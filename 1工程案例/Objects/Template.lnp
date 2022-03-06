@@ -1,0 +1,13 @@
+".\Objects\oled.obj",
+".\Objects\key.obj",
+".\Objects\delay.obj",
+".\Objects\bme280.obj",
+".\Objects\iic.obj",
+".\Objects\GPS.obj",
+".\Objects\Rotary_Encoder.obj",
+".\Objects\SPI.obj",
+".\Objects\main.obj",
+".\Objects\OLED_GUI.obj",
+".\Objects\BMP.obj" 
+TO ".\Objects\Template" RTX51 
+PRINT(".\Listings\Template.m51")

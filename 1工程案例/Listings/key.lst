@@ -1,0 +1,45 @@
+C51 COMPILER V9.60.0.0   KEY                                                               02/14/2022 12:41:39 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN .\Objects\key.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE °´¼ü\key.c LARGE RTX51 OPTIMIZE(8,SPEED) BROWSE INCDIR(.\0.96¡®OLED-SPI;
+                    -.\0.96¡®OLED-SPI\BMP;.\USER;.\delay;.\°´¼ü;.\BMEBMP280;.\IIC;.\GPS;.\SPI;.\Ðý×ª±àÂëÆ÷;.\1.54'TFT) DEBUG OBJECTEXTEND PRI
+                    -NT(.\Listings\key.lst) TABS(2) OBJECT(.\Objects\key.obj)
+
+line level    source
+
+   1          #include "key.h"
+   2          
+   3          void FirstMenukey()
+   4          {
+   5   1        if(key1==0)
+   6   1          {
+   7   2            Delay10ms();Delay10ms();Delay10ms();Delay10ms();
+   8   2            if(key1==0)
+   9   2            {
+  10   3              MenuFirst_Flag++;
+  11   3              if(MenuFirst_Flag==5)
+  12   3                {
+  13   4                  MenuFirst_Flag=1; 
+  14   4                  Delay10ms();Delay10ms();Delay10ms();Delay10ms();
+  15   4                }
+  16   3                while(!key1);
+  17   3            }
+  18   2          }
+  19   1      }
+  20          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     67    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

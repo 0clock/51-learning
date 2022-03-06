@@ -1,0 +1,204 @@
+C51 COMPILER V9.60.0.0   OLED_GUI                                                          02/14/2022 12:41:40 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE OLED_GUI
+OBJECT MODULE PLACED IN .\Objects\OLED_GUI.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE 0.96°ÆOLED-SPI\OLED_GUI.c LARGE RTX51 OPTIMIZE(8,SPEED) BROWSE INCDIR(.\
+                    -0.96°ÆOLED-SPI;.\0.96°ÆOLED-SPI\BMP;.\USER;.\delay;.\∞¥º¸;.\BMEBMP280;.\IIC;.\GPS;.\SPI;.\–˝◊™±‡¬Î∆˜;.\1.54'TFT) DEBUG O
+                    -BJECTEXTEND PRINT(.\Listings\OLED_GUI.lst) TABS(2) OBJECT(.\Objects\OLED_GUI.obj)
+
+line level    source
+
+   1          #include "OLED_GUI.h"
+   2            
+   3          unsigned int MenuFirst_Flag=1;
+   4          unsigned int MenuFirst_Top_Flag=1;
+   5          unsigned int OLED_Clean=0;
+   6          unsigned int hour=0;
+   7          unsigned int TrueMenu_Flag=1;
+   8          
+   9          void GUI_NumDisplay(uint x,uint y,uint num)
+  10          {
+  11   1        switch(num)
+  12   1        {
+  13   2          case 0 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_0); break;
+  14   2          case 1 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_1); break;
+  15   2          case 2 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_2); break;
+  16   2          case 3 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_3); break;
+  17   2          case 4 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_4); break;
+  18   2          case 5 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_5); break;
+  19   2          case 6 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_6); break;
+  20   2          case 7 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_7); break;
+  21   2          case 8 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_8); break;
+  22   2          case 9 : OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_9); break;
+  23   2          default: OLED_DrawBMP(x,y,x+14,y+3,(unsigned char *)Num_0); break;
+  24   2        }
+  25   1      }
+  26          
+  27          void GUI_Print()
+  28          {
+  29   1        if(gpsRxBuffer[1]=='B')
+  30   1        {
+  31   2        OLED_ShowChar(0,0,gpsRxBuffer[0]);
+  32   2        OLED_ShowChar(10,0,gpsRxBuffer[1]);
+  33   2        OLED_ShowChar(20,0,gpsRxBuffer[2]);
+  34   2        OLED_ShowChar(30,0,gpsRxBuffer[3]);
+  35   2        OLED_ShowChar(40,0,gpsRxBuffer[4]);
+  36   2        OLED_ShowChar(50,0,gpsRxBuffer[5]);
+  37   2        OLED_ShowChar(60,0,gpsRxBuffer[6]);
+  38   2        OLED_ShowChar(70,0,gpsRxBuffer[7]);
+  39   2        OLED_ShowChar(80,0,gpsRxBuffer[8]);
+  40   2        }
+  41   1        if((gpsRxBuffer[1]=='B')&&(gpsRxBuffer[5]=='V'))
+  42   1        {
+  43   2        OLED_ShowChar(0,2,gpsRxBuffer[0]);
+  44   2        OLED_ShowChar(10,2,gpsRxBuffer[1]);
+  45   2        OLED_ShowChar(20,2,gpsRxBuffer[2]);
+  46   2        OLED_ShowChar(30,2,gpsRxBuffer[3]);
+  47   2        OLED_ShowChar(40,2,gpsRxBuffer[4]);
+  48   2        OLED_ShowChar(50,2,gpsRxBuffer[5]);
+  49   2        OLED_ShowChar(60,2,gpsRxBuffer[6]);
+  50   2        OLED_ShowChar(70,2,gpsRxBuffer[7]);
+  51   2        OLED_ShowChar(80,2,gpsRxBuffer[8]);
+  52   2        OLED_ShowChar(90,2,gpsRxBuffer[9]);
+  53   2        OLED_ShowChar(100,2,gpsRxBuffer[10]);
+C51 COMPILER V9.60.0.0   OLED_GUI                                                          02/14/2022 12:41:40 PAGE 2   
+
+  54   2        OLED_ShowChar(110,2,gpsRxBuffer[11]);
+  55   2        OLED_ShowChar(120,2,gpsRxBuffer[12]);
+  56   2        }
+  57   1        if((gpsRxBuffer[2]=='N')&&(gpsRxBuffer[5]=='C'))
+  58   1        {
+  59   2        OLED_ShowChar(0,4,gpsRxBuffer[0]);
+  60   2        OLED_ShowChar(10,4,gpsRxBuffer[1]);
+  61   2        OLED_ShowChar(20,4,gpsRxBuffer[2]);
+  62   2        OLED_ShowChar(30,4,gpsRxBuffer[3]);
+  63   2        OLED_ShowChar(40,4,gpsRxBuffer[4]);
+  64   2        OLED_ShowChar(50,4,gpsRxBuffer[5]);
+  65   2        OLED_ShowChar(60,4,gpsRxBuffer[7]);
+  66   2        OLED_ShowChar(70,4,gpsRxBuffer[8]);
+  67   2        OLED_ShowChar(80,4,gpsRxBuffer[9]);
+  68   2        OLED_ShowChar(90,4,gpsRxBuffer[10]);
+  69   2        OLED_ShowChar(100,4,gpsRxBuffer[11]);
+  70   2        OLED_ShowChar(110,4,gpsRxBuffer[12]);
+  71   2        }else
+  72   1        {
+  73   2          OLED_ShowString(0,6, "error :(");  
+  74   2        }
+  75   1      }
+  76          void GUI_DisBMP280(void)
+  77          {
+  78   1        bmp280Convert();
+  79   1        OLED_ShowString(0,-1, "BMP280:");
+  80   1        OLED_ShowString(0,0, "Tem:"); 
+  81   1        //OLED_ShowChar(40,0,temperature);
+  82   1        OLED_ShowNum(36,0,temperature/100,2,16);
+  83   1        OLED_ShowString(52,0, ".");
+  84   1        OLED_ShowNum(58,0,temperature%100,2,16);
+  85   1        OLED_ShowString(78,0, "C");
+  86   1        OLED_ShowString(0,1, "Hum:");
+  87   1        OLED_ShowNum(40,1,humidity,4,16);
+  88   1        OLED_ShowString(78,1, "%");
+  89   1        OLED_ShowString(0,2, "AP:");
+  90   1        OLED_ShowNum(40,2,pressure,10,16);
+  91   1        //OLED_ShowString(78,2, "pa");
+  92   1        OLED_ShowString(0,3, "Hi:");
+  93   1        OLED_ShowNum(40,3,height,10,16);
+  94   1        //OLED_ShowString(78,3, "m");
+  95   1      }
+  96          
+  97          void GUI_DisGPS(void)
+  98          {
+  99   1        GPS_Handle();
+ 100   1        OLED_ShowString(0,0,"UTC:");
+ 101   1        OLED_ShowString(30,0,Save_Data.UTCTime);
+ 102   1        OLED_ShowString(0,1,"Lati&Longi:");
+ 103   1        OLED_ShowString(30,2,Save_Data.latitude);
+ 104   1        OLED_ShowString(100,2,Save_Data.N_S);
+ 105   1        OLED_ShowString(30,3,Save_Data.longitude);
+ 106   1          OLED_ShowString(100,3,Save_Data.E_W);
+ 107   1        
+ 108   1        Delay200ms();
+ 109   1        //GUI_Print();
+ 110   1      }
+ 111          
+ 112          void GUI_TimeDisplay()
+ 113          {
+ 114   1        uint x=7;
+ 115   1        GPS_Handle();
+C51 COMPILER V9.60.0.0   OLED_GUI                                                          02/14/2022 12:41:40 PAGE 3   
+
+ 116   1        if(!OLED_Clean)
+ 117   1          {
+ 118   2            OLED_Clear();
+ 119   2          }
+ 120   1        hour=(Save_Data.UTCTime[0]-'0')*10+(Save_Data.UTCTime[1]-'0')+8;
+ 121   1        if(hour>=24)
+ 122   1          {
+ 123   2            hour %= 24;
+ 124   2          }
+ 125   1        GUI_NumDisplay(x,2,hour/10);
+ 126   1        GUI_NumDisplay(x+16,2,hour%10);//x+16
+ 127   1        OLED_DrawBMP(x+33,3,x+35,5,(unsigned char *)Pixel_Dot);//x+33
+ 128   1        GUI_NumDisplay(x+39,2,Save_Data.UTCTime[2]-'0');//x+38
+ 129   1        GUI_NumDisplay(x+55,2,Save_Data.UTCTime[3]-'0');//x+54
+ 130   1        OLED_DrawBMP(x+73,3,x+75,5,(unsigned char *)Pixel_Dot);//x+71
+ 131   1        GUI_NumDisplay(x+79,2,Save_Data.UTCTime[4]-'0');//x+76
+ 132   1        GUI_NumDisplay(x+95,2,Save_Data.UTCTime[5]-'0');//x+92
+ 133   1        
+ 134   1        
+ 135   1      }
+ 136          
+ 137          void GUI_MenuFirst(void)  //È¶ñÈ°µ‰∏ÄÂÖ±ÂõõÈ°µ
+ 138          {
+ 139   1        if(MenuFirst_Flag!=TrueMenu_Flag)  //ÂÖ®Â±ÄÂà∑Êñ∞
+ 140   1        {
+ 141   2          OLED_Clear();
+ 142   2        }
+ 143   1          
+ 144   1        if(MenuFirst_Flag==2)
+ 145   1        {
+ 146   2          OLED_DrawBMP(0,0,128,8,(unsigned char *)BWeLyHqW);
+ 147   2          OLED_Clean=0;
+ 148   2        } else if(MenuFirst_Flag==1) {
+ 149   2          //OLED_DrawBMP(0,0,128,8,(unsigned char *)Time_Logo);
+ 150   2          GUI_TimeDisplay();
+ 151   2          OLED_Clean=1;
+ 152   2        } else if(MenuFirst_Flag==3) {
+ 153   2          GUI_DisBMP280();
+ 154   2          OLED_Clean=1;
+ 155   2        } else if(MenuFirst_Flag==4) {
+ 156   2          GUI_DisGPS();
+ 157   2          OLED_Clean=1;
+ 158   2        }
+ 159   1        TrueMenu_Flag=MenuFirst_Flag;
+ 160   1      }
+ 161          
+ 162          
+ 163          void GUI_MainFuction(void)  //ÂºÄÊú∫ÂêéÊòæÁ§∫‰∏ªÁïåÈù¢
+ 164          {
+ 165   1          FirstMenukey();
+ 166   1          if(MenuFirst_Top_Flag==1)
+ 167   1          {
+ 168   2            GUI_MenuFirst();  //È¶ñÈ°µ
+ 169   2          }/*else if(MenuFirst_Top_Flag==2)
+ 170   1          {
+ 171   1            GUI_MenuSecond();
+ 172   1          }*/
+ 173   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1765    ----
+C51 COMPILER V9.60.0.0   OLED_GUI                                                          02/14/2022 12:41:40 PAGE 4   
+
+   CONSTANT SIZE    =     58    ----
+   XDATA SIZE       =     10       6
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
