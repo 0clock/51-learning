@@ -15,7 +15,7 @@ void main()
 	while(1)
 	{
 		GUI_MainFuction();
-		//LCD_ShowPicture(0,0,160,80,(unsigned char *)gImage_WXJB);
+		LCD_ShowPicture(0,0,160,80,(unsigned char *)gImage_WXJB);
 	}
 }
 
