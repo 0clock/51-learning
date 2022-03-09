@@ -1,0 +1,2595 @@
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SPI
+OBJECT MODULE PLACED IN .\build\Target 1\SPI\SPI.o
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.exe .\SPI\SPI.C PRINT(.\build\Target 1\SPI\SPI.lst) OMF2 TABS(4) CODE NOCOND
+                    - SYMBOLS OPTIMIZE(8,SPEED) SMALL ROM(LARGE) INCDIR(.\null\INC\Atmel;.\0.96��OLED-SPI;.\0.96��OLED-SPI\BMP;.\USER;.\delay
+                    -;.\����;.\BMEBMP280;.\IIC;.\GPS;.\SPI;.\��ת������;.\1.54'TFT;.\..\..\..\..\..\Keil_v5\C51\INC) DEFINE(__UVISION_VERSION
+                    -=526) OBJECT(.\build\Target 1\SPI\SPI.o)
+
+line level    source
+
+   1          #include "SPI.h"
+   2          #include "tftfont.h"
+   3          
+   4          u16 BACK_COLOR;   //背景色
+   5          
+   6          /******************************************************************************
+   7                函数说明：LCD串行数据写入函数
+   8                入口数据：dat  要写入的串行数据
+   9                返回值：  无
+  10          ******************************************************************************/
+  11          void LCD_Writ_Bus(u8 dat) 
+  12          {   
+  13   1        u8 i;
+  14   1        LCD_CS_Clr;
+  15   1        for(i=0;i<8;i++)
+  16   1        {           
+  17   2          LCD_SCLK_Clr;
+  18   2          if(dat&0x80)
+  19   2            {
+  20   3                      LCD_SDA_Set;
+  21   3                  } else {
+  22   3                      LCD_SDA_Clr;
+  23   3                  }
+  24   2          LCD_SCLk_Set;
+  25   2          dat<<=1;
+  26   2        } 
+  27   1        LCD_CS_Set;   
+  28   1      }
+  29          
+  30          
+  31          /******************************************************************************
+  32                函数说明：LCD写入数据
+  33                入口数据：dat 写入的数据
+  34                返回值：  无
+  35          ******************************************************************************/
+  36          void LCD_WR_DATA8(u8 dat)
+  37          {
+  38   1        LCD_Writ_Bus(dat);
+  39   1      }
+  40          
+  41          
+  42          /******************************************************************************
+  43                函数说明：LCD写入数据
+  44                入口数据：dat 写入的数据
+  45                返回值：  无
+  46          ******************************************************************************/
+  47          void LCD_WR_DATA(u16 dat)
+  48          {
+  49   1        LCD_Writ_Bus(dat>>8);
+  50   1        LCD_Writ_Bus(dat);
+  51   1      }
+  52          
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 2   
+
+  53          
+  54          /******************************************************************************
+  55                函数说明：LCD写入命令
+  56                入口数据：dat 写入的命令
+  57                返回值：  无
+  58          ******************************************************************************/
+  59          void LCD_WR_REG(u8 dat)
+  60          {
+  61   1        LCD_DC_Clr;//写命令
+  62   1        LCD_Writ_Bus(dat);
+  63   1        LCD_DC_Set;//写数据
+  64   1      }
+  65          
+  66          
+  67          /******************************************************************************
+  68                函数说明：设置起始和结束地址
+  69                入口数据：x1,x2 设置列的起始和结束地址
+  70                          y1,y2 设置行的起始和结束地址
+  71                返回值：  无
+  72          ******************************************************************************/
+  73          void LCD_Address_Set(u16 x1,u16 y1,u16 x2,u16 y2)
+  74          {
+  75   1        if(USE_HORIZONTAL==0)
+  76   1        {
+  77   2          LCD_WR_REG(0x2a);//列地址设置
+  78   2          LCD_WR_DATA(x1+24);
+  79   2          LCD_WR_DATA(x2+24);
+  80   2          LCD_WR_REG(0x2b);//行地址设置
+  81   2          LCD_WR_DATA(y1);
+  82   2          LCD_WR_DATA(y2);
+  83   2          LCD_WR_REG(0x2c);//储存器写
+  84   2        }
+  85   1        else if(USE_HORIZONTAL==1)
+  86   1        {
+  87   2          LCD_WR_REG(0x2a);//列地址设置
+  88   2          LCD_WR_DATA(x1+24);
+  89   2          LCD_WR_DATA(x2+24);
+  90   2          LCD_WR_REG(0x2b);//行地址设置
+  91   2          LCD_WR_DATA(y1);
+  92   2          LCD_WR_DATA(y2);
+  93   2          LCD_WR_REG(0x2c);//储存器写
+  94   2        }
+  95   1        else if(USE_HORIZONTAL==2)
+  96   1        {
+  97   2          LCD_WR_REG(0x2a);//列地址设置
+  98   2          LCD_WR_DATA(x1);
+  99   2          LCD_WR_DATA(x2);
+ 100   2          LCD_WR_REG(0x2b);//行地址设置
+ 101   2          LCD_WR_DATA(y1+24);
+ 102   2          LCD_WR_DATA(y2+24);
+ 103   2          LCD_WR_REG(0x2c);//储存器写
+ 104   2        }
+ 105   1        else
+ 106   1        {
+ 107   2          LCD_WR_REG(0x2a);//列地址设置
+ 108   2          LCD_WR_DATA(x1);
+ 109   2          LCD_WR_DATA(x2);
+ 110   2          LCD_WR_REG(0x2b);//行地址设置
+ 111   2          LCD_WR_DATA(y1+24);
+ 112   2          LCD_WR_DATA(y2+24);
+ 113   2          LCD_WR_REG(0x2c);//储存器写
+ 114   2        }
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 3   
+
+ 115   1      }
+ 116          
+ 117          
+ 118          /******************************************************************************
+ 119                函数说明：LCD初始化函数
+ 120                入口数据：无
+ 121                返回值：  无
+ 122          ******************************************************************************/
+ 123          void Lcd_Init(void)
+ 124          { 
+ 125   1        LCD_RES_Clr;
+ 126   1        delay_ms(200);
+ 127   1        LCD_RES_Set;
+ 128   1        delay_ms(20);
+ 129   1        LCD_BLK_Set;
+ 130   1        
+ 131   1        LCD_WR_REG(0x11);//Sleep exit 
+ 132   1        delay_ms(120);                //Delay 120ms 
+ 133   1        LCD_WR_REG(0xB1);     
+ 134   1        LCD_WR_DATA8(0x05);   
+ 135   1        LCD_WR_DATA8(0x3C);   
+ 136   1        LCD_WR_DATA8(0x3C);   
+ 137   1        
+ 138   1        LCD_WR_REG(0xB2);     
+ 139   1        LCD_WR_DATA8(0x05);   
+ 140   1        LCD_WR_DATA8(0x3C);   
+ 141   1        LCD_WR_DATA8(0x3C);   
+ 142   1        
+ 143   1        LCD_WR_REG(0xB3);     
+ 144   1        LCD_WR_DATA8(0x05);   
+ 145   1        LCD_WR_DATA8(0x3C);   
+ 146   1        LCD_WR_DATA8(0x3C);   
+ 147   1        LCD_WR_DATA8(0x05);   
+ 148   1        LCD_WR_DATA8(0x3C);   
+ 149   1        LCD_WR_DATA8(0x3C);   
+ 150   1        
+ 151   1        LCD_WR_REG(0xB4);     //Dot inversion
+ 152   1        LCD_WR_DATA8(0x03);   
+ 153   1        
+ 154   1        LCD_WR_REG(0xC0);     
+ 155   1        LCD_WR_DATA8(0x0E);   
+ 156   1        LCD_WR_DATA8(0x0E);   
+ 157   1        LCD_WR_DATA8(0x04);   
+ 158   1        
+ 159   1        LCD_WR_REG(0xC1);     
+ 160   1        LCD_WR_DATA8(0xC5);   
+ 161   1        
+ 162   1        LCD_WR_REG(0xC2);     
+ 163   1        LCD_WR_DATA8(0x0d);   
+ 164   1        LCD_WR_DATA8(0x00);   
+ 165   1        
+ 166   1        LCD_WR_REG(0xC3);     
+ 167   1        LCD_WR_DATA8(0x8D);   
+ 168   1        LCD_WR_DATA8(0x2A);   
+ 169   1        
+ 170   1        LCD_WR_REG(0xC4);     
+ 171   1        LCD_WR_DATA8(0x8D);   
+ 172   1        LCD_WR_DATA8(0xEE);   
+ 173   1        
+ 174   1        LCD_WR_REG(0xC5);     //VCOM
+ 175   1        LCD_WR_DATA8(0x06); //1D  .06
+ 176   1        
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 4   
+
+ 177   1        
+ 178   1        LCD_WR_REG(0x36);     //MX, MY, RGB mode
+ 179   1        if(USE_HORIZONTAL==0)LCD_WR_DATA8(0x08);
+ 180   1        else if(USE_HORIZONTAL==1)LCD_WR_DATA8(0xC8);
+ 181   1        else if(USE_HORIZONTAL==2)LCD_WR_DATA8(0x78);
+ 182   1        else LCD_WR_DATA8(0xA8);  
+ 183   1        
+ 184   1        LCD_WR_REG(0x3A); 
+ 185   1        LCD_WR_DATA8(0x55);
+ 186   1        
+ 187   1        LCD_WR_REG(0xE0);     
+ 188   1        LCD_WR_DATA8(0x0b);   
+ 189   1        LCD_WR_DATA8(0x17);   
+ 190   1        LCD_WR_DATA8(0x0a);   
+ 191   1        LCD_WR_DATA8(0x0d);   
+ 192   1        LCD_WR_DATA8(0x1a);   
+ 193   1        LCD_WR_DATA8(0x19);   
+ 194   1        LCD_WR_DATA8(0x16);   
+ 195   1        LCD_WR_DATA8(0x1d);   
+ 196   1        LCD_WR_DATA8(0x21);   
+ 197   1        LCD_WR_DATA8(0x26);   
+ 198   1        LCD_WR_DATA8(0x37);   
+ 199   1        LCD_WR_DATA8(0x3c);   
+ 200   1        LCD_WR_DATA8(0x00);   
+ 201   1        LCD_WR_DATA8(0x09);   
+ 202   1        LCD_WR_DATA8(0x05);   
+ 203   1        LCD_WR_DATA8(0x10);   
+ 204   1        
+ 205   1        LCD_WR_REG(0xE1);     
+ 206   1        LCD_WR_DATA8(0x0c);   
+ 207   1        LCD_WR_DATA8(0x19);   
+ 208   1        LCD_WR_DATA8(0x09);   
+ 209   1        LCD_WR_DATA8(0x0d);   
+ 210   1        LCD_WR_DATA8(0x1b);   
+ 211   1        LCD_WR_DATA8(0x19);   
+ 212   1        LCD_WR_DATA8(0x15);   
+ 213   1        LCD_WR_DATA8(0x1d);   
+ 214   1        LCD_WR_DATA8(0x21);   
+ 215   1        LCD_WR_DATA8(0x26);   
+ 216   1        LCD_WR_DATA8(0x39);   
+ 217   1        LCD_WR_DATA8(0x3E);   
+ 218   1        LCD_WR_DATA8(0x00);   
+ 219   1        LCD_WR_DATA8(0x09);   
+ 220   1        LCD_WR_DATA8(0x05);   
+ 221   1        LCD_WR_DATA8(0x10);   
+ 222   1        
+ 223   1        delay_ms (120);
+ 224   1        LCD_WR_REG(0x29);     //Display on
+ 225   1      } 
+ 226          
+ 227          
+ 228          /******************************************************************************
+ 229                函数说明：LCD清屏函数
+ 230                入口数据：无
+ 231                返回值：  无
+ 232          ******************************************************************************/
+ 233          void LCD_Clear(u16 Color)
+ 234          {
+ 235   1        u16 i,j;      
+ 236   1        LCD_Address_Set(0,0,LCD_W-1,LCD_H-1);
+ 237   1        for(i=0;i<LCD_W;i++)
+ 238   1        {
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 5   
+
+ 239   2          for (j=0;j<LCD_H;j++)
+ 240   2          {
+ 241   3            LCD_WR_DATA(Color);
+ 242   3          }
+ 243   2        }
+ 244   1      }
+ 245          
+ 246          
+ 247          /******************************************************************************
+ 248                函数说明：LCD显示汉字
+ 249                入口数据：x,y   起始坐标
+ 250                          index 汉字的序号
+ 251                          size  字号
+ 252                返回值：  无
+ 253          *****************************************************************************
+ 254          void LCD_ShowChinese(u16 x,u16 y,u8 index,u8 size,u16 color)    
+ 255          {  
+ 256            u8 i,j,size1;
+ 257            const u8 *temp;
+ 258            if(size==16){temp=Hzk16;}//选择字号
+ 259            if(size==32){temp=Hzk32;}
+ 260            LCD_Address_Set(x,y,x+size-1,y+size-1); //设置一个汉字的区域
+ 261            size1=size*size/8;//一个汉字所占的字节
+ 262            temp+=index*size1;//写入的起始位置
+ 263            for(j=0;j<size1;j++)
+ 264            {
+ 265              for(i=0;i<8;i++)
+ 266              {
+ 267                if((*temp&(1<<i))!=0)//从数据的低位开始读
+ 268                {
+ 269                  LCD_WR_DATA(color);//点亮
+ 270                }
+ 271                else
+ 272                {
+ 273                  LCD_WR_DATA(BACK_COLOR);//不点亮
+ 274                }
+ 275              }
+ 276              temp++;
+ 277            }
+ 278          }
+ 279          
+ 280          
+ 281          /******************************************************************************
+ 282                函数说明：LCD显示汉字
+ 283                入口数据：x,y   起始坐标
+ 284                返回值：  无
+ 285          ******************************************************************************/
+ 286          void LCD_DrawPoint(u16 x,u16 y,u16 color)
+ 287          {
+ 288   1        LCD_Address_Set(x,y,x,y);//设置光标位置 
+ 289   1        LCD_WR_DATA(color);
+ 290   1      } 
+ 291          
+ 292          
+ 293          /******************************************************************************
+ 294                函数说明：LCD画一个大的点
+ 295                入口数据：x,y   起始坐标
+ 296                返回值：  无
+ 297          ******************************************************************************/
+ 298          void LCD_DrawPoint_big(u16 x,u16 y,u16 color)
+ 299          {
+ 300   1        LCD_Fill(x-1,y-1,x+1,y+1,color);
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 6   
+
+ 301   1      } 
+ 302          
+ 303          
+ 304          /******************************************************************************
+ 305                函数说明：在指定区域填充颜色
+ 306                入口数据：xsta,ysta   起始坐标
+ 307                          xend,yend   终止坐标
+ 308                返回值：  无
+ 309          ******************************************************************************/
+ 310          void LCD_Fill(u16 xsta,u16 ysta,u16 xend,u16 yend,u16 color)
+ 311          {          
+ 312   1        u16 i,j; 
+ 313   1        LCD_Address_Set(xsta,ysta,xend,yend);      //设置光标位置 
+ 314   1        for(i=ysta;i<=yend;i++)
+ 315   1        {                                                         
+ 316   2          for(j=xsta;j<=xend;j++)LCD_WR_DATA(color);//设置光标位置      
+ 317   2        }                             
+ 318   1      }
+ 319          
+ 320          
+ 321          /******************************************************************************
+ 322                函数说明：画线
+ 323                入口数据：x1,y1   起始坐标
+ 324                          x2,y2   终止坐标
+ 325                返回值：  无
+ 326          ******************************************************************************/
+ 327          void LCD_DrawLine(u16 x1,u16 y1,u16 x2,u16 y2,u16 color)
+ 328          {
+ 329   1        u16 t; 
+ 330   1        int xerr=0,yerr=0,delta_x,delta_y,distance;
+ 331   1        int incx,incy,uRow,uCol;
+ 332   1        delta_x=x2-x1; //计算坐标增量 
+ 333   1        delta_y=y2-y1;
+ 334   1        uRow=x1;//画线起点坐标
+ 335   1        uCol=y1;
+ 336   1        if(delta_x>0)incx=1; //设置单步方向 
+ 337   1        else if (delta_x==0)incx=0;//垂直线 
+ 338   1        else {incx=-1;delta_x=-delta_x;}
+ 339   1        if(delta_y>0)incy=1;
+ 340   1        else if (delta_y==0)incy=0;//水平线 
+ 341   1        else {incy=-1;delta_y=-delta_x;}
+ 342   1        if(delta_x>delta_y)distance=delta_x; //选取基本增量坐标轴 
+ 343   1        else distance=delta_y;
+ 344   1        for(t=0;t<distance+1;t++)
+ 345   1        {
+ 346   2          LCD_DrawPoint(uRow,uCol,color);//画点
+ 347   2          xerr+=delta_x;
+ 348   2          yerr+=delta_y;
+ 349   2          if(xerr>distance)
+ 350   2          {
+ 351   3            xerr-=distance;
+ 352   3            uRow+=incx;
+ 353   3          }
+ 354   2          if(yerr>distance)
+ 355   2          {
+ 356   3            yerr-=distance;
+ 357   3            uCol+=incy;
+ 358   3          }
+ 359   2        }
+ 360   1      }
+ 361          
+ 362          
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 7   
+
+ 363          /******************************************************************************
+ 364                函数说明：画矩形
+ 365                入口数据：x1,y1   起始坐标
+ 366                          x2,y2   终止坐标
+ 367                返回值：  无
+ 368          ******************************************************************************/
+ 369          void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2,u16 color)
+ 370          {
+ 371   1        LCD_DrawLine(x1,y1,x2,y1,color);
+ 372   1        LCD_DrawLine(x1,y1,x1,y2,color);
+ 373   1        LCD_DrawLine(x1,y2,x2,y2,color);
+ 374   1        LCD_DrawLine(x2,y1,x2,y2,color);
+ 375   1      }
+ 376          
+ 377          
+ 378          /******************************************************************************
+ 379                函数说明：画圆
+ 380                入口数据：x0,y0   圆心坐标
+ 381                          r       半径
+ 382                返回值：  无
+ 383          ******************************************************************************/
+ 384          void Draw_Circle(u16 x0,u16 y0,u8 r,u16 color)
+ 385          {
+ 386   1        int a,b;
+ 387   1        a=0;b=r;    
+ 388   1        while(a<=b)
+ 389   1        {
+ 390   2          LCD_DrawPoint(x0-b,y0-a,color);             //3           
+ 391   2          LCD_DrawPoint(x0+b,y0-a,color);             //0           
+ 392   2          LCD_DrawPoint(x0-a,y0+b,color);             //1                
+ 393   2          LCD_DrawPoint(x0-a,y0-b,color);             //2             
+ 394   2          LCD_DrawPoint(x0+b,y0+a,color);             //4               
+ 395   2          LCD_DrawPoint(x0+a,y0-b,color);             //5
+ 396   2          LCD_DrawPoint(x0+a,y0+b,color);             //6 
+ 397   2          LCD_DrawPoint(x0-b,y0+a,color);             //7
+ 398   2          a++;
+ 399   2          if((a*a+b*b)>(r*r))//判断要画的点是否过远
+ 400   2          {
+ 401   3            b--;
+ 402   3          }
+ 403   2        }
+ 404   1      }
+ 405          
+ 406          
+ 407          /******************************************************************************
+ 408                函数说明：显示字符
+ 409                入口数据：x,y    起点坐标
+ 410                          num    要显示的字符
+ 411                          mode   1叠加方式  0非叠加方式
+ 412                返回值：  无
+ 413          ******************************************************************************/
+ 414          void LCD_ShowChar(u16 x,u16 y,u8 num,u8 mode,u16 color)
+ 415          {
+ 416   1        u8 temp;
+ 417   1        u8 pos,t;
+ 418   1        u16 x0=x;    
+ 419   1        if(x>LCD_W-16||y>LCD_H-16)return;     //设置窗口         
+ 420   1        num=num-' ';//得到偏移后的值
+ 421   1        LCD_Address_Set(x,y,x+8-1,y+16-1);      //设置光标位置 
+ 422   1        if(!mode) //非叠加方式
+ 423   1        {
+ 424   2          for(pos=0;pos<16;pos++)
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 8   
+
+ 425   2          { 
+ 426   3            temp=asc2_1608[(u16)num*16+pos];       //调用1608字体
+ 427   3            for(t=0;t<8;t++)
+ 428   3            {                 
+ 429   4              if(temp&0x01)LCD_WR_DATA(color);
+ 430   4              else LCD_WR_DATA(BACK_COLOR);
+ 431   4              temp>>=1;
+ 432   4              x++;
+ 433   4            }
+ 434   3            x=x0;
+ 435   3            y++;
+ 436   3          }   
+ 437   2        }else//叠加方式
+ 438   1        {
+ 439   2          for(pos=0;pos<16;pos++)
+ 440   2          {
+ 441   3            temp=asc2_1608[(u16)num*16+pos];       //调用1608字体
+ 442   3            for(t=0;t<8;t++)
+ 443   3            {                 
+ 444   4              if(temp&0x01)LCD_DrawPoint(x+t,y+pos,color);//画一个点     
+ 445   4              temp>>=1; 
+ 446   4            }
+ 447   3          }
+ 448   2        }               
+ 449   1      }
+ 450          
+ 451          
+ 452          /******************************************************************************
+ 453                函数说明：显示字符串
+ 454                入口数据：x,y    起点坐标
+ 455                          *p     字符串起始地址
+ 456                返回值：  无
+ 457          ******************************************************************************/
+ 458          void LCD_ShowString(u16 x,u16 y,const u8 *p,u16 color)
+ 459          {         
+ 460   1          while(*p!='\0')
+ 461   1          {       
+ 462   2              if(x>LCD_W-16){x=0;y+=16;}
+ 463   2              if(y>LCD_H-16){y=x=0;LCD_Clear(RED);}
+ 464   2              LCD_ShowChar(x,y,*p,0,color);
+ 465   2              x+=8;
+ 466   2              p++;
+ 467   2          }  
+ 468   1      }
+ 469          
+ 470          
+ 471          /******************************************************************************
+ 472                函数说明：显示数字
+ 473                入口数据：m底数，n指数
+ 474                返回值：  无
+ 475          ******************************************************************************/
+ 476          u32 mypow(u8 m,u8 n)
+ 477          {
+ 478   1          u32 result=1;    
+ 479   1          while(n--)result*=m;    
+ 480   1          return result;
+ 481   1      }
+ 482          
+ 483          
+ 484          /******************************************************************************
+ 485                函数说明：显示数字
+ 486                入口数据：x,y    起点坐标
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 9   
+
+ 487                          num    要显示的数字
+ 488                          len    要显示的数字个数
+ 489                返回值：  无
+ 490          ******************************************************************************/
+ 491          void LCD_ShowNum(u16 x,u16 y,u16 num,u8 len,u16 color)
+ 492          {           
+ 493   1        u8 t,temp;
+ 494   1        u8 enshow=0;
+ 495   1        for(t=0;t<len;t++)
+ 496   1        {
+ 497   2          temp=(num/mypow(10,len-t-1))%10;
+ 498   2          if(enshow==0&&t<(len-1))
+ 499   2          {
+ 500   3            if(temp==0)
+ 501   3            {
+ 502   4              LCD_ShowChar(x+8*t,y,' ',0,color);
+ 503   4              continue;
+ 504   4            }else enshow=1; 
+ 505   3          }
+ 506   2          LCD_ShowChar(x+8*t,y,temp+48,0,color); 
+ 507   2        }
+ 508   1      } 
+ 509          
+ 510          
+ 511          /******************************************************************************
+ 512                函数说明：显示小数
+ 513                入口数据：x,y    起点坐标
+ 514                          num    要显示的小数
+ 515                          len    要显示的数字个数
+ 516                返回值：  无
+ 517          ******************************************************************************/
+ 518          void LCD_ShowNum1(u16 x,u16 y,float num,u8 len,u16 color)
+ 519          {           
+ 520   1        u8 t,temp;
+ 521   1        u16 num1;
+ 522   1        num1=num*100;
+ 523   1        for(t=0;t<len;t++)
+ 524   1        {
+ 525   2          temp=(num1/mypow(10,len-t-1))%10;
+ 526   2          if(t==(len-2))
+ 527   2          {
+ 528   3            LCD_ShowChar(x+8*(len-2),y,'.',0,color);
+ 529   3            t++;
+ 530   3            len+=1;
+ 531   3          }
+ 532   2          LCD_ShowChar(x+8*t,y,temp+48,0,color);
+ 533   2        }
+ 534   1      }
+ 535          
+ 536          
+ 537          /******************************************************************************
+ 538                函数说明：显示图片
+ 539                入口数据：x,y    起点坐标
+ 540                返回值：  无
+ 541          ******************************************************************************/
+ 542          void LCD_ShowPicture(u16 x,u16 y,u16 sizex,u16 sizey,const u8 pic[])
+ 543          {
+ 544   1        u32 i,j,k=0;
+ 545   1        LCD_Address_Set(x,y,x+sizex-1,y+sizey-1);
+ 546   1        for(i=0;i<sizex;i++)
+ 547   1        {
+ 548   2          for(j=0;j<sizey;j++)
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 10  
+
+ 549   2          {
+ 550   3            LCD_WR_DATA8(pic[k*2+1]);
+ 551   3            LCD_WR_DATA8(pic[k*2]);
+ 552   3            k++;
+ 553   3          }
+ 554   2        }
+ 555   1      }
+ 556          
+ 557          
+ 558          
+*** WARNING C294 IN LINE 77 OF .\SPI\SPI.C: unreachable code
+*** WARNING C294 IN LINE 87 OF .\SPI\SPI.C: unreachable code
+*** WARNING C294 IN LINE 107 OF .\SPI\SPI.C: unreachable code
+*** WARNING C294 IN LINE 182 OF .\SPI\SPI.C: unreachable code
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 11  
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION _LCD_Writ_Bus (BEGIN)
+                                           ; SOURCE LINE # 11
+;---- Variable 'dat' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 12
+                                           ; SOURCE LINE # 14
+0000 C293              CLR     LCD_CE_PIN_NUM
+                                           ; SOURCE LINE # 15
+;---- Variable 'i' assigned to Register 'R6' ----
+0002 E4                CLR     A
+0003 FE                MOV     R6,A
+0004         ?C0001:
+0004 EE                MOV     A,R6
+0005 C3                CLR     C
+0006 9408              SUBB    A,#08H
+0008 7480              MOV     A,#080H
+000A 9480              SUBB    A,#080H
+000C 5015              JNC     ?C0002
+                                           ; SOURCE LINE # 16
+                                           ; SOURCE LINE # 17
+000E C297              CLR     LCD_SCLK_PIN_NUM
+                                           ; SOURCE LINE # 18
+0010 EF                MOV     A,R7
+0011 30E704            JNB     ACC.7,?C0004
+                                           ; SOURCE LINE # 19
+                                           ; SOURCE LINE # 20
+0014 D296              SETB    LCD_SDIN_PIN_NUM
+                                           ; SOURCE LINE # 21
+0016 8002              SJMP    ?C0005
+0018         ?C0004:
+                                           ; SOURCE LINE # 22
+0018 C296              CLR     LCD_SDIN_PIN_NUM
+                                           ; SOURCE LINE # 23
+001A         ?C0005:
+                                           ; SOURCE LINE # 24
+001A D297              SETB    LCD_SCLK_PIN_NUM
+                                           ; SOURCE LINE # 25
+001C EF                MOV     A,R7
+001D 25E0              ADD     A,ACC
+001F FF                MOV     R7,A
+                                           ; SOURCE LINE # 26
+0020 0E                INC     R6
+0021 80E1              SJMP    ?C0001
+0023         ?C0002:
+                                           ; SOURCE LINE # 27
+0023 D293              SETB    LCD_CE_PIN_NUM
+                                           ; SOURCE LINE # 28
+0025 22                RET     
+             ; FUNCTION _LCD_Writ_Bus (END)
+
+             ; FUNCTION L?0121 (BEGIN)
+0000         L?0122:
+0000 120000      R     LCALL   _LCD_WR_REG
+0003         L?0123:
+0003 7F05              MOV     R7,#05H
+0005 120000      R     LCALL   _LCD_WR_DATA8
+0008 7F3C              MOV     R7,#03CH
+000A         L?0124:
+000A 120000      R     LCALL   _LCD_WR_DATA8
+000D 7F3C              MOV     R7,#03CH
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 12  
+
+             ; FUNCTION _LCD_WR_DATA8 (BEGIN)
+                                           ; SOURCE LINE # 36
+;---- Variable 'dat' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 37
+                                           ; SOURCE LINE # 38
+000F 020000      R     LJMP    _LCD_Writ_Bus
+             ; FUNCTION _LCD_WR_DATA8 (END)
+
+             ; FUNCTION _LCD_WR_DATA (BEGIN)
+                                           ; SOURCE LINE # 47
+;---- Variable 'dat' assigned to Register 'R4/R5' ----
+0000 AD07              MOV     R5,AR7
+0002 AC06              MOV     R4,AR6
+                                           ; SOURCE LINE # 48
+                                           ; SOURCE LINE # 49
+0004 AF04              MOV     R7,AR4
+0006 120000      R     LCALL   _LCD_Writ_Bus
+                                           ; SOURCE LINE # 50
+0009 AF05              MOV     R7,AR5
+000B 020000      R     LJMP    _LCD_Writ_Bus
+             ; FUNCTION _LCD_WR_DATA (END)
+
+             ; FUNCTION _LCD_WR_REG (BEGIN)
+                                           ; SOURCE LINE # 59
+;---- Variable 'dat' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 60
+                                           ; SOURCE LINE # 61
+0000 C294              CLR     LCD_DC_PIN_NUM
+                                           ; SOURCE LINE # 62
+0002 120000      R     LCALL   _LCD_Writ_Bus
+                                           ; SOURCE LINE # 63
+0005 D294              SETB    LCD_DC_PIN_NUM
+                                           ; SOURCE LINE # 64
+0007 22                RET     
+             ; FUNCTION _LCD_WR_REG (END)
+
+             ; FUNCTION _LCD_Address_Set (BEGIN)
+                                           ; SOURCE LINE # 73
+0000 8E00        R     MOV     x1,R6
+0002 8F00        R     MOV     x1+01H,R7
+;---- Variable 'x2' assigned to Register 'R2/R3' ----
+;---- Variable 'y1' assigned to Register 'DPTR' ----
+0004 8D82              MOV     DPL,R5
+0006 8C83              MOV     DPH,R4
+                                           ; SOURCE LINE # 74
+                                           ; SOURCE LINE # 75
+                                           ; SOURCE LINE # 76
+                                           ; SOURCE LINE # 77
+                                           ; SOURCE LINE # 78
+                                           ; SOURCE LINE # 79
+                                           ; SOURCE LINE # 80
+                                           ; SOURCE LINE # 81
+                                           ; SOURCE LINE # 82
+                                           ; SOURCE LINE # 83
+                                           ; SOURCE LINE # 84
+                                           ; SOURCE LINE # 85
+                                           ; SOURCE LINE # 86
+                                           ; SOURCE LINE # 87
+                                           ; SOURCE LINE # 88
+                                           ; SOURCE LINE # 89
+                                           ; SOURCE LINE # 90
+                                           ; SOURCE LINE # 91
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 13  
+
+                                           ; SOURCE LINE # 92
+                                           ; SOURCE LINE # 93
+                                           ; SOURCE LINE # 94
+                                           ; SOURCE LINE # 95
+                                           ; SOURCE LINE # 96
+                                           ; SOURCE LINE # 97
+0008 7F2A              MOV     R7,#02AH
+000A 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 98
+000D AF00        R     MOV     R7,x1+01H
+000F AE00        R     MOV     R6,x1
+0011 120000      R     LCALL   _LCD_WR_DATA
+                                           ; SOURCE LINE # 99
+0014 AF03              MOV     R7,AR3
+0016 AE02              MOV     R6,AR2
+0018 120000      R     LCALL   _LCD_WR_DATA
+                                           ; SOURCE LINE # 100
+001B 7F2B              MOV     R7,#02BH
+001D 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 101
+0020 E582              MOV     A,DPL
+0022 2418              ADD     A,#018H
+0024 FF                MOV     R7,A
+0025 E4                CLR     A
+0026 3583              ADDC    A,DPH
+0028 FE                MOV     R6,A
+0029 120000      R     LCALL   _LCD_WR_DATA
+                                           ; SOURCE LINE # 102
+002C E500        R     MOV     A,y2+01H
+002E 2418              ADD     A,#018H
+0030 FF                MOV     R7,A
+0031 E4                CLR     A
+0032 3500        R     ADDC    A,y2
+0034 FE                MOV     R6,A
+0035 120000      R     LCALL   _LCD_WR_DATA
+                                           ; SOURCE LINE # 103
+0038 7F2C              MOV     R7,#02CH
+003A 020000      R     LJMP    _LCD_WR_REG
+             ; FUNCTION _LCD_Address_Set (END)
+
+             ; FUNCTION Lcd_Init (BEGIN)
+                                           ; SOURCE LINE # 123
+                                           ; SOURCE LINE # 124
+                                           ; SOURCE LINE # 125
+0000 C295              CLR     LCD_RST_PIN_NUM
+                                           ; SOURCE LINE # 126
+0002 7FC8              MOV     R7,#0C8H
+0004 7E00              MOV     R6,#00H
+0006 120000      E     LCALL   _delay_ms
+                                           ; SOURCE LINE # 127
+0009 D295              SETB    LCD_RST_PIN_NUM
+                                           ; SOURCE LINE # 128
+000B 7F14              MOV     R7,#014H
+000D 7E00              MOV     R6,#00H
+000F 120000      E     LCALL   _delay_ms
+                                           ; SOURCE LINE # 129
+0012 D292              SETB    LCD_BLK_PIN_NUM
+                                           ; SOURCE LINE # 131
+0014 7F11              MOV     R7,#011H
+0016 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 132
+0019 7F78              MOV     R7,#078H
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 14  
+
+001B 7E00              MOV     R6,#00H
+001D 120000      E     LCALL   _delay_ms
+                                           ; SOURCE LINE # 133
+0020 7FB1              MOV     R7,#0B1H
+                                           ; SOURCE LINE # 134
+                                           ; SOURCE LINE # 135
+                                           ; SOURCE LINE # 136
+0022 120000      R     LCALL   L?0121
+                                           ; SOURCE LINE # 138
+0025 7FB2              MOV     R7,#0B2H
+                                           ; SOURCE LINE # 139
+                                           ; SOURCE LINE # 140
+                                           ; SOURCE LINE # 141
+0027 120000      R     LCALL   L?0121
+                                           ; SOURCE LINE # 143
+002A 7FB3              MOV     R7,#0B3H
+                                           ; SOURCE LINE # 144
+                                           ; SOURCE LINE # 145
+                                           ; SOURCE LINE # 146
+002C 120000      R     LCALL   L?0122
+                                           ; SOURCE LINE # 147
+                                           ; SOURCE LINE # 148
+                                           ; SOURCE LINE # 149
+002F 120000      R     LCALL   L?0123
+                                           ; SOURCE LINE # 151
+0032 7FB4              MOV     R7,#0B4H
+0034 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 152
+0037 7F03              MOV     R7,#03H
+0039 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 154
+003C 7FC0              MOV     R7,#0C0H
+003E 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 155
+0041 7F0E              MOV     R7,#0EH
+0043 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 156
+0046 7F0E              MOV     R7,#0EH
+0048 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 157
+004B 7F04              MOV     R7,#04H
+004D 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 159
+0050 7FC1              MOV     R7,#0C1H
+0052 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 160
+0055 7FC5              MOV     R7,#0C5H
+0057 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 162
+005A 7FC2              MOV     R7,#0C2H
+005C 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 163
+005F 7F0D              MOV     R7,#0DH
+0061 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 164
+0064 E4                CLR     A
+0065 FF                MOV     R7,A
+0066 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 166
+0069 7FC3              MOV     R7,#0C3H
+006B 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 167
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 15  
+
+006E 7F8D              MOV     R7,#08DH
+0070 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 168
+0073 7F2A              MOV     R7,#02AH
+0075 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 170
+0078 7FC4              MOV     R7,#0C4H
+007A 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 171
+007D 7F8D              MOV     R7,#08DH
+007F 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 172
+0082 7FEE              MOV     R7,#0EEH
+0084 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 174
+0087 7FC5              MOV     R7,#0C5H
+0089 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 175
+008C 7F06              MOV     R7,#06H
+008E 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 178
+0091 7F36              MOV     R7,#036H
+0093 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 179
+                                           ; SOURCE LINE # 180
+                                           ; SOURCE LINE # 181
+0096 7F78              MOV     R7,#078H
+0098 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 182
+                                           ; SOURCE LINE # 184
+009B 7F3A              MOV     R7,#03AH
+009D 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 185
+00A0 7F55              MOV     R7,#055H
+00A2 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 187
+00A5 7FE0              MOV     R7,#0E0H
+00A7 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 188
+00AA 7F0B              MOV     R7,#0BH
+00AC 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 189
+00AF 7F17              MOV     R7,#017H
+00B1 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 190
+00B4 7F0A              MOV     R7,#0AH
+00B6 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 191
+00B9 7F0D              MOV     R7,#0DH
+00BB 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 192
+00BE 7F1A              MOV     R7,#01AH
+00C0 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 193
+00C3 7F19              MOV     R7,#019H
+00C5 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 194
+00C8 7F16              MOV     R7,#016H
+00CA 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 195
+00CD 7F1D              MOV     R7,#01DH
+00CF 120000      R     LCALL   _LCD_WR_DATA8
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 16  
+
+                                           ; SOURCE LINE # 196
+00D2 7F21              MOV     R7,#021H
+00D4 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 197
+00D7 7F26              MOV     R7,#026H
+00D9 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 198
+00DC 7F37              MOV     R7,#037H
+                                           ; SOURCE LINE # 199
+00DE 120000      R     LCALL   L?0124
+                                           ; SOURCE LINE # 200
+00E1 E4                CLR     A
+00E2 FF                MOV     R7,A
+00E3 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 201
+00E6 7F09              MOV     R7,#09H
+00E8 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 202
+00EB 7F05              MOV     R7,#05H
+00ED 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 203
+00F0 7F10              MOV     R7,#010H
+00F2 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 205
+00F5 7FE1              MOV     R7,#0E1H
+00F7 120000      R     LCALL   _LCD_WR_REG
+                                           ; SOURCE LINE # 206
+00FA 7F0C              MOV     R7,#0CH
+00FC 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 207
+00FF 7F19              MOV     R7,#019H
+0101 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 208
+0104 7F09              MOV     R7,#09H
+0106 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 209
+0109 7F0D              MOV     R7,#0DH
+010B 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 210
+010E 7F1B              MOV     R7,#01BH
+0110 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 211
+0113 7F19              MOV     R7,#019H
+0115 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 212
+0118 7F15              MOV     R7,#015H
+011A 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 213
+011D 7F1D              MOV     R7,#01DH
+011F 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 214
+0122 7F21              MOV     R7,#021H
+0124 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 215
+0127 7F26              MOV     R7,#026H
+0129 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 216
+012C 7F39              MOV     R7,#039H
+012E 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 217
+0131 7F3E              MOV     R7,#03EH
+0133 120000      R     LCALL   _LCD_WR_DATA8
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 17  
+
+                                           ; SOURCE LINE # 218
+0136 E4                CLR     A
+0137 FF                MOV     R7,A
+0138 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 219
+013B 7F09              MOV     R7,#09H
+013D 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 220
+0140 7F05              MOV     R7,#05H
+0142 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 221
+0145 7F10              MOV     R7,#010H
+0147 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 223
+014A 7F78              MOV     R7,#078H
+014C 7E00              MOV     R6,#00H
+014E 120000      E     LCALL   _delay_ms
+                                           ; SOURCE LINE # 224
+0151 7F29              MOV     R7,#029H
+0153 020000      R     LJMP    _LCD_WR_REG
+             ; FUNCTION Lcd_Init (END)
+
+             ; FUNCTION _LCD_Clear (BEGIN)
+                                           ; SOURCE LINE # 233
+0000 8E00        R     MOV     Color,R6
+0002 8F00        R     MOV     Color+01H,R7
+                                           ; SOURCE LINE # 234
+                                           ; SOURCE LINE # 236
+0004 750000      R     MOV     ?_LCD_Address_Set?BYTE+06H,#00H
+0007 75004F      R     MOV     ?_LCD_Address_Set?BYTE+07H,#04FH
+000A 7B9F              MOV     R3,#09FH
+000C 7A00              MOV     R2,#00H
+000E E4                CLR     A
+000F FD                MOV     R5,A
+0010 FC                MOV     R4,A
+0011 FF                MOV     R7,A
+0012 FE                MOV     R6,A
+0013 120000      R     LCALL   _LCD_Address_Set
+                                           ; SOURCE LINE # 237
+;---- Variable 'i' assigned to Register 'R2/R3' ----
+0016 E4                CLR     A
+0017 FB                MOV     R3,A
+0018         ?C0024:
+                                           ; SOURCE LINE # 238
+                                           ; SOURCE LINE # 239
+;---- Variable 'j' assigned to Register 'DPTR' ----
+0018 900000            MOV     DPTR,#00H
+001B         ?C0027:
+                                           ; SOURCE LINE # 240
+                                           ; SOURCE LINE # 241
+001B AF00        R     MOV     R7,Color+01H
+001D AE00        R     MOV     R6,Color
+001F 120000      R     LCALL   _LCD_WR_DATA
+                                           ; SOURCE LINE # 242
+0022 A3                INC     DPTR
+0023 E582              MOV     A,DPL
+0025 6450              XRL     A,#050H
+0027 4583              ORL     A,DPH
+0029 70F0              JNZ     ?C0027
+                                           ; SOURCE LINE # 243
+002B         ?C0026:
+002B 0B                INC     R3
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 18  
+
+002C BB0001            CJNE    R3,#00H,?C0108
+002F 0A                INC     R2
+0030         ?C0108:
+0030 EB                MOV     A,R3
+0031 64A0              XRL     A,#0A0H
+0033 4A                ORL     A,R2
+0034 70E2              JNZ     ?C0024
+                                           ; SOURCE LINE # 244
+0036         ?C0030:
+0036 22                RET     
+             ; FUNCTION _LCD_Clear (END)
+
+             ; FUNCTION L?0125 (BEGIN)
+0000 FE                MOV     R6,A
+0001 C3                CLR     C
+0002 E500        R     MOV     A,y0+01H
+0004 9500        R     SUBB    A,a+01H
+0006 FD                MOV     R5,A
+0007 E500        R     MOV     A,y0
+0009 9500        R     SUBB    A,a
+000B         L?0126:
+000B FC                MOV     R4,A
+000C AB00        R     MOV     R3,color+01H
+000E AA00        R     MOV     R2,color
+             ; FUNCTION _LCD_DrawPoint (BEGIN)
+                                           ; SOURCE LINE # 286
+0010 8A00        R     MOV     color,R2
+0012 8B00        R     MOV     color+01H,R3
+;---- Variable 'y' assigned to Register 'R4/R5' ----
+;---- Variable 'x' assigned to Register 'R6/R7' ----
+                                           ; SOURCE LINE # 287
+                                           ; SOURCE LINE # 288
+0014 AB07              MOV     R3,AR7
+0016 AA06              MOV     R2,AR6
+0018 8C00        R     MOV     ?_LCD_Address_Set?BYTE+06H,R4
+001A 8D00        R     MOV     ?_LCD_Address_Set?BYTE+07H,R5
+001C 120000      R     LCALL   _LCD_Address_Set
+                                           ; SOURCE LINE # 289
+001F AF00        R     MOV     R7,color+01H
+0021 AE00        R     MOV     R6,color
+0023 020000      R     LJMP    _LCD_WR_DATA
+             ; FUNCTION _LCD_DrawPoint (END)
+
+             ; FUNCTION _LCD_DrawPoint_big (BEGIN)
+                                           ; SOURCE LINE # 298
+0000 8E00        R     MOV     x,R6
+0002 8F00        R     MOV     x+01H,R7
+0004 8A00        R     MOV     color,R2
+0006 8B00        R     MOV     color+01H,R3
+;---- Variable 'y' assigned to Register 'DPTR' ----
+0008 8D82              MOV     DPL,R5
+000A 8C83              MOV     DPH,R4
+                                           ; SOURCE LINE # 299
+                                           ; SOURCE LINE # 300
+000C E500        R     MOV     A,x+01H
+000E 24FF              ADD     A,#0FFH
+0010 FF                MOV     R7,A
+0011 E500        R     MOV     A,x
+0013 34FF              ADDC    A,#0FFH
+0015 FE                MOV     R6,A
+0016 E582              MOV     A,DPL
+0018 24FF              ADD     A,#0FFH
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 19  
+
+001A FD                MOV     R5,A
+001B E583              MOV     A,DPH
+001D 34FF              ADDC    A,#0FFH
+001F FC                MOV     R4,A
+0020 E500        R     MOV     A,x+01H
+0022 2401              ADD     A,#01H
+0024 FB                MOV     R3,A
+0025 E4                CLR     A
+0026 3500        R     ADDC    A,x
+0028 FA                MOV     R2,A
+0029 E582              MOV     A,DPL
+002B 2401              ADD     A,#01H
+002D F500        R     MOV     ?_LCD_Fill?BYTE+07H,A
+002F E4                CLR     A
+0030 3583              ADDC    A,DPH
+0032 F500        R     MOV     ?_LCD_Fill?BYTE+06H,A
+0034 850000      R     MOV     ?_LCD_Fill?BYTE+08H,color
+0037 850000      R     MOV     ?_LCD_Fill?BYTE+09H,color+01H
+003A 020000      R     LJMP    _LCD_Fill
+             ; FUNCTION _LCD_DrawPoint_big (END)
+
+             ; FUNCTION _LCD_Fill (BEGIN)
+                                           ; SOURCE LINE # 310
+0000 8E00        R     MOV     xsta,R6
+0002 8F00        R     MOV     xsta+01H,R7
+0004 8C00        R     MOV     ysta,R4
+0006 8D00        R     MOV     ysta+01H,R5
+0008 8A00        R     MOV     xend,R2
+000A 8B00        R     MOV     xend+01H,R3
+                                           ; SOURCE LINE # 311
+                                           ; SOURCE LINE # 313
+000C 850000      R     MOV     ?_LCD_Address_Set?BYTE+06H,yend
+000F 850000      R     MOV     ?_LCD_Address_Set?BYTE+07H,yend+01H
+0012 120000      R     LCALL   _LCD_Address_Set
+                                           ; SOURCE LINE # 314
+;---- Variable 'i' assigned to Register 'R2/R3' ----
+0015 AB00        R     MOV     R3,ysta+01H
+0017 AA00        R     MOV     R2,ysta
+0019         ?C0033:
+0019 D3                SETB    C
+001A EB                MOV     A,R3
+001B 9500        R     SUBB    A,yend+01H
+001D EA                MOV     A,R2
+001E 9500        R     SUBB    A,yend
+0020 5022              JNC     ?C0039
+                                           ; SOURCE LINE # 315
+                                           ; SOURCE LINE # 316
+;---- Variable 'j' assigned to Register 'DPTR' ----
+0022 850082      R     MOV     DPL,xsta+01H
+0025 850083      R     MOV     DPH,xsta
+0028         ?C0036:
+0028 D3                SETB    C
+0029 E582              MOV     A,DPL
+002B 9500        R     SUBB    A,xend+01H
+002D E583              MOV     A,DPH
+002F 9500        R     SUBB    A,xend
+0031 500A              JNC     ?C0035
+0033 AF00        R     MOV     R7,color+01H
+0035 AE00        R     MOV     R6,color
+0037 120000      R     LCALL   _LCD_WR_DATA
+003A A3                INC     DPTR
+003B 80EB              SJMP    ?C0036
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 20  
+
+                                           ; SOURCE LINE # 317
+003D         ?C0035:
+003D 0B                INC     R3
+003E BB0001            CJNE    R3,#00H,?C0109
+0041 0A                INC     R2
+0042         ?C0109:
+0042 80D5              SJMP    ?C0033
+                                           ; SOURCE LINE # 318
+0044         ?C0039:
+0044 22                RET     
+             ; FUNCTION _LCD_Fill (END)
+
+             ; FUNCTION _LCD_DrawLine (BEGIN)
+                                           ; SOURCE LINE # 327
+;---- Variable 'y1' assigned to Register 'R4/R5' ----
+;---- Variable 'x1' assigned to Register 'R6/R7' ----
+;---- Variable 'x2' assigned to Register 'R2/R3' ----
+                                           ; SOURCE LINE # 328
+                                           ; SOURCE LINE # 330
+0000 E4                CLR     A
+0001 F500        R     MOV     xerr,A
+0003 F500        R     MOV     xerr+01H,A
+0005 F500        R     MOV     yerr,A
+0007 F500        R     MOV     yerr+01H,A
+                                           ; SOURCE LINE # 332
+0009 C3                CLR     C
+000A EB                MOV     A,R3
+000B 9F                SUBB    A,R7
+000C F500        R     MOV     delta_x+01H,A
+000E EA                MOV     A,R2
+000F 9E                SUBB    A,R6
+0010 F500        R     MOV     delta_x,A
+                                           ; SOURCE LINE # 333
+0012 C3                CLR     C
+0013 E500        R     MOV     A,y2+01H
+0015 9D                SUBB    A,R5
+0016 F500        R     MOV     delta_y+01H,A
+0018 E500        R     MOV     A,y2
+001A 9C                SUBB    A,R4
+001B F500        R     MOV     delta_y,A
+                                           ; SOURCE LINE # 334
+001D 8E00        R     MOV     uRow,R6
+001F 8F00        R     MOV     uRow+01H,R7
+                                           ; SOURCE LINE # 335
+0021 8C00        R     MOV     uCol,R4
+0023 8D00        R     MOV     uCol+01H,R5
+                                           ; SOURCE LINE # 336
+0025 D3                SETB    C
+0026 E500        R     MOV     A,delta_x+01H
+0028 9400              SUBB    A,#00H
+002A E500        R     MOV     A,delta_x
+002C 6480              XRL     A,#080H
+002E 9480              SUBB    A,#080H
+0030 4008              JC      ?C0040
+0032 750000      R     MOV     incx,#00H
+0035 750001      R     MOV     incx+01H,#01H
+0038 801D              SJMP    ?C0041
+003A         ?C0040:
+                                           ; SOURCE LINE # 337
+003A E500        R     MOV     A,delta_x+01H
+003C 4500        R     ORL     A,delta_x
+003E 7006              JNZ     ?C0042
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 21  
+
+0040 F500        R     MOV     incx,A
+0042 F500        R     MOV     incx+01H,A
+0044 8011              SJMP    ?C0041
+0046         ?C0042:
+                                           ; SOURCE LINE # 338
+0046 74FF              MOV     A,#0FFH
+0048 F500        R     MOV     incx,A
+004A F500        R     MOV     incx+01H,A
+004C C3                CLR     C
+004D E4                CLR     A
+004E 9500        R     SUBB    A,delta_x+01H
+0050 F500        R     MOV     delta_x+01H,A
+0052 E4                CLR     A
+0053 9500        R     SUBB    A,delta_x
+0055 F500        R     MOV     delta_x,A
+0057         ?C0041:
+                                           ; SOURCE LINE # 339
+0057 D3                SETB    C
+0058 E500        R     MOV     A,delta_y+01H
+005A 9400              SUBB    A,#00H
+005C E500        R     MOV     A,delta_y
+005E 6480              XRL     A,#080H
+0060 9480              SUBB    A,#080H
+0062 4008              JC      ?C0044
+0064 750000      R     MOV     incy,#00H
+0067 750001      R     MOV     incy+01H,#01H
+006A 801D              SJMP    ?C0045
+006C         ?C0044:
+                                           ; SOURCE LINE # 340
+006C E500        R     MOV     A,delta_y+01H
+006E 4500        R     ORL     A,delta_y
+0070 7006              JNZ     ?C0046
+0072 F500        R     MOV     incy,A
+0074 F500        R     MOV     incy+01H,A
+0076 8011              SJMP    ?C0045
+0078         ?C0046:
+                                           ; SOURCE LINE # 341
+0078 74FF              MOV     A,#0FFH
+007A F500        R     MOV     incy,A
+007C F500        R     MOV     incy+01H,A
+007E C3                CLR     C
+007F E4                CLR     A
+0080 9500        R     SUBB    A,delta_x+01H
+0082 F500        R     MOV     delta_y+01H,A
+0084 E4                CLR     A
+0085 9500        R     SUBB    A,delta_x
+0087 F500        R     MOV     delta_y,A
+0089         ?C0045:
+                                           ; SOURCE LINE # 342
+0089 D3                SETB    C
+008A E500        R     MOV     A,delta_x+01H
+008C 9500        R     SUBB    A,delta_y+01H
+008E E500        R     MOV     A,delta_y
+0090 6480              XRL     A,#080H
+0092 F8                MOV     R0,A
+0093 E500        R     MOV     A,delta_x
+0095 6480              XRL     A,#080H
+0097 98                SUBB    A,R0
+0098 4008              JC      ?C0048
+009A 850000      R     MOV     distance,delta_x
+009D 850000      R     MOV     distance+01H,delta_x+01H
+00A0 8006              SJMP    ?C0049
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 22  
+
+00A2         ?C0048:
+                                           ; SOURCE LINE # 343
+00A2 850000      R     MOV     distance,delta_y
+00A5 850000      R     MOV     distance+01H,delta_y+01H
+00A8         ?C0049:
+                                           ; SOURCE LINE # 344
+00A8 E4                CLR     A
+00A9 F500        R     MOV     t,A
+00AB F500        R     MOV     t+01H,A
+00AD         ?C0050:
+00AD E500        R     MOV     A,distance+01H
+00AF 2401              ADD     A,#01H
+00B1 FF                MOV     R7,A
+00B2 E4                CLR     A
+00B3 3500        R     ADDC    A,distance
+00B5 FE                MOV     R6,A
+00B6 C3                CLR     C
+00B7 E500        R     MOV     A,t+01H
+00B9 9F                SUBB    A,R7
+00BA E500        R     MOV     A,t
+00BC 9E                SUBB    A,R6
+00BD 4003              JC      $ + 5H
+00BF 020000      R     LJMP    ?C0055
+                                           ; SOURCE LINE # 345
+                                           ; SOURCE LINE # 346
+00C2 AB00        R     MOV     R3,color+01H
+00C4 AA00        R     MOV     R2,color
+00C6 AD00        R     MOV     R5,uCol+01H
+00C8 AC00        R     MOV     R4,uCol
+00CA AF00        R     MOV     R7,uRow+01H
+00CC AE00        R     MOV     R6,uRow
+00CE 120000      R     LCALL   _LCD_DrawPoint
+                                           ; SOURCE LINE # 347
+00D1 E500        R     MOV     A,delta_x+01H
+00D3 2500        R     ADD     A,xerr+01H
+00D5 F500        R     MOV     xerr+01H,A
+00D7 E500        R     MOV     A,delta_x
+00D9 3500        R     ADDC    A,xerr
+00DB F500        R     MOV     xerr,A
+                                           ; SOURCE LINE # 348
+00DD E500        R     MOV     A,delta_y+01H
+00DF 2500        R     ADD     A,yerr+01H
+00E1 F500        R     MOV     yerr+01H,A
+00E3 E500        R     MOV     A,delta_y
+00E5 3500        R     ADDC    A,yerr
+00E7 F500        R     MOV     yerr,A
+                                           ; SOURCE LINE # 349
+00E9 D3                SETB    C
+00EA E500        R     MOV     A,xerr+01H
+00EC 9500        R     SUBB    A,distance+01H
+00EE E500        R     MOV     A,distance
+00F0 6480              XRL     A,#080H
+00F2 F8                MOV     R0,A
+00F3 E500        R     MOV     A,xerr
+00F5 6480              XRL     A,#080H
+00F7 98                SUBB    A,R0
+00F8 4018              JC      ?C0053
+                                           ; SOURCE LINE # 350
+                                           ; SOURCE LINE # 351
+00FA E500        R     MOV     A,xerr+01H
+00FC 9500        R     SUBB    A,distance+01H
+00FE F500        R     MOV     xerr+01H,A
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 23  
+
+0100 E500        R     MOV     A,xerr
+0102 9500        R     SUBB    A,distance
+0104 F500        R     MOV     xerr,A
+                                           ; SOURCE LINE # 352
+0106 E500        R     MOV     A,incx+01H
+0108 2500        R     ADD     A,uRow+01H
+010A F500        R     MOV     uRow+01H,A
+010C E500        R     MOV     A,incx
+010E 3500        R     ADDC    A,uRow
+0110 F500        R     MOV     uRow,A
+                                           ; SOURCE LINE # 353
+0112         ?C0053:
+                                           ; SOURCE LINE # 354
+0112 D3                SETB    C
+0113 E500        R     MOV     A,yerr+01H
+0115 9500        R     SUBB    A,distance+01H
+0117 E500        R     MOV     A,distance
+0119 6480              XRL     A,#080H
+011B F8                MOV     R0,A
+011C E500        R     MOV     A,yerr
+011E 6480              XRL     A,#080H
+0120 98                SUBB    A,R0
+0121 4018              JC      ?C0052
+                                           ; SOURCE LINE # 355
+                                           ; SOURCE LINE # 356
+0123 E500        R     MOV     A,yerr+01H
+0125 9500        R     SUBB    A,distance+01H
+0127 F500        R     MOV     yerr+01H,A
+0129 E500        R     MOV     A,yerr
+012B 9500        R     SUBB    A,distance
+012D F500        R     MOV     yerr,A
+                                           ; SOURCE LINE # 357
+012F E500        R     MOV     A,incy+01H
+0131 2500        R     ADD     A,uCol+01H
+0133 F500        R     MOV     uCol+01H,A
+0135 E500        R     MOV     A,incy
+0137 3500        R     ADDC    A,uCol
+0139 F500        R     MOV     uCol,A
+                                           ; SOURCE LINE # 358
+                                           ; SOURCE LINE # 359
+013B         ?C0052:
+013B 0500        R     INC     t+01H
+013D E500        R     MOV     A,t+01H
+013F 7002              JNZ     ?C0110
+0141 0500        R     INC     t
+0143         ?C0110:
+0143 020000      R     LJMP    ?C0050
+                                           ; SOURCE LINE # 360
+0146         ?C0055:
+0146 22                RET     
+             ; FUNCTION _LCD_DrawLine (END)
+
+             ; FUNCTION _LCD_DrawRectangle (BEGIN)
+                                           ; SOURCE LINE # 369
+0000 8E00        R     MOV     x1,R6
+0002 8F00        R     MOV     x1+01H,R7
+0004 8C00        R     MOV     y1,R4
+0006 8D00        R     MOV     y1+01H,R5
+0008 8A00        R     MOV     x2,R2
+000A 8B00        R     MOV     x2+01H,R3
+                                           ; SOURCE LINE # 370
+                                           ; SOURCE LINE # 371
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 24  
+
+000C 850000      R     MOV     ?_LCD_DrawLine?BYTE+06H,y1
+000F 850000      R     MOV     ?_LCD_DrawLine?BYTE+07H,y1+01H
+0012 850000      R     MOV     ?_LCD_DrawLine?BYTE+08H,color
+0015 850000      R     MOV     ?_LCD_DrawLine?BYTE+09H,color+01H
+0018 120000      R     LCALL   _LCD_DrawLine
+                                           ; SOURCE LINE # 372
+001B 850000      R     MOV     ?_LCD_DrawLine?BYTE+06H,y2
+001E 850000      R     MOV     ?_LCD_DrawLine?BYTE+07H,y2+01H
+0021 850000      R     MOV     ?_LCD_DrawLine?BYTE+08H,color
+0024 850000      R     MOV     ?_LCD_DrawLine?BYTE+09H,color+01H
+0027 AB00        R     MOV     R3,x1+01H
+0029 AA00        R     MOV     R2,x1
+002B AD00        R     MOV     R5,y1+01H
+002D AC00        R     MOV     R4,y1
+002F AF00        R     MOV     R7,x1+01H
+0031 AE00        R     MOV     R6,x1
+0033 120000      R     LCALL   _LCD_DrawLine
+                                           ; SOURCE LINE # 373
+0036 850000      R     MOV     ?_LCD_DrawLine?BYTE+06H,y2
+0039 850000      R     MOV     ?_LCD_DrawLine?BYTE+07H,y2+01H
+003C 850000      R     MOV     ?_LCD_DrawLine?BYTE+08H,color
+003F 850000      R     MOV     ?_LCD_DrawLine?BYTE+09H,color+01H
+0042 AB00        R     MOV     R3,x2+01H
+0044 AA00        R     MOV     R2,x2
+0046 AD00        R     MOV     R5,y2+01H
+0048 AC00        R     MOV     R4,y2
+004A AF00        R     MOV     R7,x1+01H
+004C AE00        R     MOV     R6,x1
+004E 120000      R     LCALL   _LCD_DrawLine
+                                           ; SOURCE LINE # 374
+0051 850000      R     MOV     ?_LCD_DrawLine?BYTE+06H,y2
+0054 850000      R     MOV     ?_LCD_DrawLine?BYTE+07H,y2+01H
+0057 850000      R     MOV     ?_LCD_DrawLine?BYTE+08H,color
+005A 850000      R     MOV     ?_LCD_DrawLine?BYTE+09H,color+01H
+005D AB00        R     MOV     R3,x2+01H
+005F AA00        R     MOV     R2,x2
+0061 AD00        R     MOV     R5,y1+01H
+0063 AC00        R     MOV     R4,y1
+0065 AF00        R     MOV     R7,x2+01H
+0067 AE00        R     MOV     R6,x2
+0069 020000      R     LJMP    _LCD_DrawLine
+             ; FUNCTION _LCD_DrawRectangle (END)
+
+             ; FUNCTION _Draw_Circle (BEGIN)
+                                           ; SOURCE LINE # 384
+0000 8E00        R     MOV     x0,R6
+0002 8F00        R     MOV     x0+01H,R7
+0004 8C00        R     MOV     y0,R4
+0006 8D00        R     MOV     y0+01H,R5
+;---- Variable 'r' assigned to Register 'R1' ----
+0008 A903              MOV     R1,AR3
+                                           ; SOURCE LINE # 385
+                                           ; SOURCE LINE # 387
+000A E4                CLR     A
+000B F500        R     MOV     a,A
+000D F500        R     MOV     a+01H,A
+000F E9                MOV     A,R1
+0010 750000      R     MOV     b,#00H
+0013 F500        R     MOV     b+01H,A
+0015         ?C0057:
+                                           ; SOURCE LINE # 388
+0015 D3                SETB    C
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 25  
+
+0016 E500        R     MOV     A,a+01H
+0018 9500        R     SUBB    A,b+01H
+001A E500        R     MOV     A,b
+001C 6480              XRL     A,#080H
+001E F8                MOV     R0,A
+001F E500        R     MOV     A,a
+0021 6480              XRL     A,#080H
+0023 98                SUBB    A,R0
+0024 4003              JC      $ + 5H
+0026 020000      R     LJMP    ?C0060
+                                           ; SOURCE LINE # 389
+                                           ; SOURCE LINE # 390
+0029 C3                CLR     C
+002A E500        R     MOV     A,x0+01H
+002C 9500        R     SUBB    A,b+01H
+002E FF                MOV     R7,A
+002F E500        R     MOV     A,x0
+0031 9500        R     SUBB    A,b
+0033 120000      R     LCALL   L?0125
+                                           ; SOURCE LINE # 391
+0036 E500        R     MOV     A,x0+01H
+0038 2500        R     ADD     A,b+01H
+003A FF                MOV     R7,A
+003B E500        R     MOV     A,x0
+003D 3500        R     ADDC    A,b
+003F 120000      R     LCALL   L?0125
+                                           ; SOURCE LINE # 392
+0042 C3                CLR     C
+0043 E500        R     MOV     A,x0+01H
+0045 9500        R     SUBB    A,a+01H
+0047 FF                MOV     R7,A
+0048 E500        R     MOV     A,x0
+004A 9500        R     SUBB    A,a
+004C FE                MOV     R6,A
+004D E500        R     MOV     A,y0+01H
+004F 2500        R     ADD     A,b+01H
+0051 FD                MOV     R5,A
+0052 E500        R     MOV     A,y0
+0054 3500        R     ADDC    A,b
+0056 120000      R     LCALL   L?0126
+                                           ; SOURCE LINE # 393
+0059 C3                CLR     C
+005A E500        R     MOV     A,x0+01H
+005C 9500        R     SUBB    A,a+01H
+005E FF                MOV     R7,A
+005F E500        R     MOV     A,x0
+0061 9500        R     SUBB    A,a
+0063 FE                MOV     R6,A
+0064 C3                CLR     C
+0065 E500        R     MOV     A,y0+01H
+0067 9500        R     SUBB    A,b+01H
+0069 FD                MOV     R5,A
+006A E500        R     MOV     A,y0
+006C 9500        R     SUBB    A,b
+006E 120000      R     LCALL   L?0126
+                                           ; SOURCE LINE # 394
+0071 E500        R     MOV     A,x0+01H
+0073 2500        R     ADD     A,b+01H
+0075 FF                MOV     R7,A
+0076 E500        R     MOV     A,x0
+0078 3500        R     ADDC    A,b
+007A FE                MOV     R6,A
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 26  
+
+007B E500        R     MOV     A,y0+01H
+007D 2500        R     ADD     A,a+01H
+007F FD                MOV     R5,A
+0080 E500        R     MOV     A,y0
+0082 3500        R     ADDC    A,a
+0084 120000      R     LCALL   L?0126
+                                           ; SOURCE LINE # 395
+0087 E500        R     MOV     A,x0+01H
+0089 2500        R     ADD     A,a+01H
+008B FF                MOV     R7,A
+008C E500        R     MOV     A,x0
+008E 3500        R     ADDC    A,a
+0090 FE                MOV     R6,A
+0091 C3                CLR     C
+0092 E500        R     MOV     A,y0+01H
+0094 9500        R     SUBB    A,b+01H
+0096 FD                MOV     R5,A
+0097 E500        R     MOV     A,y0
+0099 9500        R     SUBB    A,b
+009B 120000      R     LCALL   L?0126
+                                           ; SOURCE LINE # 396
+009E E500        R     MOV     A,x0+01H
+00A0 2500        R     ADD     A,a+01H
+00A2 FF                MOV     R7,A
+00A3 E500        R     MOV     A,x0
+00A5 3500        R     ADDC    A,a
+00A7 FE                MOV     R6,A
+00A8 E500        R     MOV     A,y0+01H
+00AA 2500        R     ADD     A,b+01H
+00AC FD                MOV     R5,A
+00AD E500        R     MOV     A,y0
+00AF 3500        R     ADDC    A,b
+00B1 120000      R     LCALL   L?0126
+                                           ; SOURCE LINE # 397
+00B4 C3                CLR     C
+00B5 E500        R     MOV     A,x0+01H
+00B7 9500        R     SUBB    A,b+01H
+00B9 FF                MOV     R7,A
+00BA E500        R     MOV     A,x0
+00BC 9500        R     SUBB    A,b
+00BE FE                MOV     R6,A
+00BF E500        R     MOV     A,y0+01H
+00C1 2500        R     ADD     A,a+01H
+00C3 FD                MOV     R5,A
+00C4 E500        R     MOV     A,y0
+00C6 3500        R     ADDC    A,a
+00C8 120000      R     LCALL   L?0126
+                                           ; SOURCE LINE # 398
+00CB 0500        R     INC     a+01H
+00CD E500        R     MOV     A,a+01H
+00CF 7002              JNZ     ?C0111
+00D1 0500        R     INC     a
+00D3         ?C0111:
+                                           ; SOURCE LINE # 399
+00D3 AC00        R     MOV     R4,b
+00D5 AD00        R     MOV     R5,b+01H
+00D7 AE00        R     MOV     R6,b
+00D9 AF00        R     MOV     R7,b+01H
+00DB 120000      E     LCALL   ?C?IMUL
+00DE AA06              MOV     R2,AR6
+00E0 AB07              MOV     R3,AR7
+00E2 AC00        R     MOV     R4,a
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 27  
+
+00E4 AD00        R     MOV     R5,a+01H
+00E6 AE00        R     MOV     R6,a
+00E8 AF00        R     MOV     R7,a+01H
+00EA 120000      E     LCALL   ?C?IMUL
+00ED EF                MOV     A,R7
+00EE 2B                ADD     A,R3
+00EF FD                MOV     R5,A
+00F0 EE                MOV     A,R6
+00F1 3A                ADDC    A,R2
+00F2 FC                MOV     R4,A
+00F3 E9                MOV     A,R1
+00F4 F5F0              MOV     B,A
+00F6 A4                MUL     AB
+00F7 FF                MOV     R7,A
+00F8 D3                SETB    C
+00F9 ED                MOV     A,R5
+00FA 9F                SUBB    A,R7
+00FB E5F0              MOV     A,B
+00FD 6480              XRL     A,#080H
+00FF F8                MOV     R0,A
+0100 EC                MOV     A,R4
+0101 6480              XRL     A,#080H
+0103 98                SUBB    A,R0
+0104 5003              JNC     $ + 5H
+0106 020000      R     LJMP    ?C0057
+                                           ; SOURCE LINE # 400
+                                           ; SOURCE LINE # 401
+0109 E500        R     MOV     A,b+01H
+010B 1500        R     DEC     b+01H
+010D 6003              JZ      $ + 5H
+010F 020000      R     LJMP    ?C0057
+0112 1500        R     DEC     b
+0114         ?C0112:
+                                           ; SOURCE LINE # 402
+                                           ; SOURCE LINE # 403
+0114 020000      R     LJMP    ?C0057
+                                           ; SOURCE LINE # 404
+0117         ?C0060:
+0117 22                RET     
+             ; FUNCTION _Draw_Circle (END)
+
+             ; FUNCTION _LCD_ShowChar (BEGIN)
+                                           ; SOURCE LINE # 414
+;---- Variable 'pos' assigned to Register 'R1' ----
+0000 8E00        R     MOV     x,R6
+0002 8F00        R     MOV     x+01H,R7
+0004 8C00        R     MOV     y,R4
+0006 8D00        R     MOV     y+01H,R5
+0008 8B00        R     MOV     num,R3
+                                           ; SOURCE LINE # 415
+                                           ; SOURCE LINE # 418
+000A 850000      R     MOV     x0,x
+000D 850000      R     MOV     x0+01H,x+01H
+                                           ; SOURCE LINE # 419
+0010 D3                SETB    C
+0011 E500        R     MOV     A,x+01H
+0013 9490              SUBB    A,#090H
+0015 E500        R     MOV     A,x
+0017 9400              SUBB    A,#00H
+0019 4003              JC      $ + 5H
+001B 020000      R     LJMP    ?C0063
+001E E500        R     MOV     A,y+01H
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 28  
+
+0020 9440              SUBB    A,#040H
+0022 E500        R     MOV     A,y
+0024 9400              SUBB    A,#00H
+0026 4003              JC      $ + 5H
+0028 020000      R     LJMP    ?C0063
+                                           ; SOURCE LINE # 420
+002B 74E0              MOV     A,#0E0H
+002D 2500        R     ADD     A,num
+002F F500        R     MOV     num,A
+                                           ; SOURCE LINE # 421
+0031 E500        R     MOV     A,x+01H
+0033 2407              ADD     A,#07H
+0035 FB                MOV     R3,A
+0036 E4                CLR     A
+0037 3500        R     ADDC    A,x
+0039 FA                MOV     R2,A
+003A E500        R     MOV     A,y+01H
+003C 240F              ADD     A,#0FH
+003E F500        R     MOV     ?_LCD_Address_Set?BYTE+07H,A
+0040 E4                CLR     A
+0041 3500        R     ADDC    A,y
+0043 F500        R     MOV     ?_LCD_Address_Set?BYTE+06H,A
+0045 120000      R     LCALL   _LCD_Address_Set
+                                           ; SOURCE LINE # 422
+0048 E500        R     MOV     A,mode
+004A 706F              JNZ     ?C0064
+                                           ; SOURCE LINE # 423
+                                           ; SOURCE LINE # 424
+004C F9                MOV     R1,A
+004D         ?C0065:
+004D E9                MOV     A,R1
+004E C3                CLR     C
+004F 9410              SUBB    A,#010H
+0051 7480              MOV     A,#080H
+0053 9480              SUBB    A,#080H
+0055 4003              JC      $ + 5H
+0057 020000      R     LJMP    ?C0063
+                                           ; SOURCE LINE # 425
+                                           ; SOURCE LINE # 426
+005A E500        R     MOV     A,num
+005C 75F010            MOV     B,#010H
+005F A4                MUL     AB
+0060 FF                MOV     R7,A
+0061 E9                MOV     A,R1
+0062 7C00              MOV     R4,#00H
+0064 2F                ADD     A,R7
+0065 FF                MOV     R7,A
+0066 EC                MOV     A,R4
+0067 35F0              ADDC    A,B
+0069 FE                MOV     R6,A
+006A 7400        R     MOV     A,#LOW asc2_1608
+006C 2F                ADD     A,R7
+006D F582              MOV     DPL,A
+006F 7400        R     MOV     A,#HIGH asc2_1608
+0071 3E                ADDC    A,R6
+0072 F583              MOV     DPH,A
+0074 E4                CLR     A
+0075 93                MOVC    A,@A+DPTR
+0076 F500        R     MOV     temp,A
+                                           ; SOURCE LINE # 427
+0078 E4                CLR     A
+0079 F500        R     MOV     t,A
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 29  
+
+007B         ?C0068:
+007B C3                CLR     C
+007C E500        R     MOV     A,t
+007E 9408              SUBB    A,#08H
+0080 7480              MOV     A,#080H
+0082 9480              SUBB    A,#080H
+0084 5024              JNC     ?C0069
+                                           ; SOURCE LINE # 428
+                                           ; SOURCE LINE # 429
+0086 E500        R     MOV     A,temp
+0088 30E006            JNB     ACC.0,?C0071
+008B AF00        R     MOV     R7,color+01H
+008D AE00        R     MOV     R6,color
+008F 8004              SJMP    ?C0119
+0091         ?C0071:
+                                           ; SOURCE LINE # 430
+0091 AF00        R     MOV     R7,BACK_COLOR+01H
+0093 AE00        R     MOV     R6,BACK_COLOR
+0095         ?C0119:
+0095 120000      R     LCALL   _LCD_WR_DATA
+0098         ?C0072:
+                                           ; SOURCE LINE # 431
+0098 E500        R     MOV     A,temp
+009A C3                CLR     C
+009B 13                RRC     A
+009C F500        R     MOV     temp,A
+                                           ; SOURCE LINE # 432
+009E 0500        R     INC     x+01H
+00A0 E500        R     MOV     A,x+01H
+00A2 7002              JNZ     ?C0113
+00A4 0500        R     INC     x
+00A6         ?C0113:
+                                           ; SOURCE LINE # 433
+00A6 0500        R     INC     t
+00A8 80D1              SJMP    ?C0068
+00AA         ?C0069:
+                                           ; SOURCE LINE # 434
+00AA 850000      R     MOV     x,x0
+00AD 850000      R     MOV     x+01H,x0+01H
+                                           ; SOURCE LINE # 435
+00B0 0500        R     INC     y+01H
+00B2 E500        R     MOV     A,y+01H
+00B4 7002              JNZ     ?C0114
+00B6 0500        R     INC     y
+00B8         ?C0114:
+                                           ; SOURCE LINE # 436
+00B8 09                INC     R1
+00B9 8092              SJMP    ?C0065
+                                           ; SOURCE LINE # 437
+00BB         ?C0064:
+                                           ; SOURCE LINE # 438
+                                           ; SOURCE LINE # 439
+00BB E4                CLR     A
+00BC F9                MOV     R1,A
+00BD         ?C0074:
+00BD E9                MOV     A,R1
+00BE C3                CLR     C
+00BF 9410              SUBB    A,#010H
+00C1 7480              MOV     A,#080H
+00C3 9480              SUBB    A,#080H
+00C5 505A              JNC     ?C0063
+                                           ; SOURCE LINE # 440
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 30  
+
+                                           ; SOURCE LINE # 441
+00C7 E500        R     MOV     A,num
+00C9 75F010            MOV     B,#010H
+00CC A4                MUL     AB
+00CD FF                MOV     R7,A
+00CE E9                MOV     A,R1
+00CF 7C00              MOV     R4,#00H
+00D1 2F                ADD     A,R7
+00D2 FF                MOV     R7,A
+00D3 EC                MOV     A,R4
+00D4 35F0              ADDC    A,B
+00D6 FE                MOV     R6,A
+00D7 7400        R     MOV     A,#LOW asc2_1608
+00D9 2F                ADD     A,R7
+00DA F582              MOV     DPL,A
+00DC 7400        R     MOV     A,#HIGH asc2_1608
+00DE 3E                ADDC    A,R6
+00DF F583              MOV     DPH,A
+00E1 E4                CLR     A
+00E2 93                MOVC    A,@A+DPTR
+00E3 F500        R     MOV     temp,A
+                                           ; SOURCE LINE # 442
+00E5 E4                CLR     A
+00E6 F500        R     MOV     t,A
+00E8         ?C0077:
+00E8 C3                CLR     C
+00E9 E500        R     MOV     A,t
+00EB 9408              SUBB    A,#08H
+00ED 7480              MOV     A,#080H
+00EF 9480              SUBB    A,#080H
+00F1 502B              JNC     ?C0076
+                                           ; SOURCE LINE # 443
+                                           ; SOURCE LINE # 444
+00F3 E500        R     MOV     A,temp
+00F5 30E01C            JNB     ACC.0,?C0080
+00F8 7E00              MOV     R6,#00H
+00FA E500        R     MOV     A,x+01H
+00FC 2500        R     ADD     A,t
+00FE FF                MOV     R7,A
+00FF EE                MOV     A,R6
+0100 3500        R     ADDC    A,x
+0102 FE                MOV     R6,A
+0103 E9                MOV     A,R1
+0104 7C00              MOV     R4,#00H
+0106 2500        R     ADD     A,y+01H
+0108 FD                MOV     R5,A
+0109 EC                MOV     A,R4
+010A 3500        R     ADDC    A,y
+010C FC                MOV     R4,A
+010D AB00        R     MOV     R3,color+01H
+010F AA00        R     MOV     R2,color
+0111 120000      R     LCALL   _LCD_DrawPoint
+0114         ?C0080:
+                                           ; SOURCE LINE # 445
+0114 E500        R     MOV     A,temp
+0116 C3                CLR     C
+0117 13                RRC     A
+0118 F500        R     MOV     temp,A
+                                           ; SOURCE LINE # 446
+011A 0500        R     INC     t
+011C 80CA              SJMP    ?C0077
+                                           ; SOURCE LINE # 447
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 31  
+
+011E         ?C0076:
+011E 09                INC     R1
+011F 809C              SJMP    ?C0074
+                                           ; SOURCE LINE # 448
+                                           ; SOURCE LINE # 449
+0121         ?C0063:
+0121 22                RET     
+             ; FUNCTION _LCD_ShowChar (END)
+
+             ; FUNCTION _LCD_ShowString (BEGIN)
+                                           ; SOURCE LINE # 458
+0000 8E00        R     MOV     x,R6
+0002 8F00        R     MOV     x+01H,R7
+0004 8C00        R     MOV     y,R4
+0006 8D00        R     MOV     y+01H,R5
+0008 8B00        R     MOV     p,R3
+000A 8A00        R     MOV     p+01H,R2
+000C 8900        R     MOV     p+02H,R1
+                                           ; SOURCE LINE # 459
+000E         ?C0081:
+                                           ; SOURCE LINE # 460
+000E AB00        R     MOV     R3,p
+0010 AA00        R     MOV     R2,p+01H
+0012 A900        R     MOV     R1,p+02H
+0014 120000      E     LCALL   ?C?CLDPTR
+0017 606B              JZ      ?C0085
+                                           ; SOURCE LINE # 461
+                                           ; SOURCE LINE # 462
+0019 D3                SETB    C
+001A E500        R     MOV     A,x+01H
+001C 9490              SUBB    A,#090H
+001E E500        R     MOV     A,x
+0020 9400              SUBB    A,#00H
+0022 4010              JC      ?C0083
+0024 E4                CLR     A
+0025 F500        R     MOV     x,A
+0027 F500        R     MOV     x+01H,A
+0029 7410              MOV     A,#010H
+002B 2500        R     ADD     A,y+01H
+002D F500        R     MOV     y+01H,A
+002F E4                CLR     A
+0030 3500        R     ADDC    A,y
+0032 F500        R     MOV     y,A
+0034         ?C0083:
+                                           ; SOURCE LINE # 463
+0034 D3                SETB    C
+0035 E500        R     MOV     A,y+01H
+0037 9440              SUBB    A,#040H
+0039 E500        R     MOV     A,y
+003B 9400              SUBB    A,#00H
+003D 400F              JC      ?C0084
+003F E4                CLR     A
+0040 F500        R     MOV     x,A
+0042 F500        R     MOV     x+01H,A
+0044 F500        R     MOV     y,A
+0046 F500        R     MOV     y+01H,A
+0048 FF                MOV     R7,A
+0049 7EF8              MOV     R6,#0F8H
+004B 120000      R     LCALL   _LCD_Clear
+004E         ?C0084:
+                                           ; SOURCE LINE # 464
+004E AB00        R     MOV     R3,p
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 32  
+
+0050 AA00        R     MOV     R2,p+01H
+0052 A900        R     MOV     R1,p+02H
+0054 120000      E     LCALL   ?C?CLDPTR
+0057 FB                MOV     R3,A
+0058 E4                CLR     A
+0059 F500        R     MOV     ?_LCD_ShowChar?BYTE+05H,A
+005B 850000      R     MOV     ?_LCD_ShowChar?BYTE+06H,color
+005E 850000      R     MOV     ?_LCD_ShowChar?BYTE+07H,color+01H
+0061 AD00        R     MOV     R5,y+01H
+0063 AC00        R     MOV     R4,y
+0065 AF00        R     MOV     R7,x+01H
+0067 AE00        R     MOV     R6,x
+0069 120000      R     LCALL   _LCD_ShowChar
+                                           ; SOURCE LINE # 465
+006C 7408              MOV     A,#08H
+006E 2500        R     ADD     A,x+01H
+0070 F500        R     MOV     x+01H,A
+0072 E4                CLR     A
+0073 3500        R     ADDC    A,x
+0075 F500        R     MOV     x,A
+                                           ; SOURCE LINE # 466
+0077 7401              MOV     A,#01H
+0079 2500        R     ADD     A,p+02H
+007B F500        R     MOV     p+02H,A
+007D E4                CLR     A
+007E 3500        R     ADDC    A,p+01H
+0080 F500        R     MOV     p+01H,A
+                                           ; SOURCE LINE # 467
+0082 808A              SJMP    ?C0081
+                                           ; SOURCE LINE # 468
+0084         ?C0085:
+0084 22                RET     
+             ; FUNCTION _LCD_ShowString (END)
+
+             ; FUNCTION _mypow (BEGIN)
+                                           ; SOURCE LINE # 476
+0000 8F00        R     MOV     m,R7
+;---- Variable 'n' assigned to Register 'R1' ----
+0002 A905              MOV     R1,AR5
+                                           ; SOURCE LINE # 477
+                                           ; SOURCE LINE # 478
+;---- Variable 'result' assigned to Register 'R6/R7' ----
+0004 7F01              MOV     R7,#01H
+0006 7E00              MOV     R6,#00H
+0008         ?C0086:
+                                           ; SOURCE LINE # 479
+0008 AD01              MOV     R5,AR1
+000A 19                DEC     R1
+000B ED                MOV     A,R5
+000C 6009              JZ      ?C0087
+000E AD00        R     MOV     R5,m
+0010 7C00              MOV     R4,#00H
+0012 120000      E     LCALL   ?C?IMUL
+0015 80F1              SJMP    ?C0086
+0017         ?C0087:
+                                           ; SOURCE LINE # 480
+                                           ; SOURCE LINE # 481
+0017 22                RET     
+             ; FUNCTION _mypow (END)
+
+             ; FUNCTION _LCD_ShowNum (BEGIN)
+                                           ; SOURCE LINE # 491
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 33  
+
+0000 8E00        R     MOV     x,R6
+0002 8F00        R     MOV     x+01H,R7
+0004 8C00        R     MOV     y,R4
+0006 8D00        R     MOV     y+01H,R5
+0008 8A00        R     MOV     num,R2
+000A 8B00        R     MOV     num+01H,R3
+                                           ; SOURCE LINE # 492
+                                           ; SOURCE LINE # 494
+000C E4                CLR     A
+000D F500        R     MOV     enshow,A
+                                           ; SOURCE LINE # 495
+000F F500        R     MOV     t,A
+0011         ?C0089:
+0011 E500        R     MOV     A,t
+0013 C3                CLR     C
+0014 9500        R     SUBB    A,len
+0016 5079              JNC     ?C0095
+                                           ; SOURCE LINE # 496
+                                           ; SOURCE LINE # 497
+0018 C3                CLR     C
+0019 E500        R     MOV     A,len
+001B 9500        R     SUBB    A,t
+001D 14                DEC     A
+001E FD                MOV     R5,A
+001F 7F0A              MOV     R7,#0AH
+0021 120000      R     LCALL   _mypow
+0024 AC00        R     MOV     R4,num
+0026 AD00        R     MOV     R5,num+01H
+0028 CF                XCH     A,R7
+0029 CD                XCH     A,R5
+002A CF                XCH     A,R7
+002B CE                XCH     A,R6
+002C CC                XCH     A,R4
+002D CE                XCH     A,R6
+002E 120000      E     LCALL   ?C?UIDIV
+0031 7C00              MOV     R4,#00H
+0033 7D0A              MOV     R5,#0AH
+0035 120000      E     LCALL   ?C?UIDIV
+0038 8D00        R     MOV     temp,R5
+                                           ; SOURCE LINE # 498
+003A E500        R     MOV     A,enshow
+003C 702C              JNZ     ?C0092
+003E E500        R     MOV     A,len
+0040 14                DEC     A
+0041 FF                MOV     R7,A
+0042 E500        R     MOV     A,t
+0044 C3                CLR     C
+0045 9F                SUBB    A,R7
+0046 5022              JNC     ?C0092
+                                           ; SOURCE LINE # 499
+                                           ; SOURCE LINE # 500
+0048 E500        R     MOV     A,temp
+004A 701B              JNZ     ?C0093
+                                           ; SOURCE LINE # 501
+                                           ; SOURCE LINE # 502
+004C E500        R     MOV     A,t
+004E 75F008            MOV     B,#08H
+0051 A4                MUL     AB
+0052 2500        R     ADD     A,x+01H
+0054 FF                MOV     R7,A
+0055 E500        R     MOV     A,x
+0057 35F0              ADDC    A,B
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 34  
+
+0059 FE                MOV     R6,A
+005A E4                CLR     A
+005B F500        R     MOV     ?_LCD_ShowChar?BYTE+05H,A
+005D 850000      R     MOV     ?_LCD_ShowChar?BYTE+06H,color
+0060 850000      R     MOV     ?_LCD_ShowChar?BYTE+07H,color+01H
+0063 7B20              MOV     R3,#020H
+                                           ; SOURCE LINE # 503
+0065 801F              SJMP    ?C0120
+                                           ; SOURCE LINE # 504
+0067         ?C0093:
+0067 750001      R     MOV     enshow,#01H
+                                           ; SOURCE LINE # 505
+006A         ?C0092:
+                                           ; SOURCE LINE # 506
+006A E500        R     MOV     A,t
+006C 75F008            MOV     B,#08H
+006F A4                MUL     AB
+0070 2500        R     ADD     A,x+01H
+0072 FF                MOV     R7,A
+0073 E500        R     MOV     A,x
+0075 35F0              ADDC    A,B
+0077 FE                MOV     R6,A
+0078 E500        R     MOV     A,temp
+007A 2430              ADD     A,#030H
+007C FB                MOV     R3,A
+007D E4                CLR     A
+007E F500        R     MOV     ?_LCD_ShowChar?BYTE+05H,A
+0080 850000      R     MOV     ?_LCD_ShowChar?BYTE+06H,color
+0083 850000      R     MOV     ?_LCD_ShowChar?BYTE+07H,color+01H
+0086         ?C0120:
+0086 AD00        R     MOV     R5,y+01H
+0088 AC00        R     MOV     R4,y
+008A 120000      R     LCALL   _LCD_ShowChar
+                                           ; SOURCE LINE # 507
+008D         ?C0091:
+008D 0500        R     INC     t
+008F 8080              SJMP    ?C0089
+                                           ; SOURCE LINE # 508
+0091         ?C0095:
+0091 22                RET     
+             ; FUNCTION _LCD_ShowNum (END)
+
+             ; FUNCTION _LCD_ShowNum1 (BEGIN)
+                                           ; SOURCE LINE # 518
+0000 8E00        R     MOV     x,R6
+0002 8F00        R     MOV     x+01H,R7
+0004 8C00        R     MOV     y,R4
+0006 8D00        R     MOV     y+01H,R5
+                                           ; SOURCE LINE # 519
+                                           ; SOURCE LINE # 522
+0008 E4                CLR     A
+0009 FF                MOV     R7,A
+000A FE                MOV     R6,A
+000B 7DC8              MOV     R5,#0C8H
+000D 7C42              MOV     R4,#042H
+000F AB00        R     MOV     R3,num+03H
+0011 AA00        R     MOV     R2,num+02H
+0013 A900        R     MOV     R1,num+01H
+0015 A800        R     MOV     R0,num
+0017 120000      E     LCALL   ?C?FPMUL
+001A 120000      E     LCALL   ?C?CASTF
+001D 8E00        R     MOV     num1,R6
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 35  
+
+001F 8F00        R     MOV     num1+01H,R7
+                                           ; SOURCE LINE # 523
+0021 E4                CLR     A
+0022 F500        R     MOV     t,A
+0024         ?C0096:
+0024 E500        R     MOV     A,t
+0026 C3                CLR     C
+0027 9500        R     SUBB    A,len
+0029 4003              JC      $ + 5H
+002B 020000      R     LJMP    ?C0100
+                                           ; SOURCE LINE # 524
+                                           ; SOURCE LINE # 525
+002E C3                CLR     C
+002F E500        R     MOV     A,len
+0031 9500        R     SUBB    A,t
+0033 14                DEC     A
+0034 FD                MOV     R5,A
+0035 7F0A              MOV     R7,#0AH
+0037 120000      R     LCALL   _mypow
+003A AC00        R     MOV     R4,num1
+003C AD00        R     MOV     R5,num1+01H
+003E CF                XCH     A,R7
+003F CD                XCH     A,R5
+0040 CF                XCH     A,R7
+0041 CE                XCH     A,R6
+0042 CC                XCH     A,R4
+0043 CE                XCH     A,R6
+0044 120000      E     LCALL   ?C?UIDIV
+0047 7C00              MOV     R4,#00H
+0049 7D0A              MOV     R5,#0AH
+004B 120000      E     LCALL   ?C?UIDIV
+004E 8D00        R     MOV     temp,R5
+                                           ; SOURCE LINE # 526
+0050 E500        R     MOV     A,len
+0052 24FE              ADD     A,#0FEH
+0054 B50030            CJNE    A,t,?C0099
+                                           ; SOURCE LINE # 527
+                                           ; SOURCE LINE # 528
+0057 E500        R     MOV     A,len
+0059 24FE              ADD     A,#0FEH
+005B FF                MOV     R7,A
+005C E4                CLR     A
+005D 34FF              ADDC    A,#0FFH
+005F FE                MOV     R6,A
+0060 EF                MOV     A,R7
+0061 7803              MOV     R0,#03H
+0063         ?C0115:
+0063 C3                CLR     C
+0064 33                RLC     A
+0065 CE                XCH     A,R6
+0066 33                RLC     A
+0067 CE                XCH     A,R6
+0068 D8F9              DJNZ    R0,?C0115
+006A 2500        R     ADD     A,x+01H
+006C FF                MOV     R7,A
+006D E500        R     MOV     A,x
+006F 3E                ADDC    A,R6
+0070 FE                MOV     R6,A
+0071 E4                CLR     A
+0072 F500        R     MOV     ?_LCD_ShowChar?BYTE+05H,A
+0074 850000      R     MOV     ?_LCD_ShowChar?BYTE+06H,color
+0077 850000      R     MOV     ?_LCD_ShowChar?BYTE+07H,color+01H
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 36  
+
+007A 7B2E              MOV     R3,#02EH
+007C AD00        R     MOV     R5,y+01H
+007E AC00        R     MOV     R4,y
+0080 120000      R     LCALL   _LCD_ShowChar
+                                           ; SOURCE LINE # 529
+0083 0500        R     INC     t
+                                           ; SOURCE LINE # 530
+0085 0500        R     INC     len
+                                           ; SOURCE LINE # 531
+0087         ?C0099:
+                                           ; SOURCE LINE # 532
+0087 E500        R     MOV     A,t
+0089 75F008            MOV     B,#08H
+008C A4                MUL     AB
+008D 2500        R     ADD     A,x+01H
+008F FF                MOV     R7,A
+0090 E500        R     MOV     A,x
+0092 35F0              ADDC    A,B
+0094 FE                MOV     R6,A
+0095 E500        R     MOV     A,temp
+0097 2430              ADD     A,#030H
+0099 FB                MOV     R3,A
+009A E4                CLR     A
+009B F500        R     MOV     ?_LCD_ShowChar?BYTE+05H,A
+009D 850000      R     MOV     ?_LCD_ShowChar?BYTE+06H,color
+00A0 850000      R     MOV     ?_LCD_ShowChar?BYTE+07H,color+01H
+00A3 AD00        R     MOV     R5,y+01H
+00A5 AC00        R     MOV     R4,y
+00A7 120000      R     LCALL   _LCD_ShowChar
+                                           ; SOURCE LINE # 533
+00AA 0500        R     INC     t
+00AC 020000      R     LJMP    ?C0096
+                                           ; SOURCE LINE # 534
+00AF         ?C0100:
+00AF 22                RET     
+             ; FUNCTION _LCD_ShowNum1 (END)
+
+             ; FUNCTION _LCD_ShowPicture (BEGIN)
+                                           ; SOURCE LINE # 542
+0000 8A00        R     MOV     sizex,R2
+0002 8B00        R     MOV     sizex+01H,R3
+;---- Variable 'y' assigned to Register 'R4/R5' ----
+;---- Variable 'x' assigned to Register 'R6/R7' ----
+                                           ; SOURCE LINE # 543
+                                           ; SOURCE LINE # 544
+0004 E4                CLR     A
+0005 F500        R     MOV     k,A
+0007 F500        R     MOV     k+01H,A
+                                           ; SOURCE LINE # 545
+0009 E500        R     MOV     A,sizex+01H
+000B 2F                ADD     A,R7
+000C CB                XCH     A,R3
+000D E500        R     MOV     A,sizex
+000F 3E                ADDC    A,R6
+0010 CB                XCH     A,R3
+0011 24FF              ADD     A,#0FFH
+0013 CB                XCH     A,R3
+0014 34FF              ADDC    A,#0FFH
+0016 FA                MOV     R2,A
+0017 E500        R     MOV     A,sizey+01H
+0019 2D                ADD     A,R5
+001A F582              MOV     DPL,A
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 37  
+
+001C E500        R     MOV     A,sizey
+001E 3C                ADDC    A,R4
+001F F583              MOV     DPH,A
+0021 E582              MOV     A,DPL
+0023 24FF              ADD     A,#0FFH
+0025 F500        R     MOV     ?_LCD_Address_Set?BYTE+07H,A
+0027 E583              MOV     A,DPH
+0029 34FF              ADDC    A,#0FFH
+002B F500        R     MOV     ?_LCD_Address_Set?BYTE+06H,A
+002D 120000      R     LCALL   _LCD_Address_Set
+                                           ; SOURCE LINE # 546
+0030 E4                CLR     A
+0031 F500        R     MOV     i,A
+0033 F500        R     MOV     i+01H,A
+0035         ?C0101:
+0035 C3                CLR     C
+0036 E500        R     MOV     A,i+01H
+0038 9500        R     SUBB    A,sizex+01H
+003A E500        R     MOV     A,i
+003C 9500        R     SUBB    A,sizex
+003E 5058              JNC     ?C0107
+                                           ; SOURCE LINE # 547
+                                           ; SOURCE LINE # 548
+;---- Variable 'j' assigned to Register 'R4/R5' ----
+0040 E4                CLR     A
+0041 FD                MOV     R5,A
+0042 FC                MOV     R4,A
+0043         ?C0104:
+0043 C3                CLR     C
+0044 ED                MOV     A,R5
+0045 9500        R     SUBB    A,sizey+01H
+0047 EC                MOV     A,R4
+0048 9500        R     SUBB    A,sizey
+004A 5042              JNC     ?C0103
+                                           ; SOURCE LINE # 549
+                                           ; SOURCE LINE # 550
+004C E500        R     MOV     A,k+01H
+004E 25E0              ADD     A,ACC
+0050 FF                MOV     R7,A
+0051 E500        R     MOV     A,k
+0053 33                RLC     A
+0054 8F82              MOV     DPL,R7
+0056 F583              MOV     DPH,A
+0058 A3                INC     DPTR
+0059 AB00        R     MOV     R3,pic
+005B AA00        R     MOV     R2,pic+01H
+005D A900        R     MOV     R1,pic+02H
+005F 120000      E     LCALL   ?C?CLDOPTR
+0062 FF                MOV     R7,A
+0063 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 551
+0066 E500        R     MOV     A,k+01H
+0068 25E0              ADD     A,ACC
+006A FF                MOV     R7,A
+006B E500        R     MOV     A,k
+006D 33                RLC     A
+006E AB00        R     MOV     R3,pic
+0070 AA00        R     MOV     R2,pic+01H
+0072 A900        R     MOV     R1,pic+02H
+0074 8F82              MOV     DPL,R7
+0076 F583              MOV     DPH,A
+0078 120000      E     LCALL   ?C?CLDOPTR
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 38  
+
+007B FF                MOV     R7,A
+007C 120000      R     LCALL   _LCD_WR_DATA8
+                                           ; SOURCE LINE # 552
+007F 0500        R     INC     k+01H
+0081 E500        R     MOV     A,k+01H
+0083 7002              JNZ     ?C0116
+0085 0500        R     INC     k
+0087         ?C0116:
+                                           ; SOURCE LINE # 553
+0087 0D                INC     R5
+0088 BD0001            CJNE    R5,#00H,?C0117
+008B 0C                INC     R4
+008C         ?C0117:
+008C 80B5              SJMP    ?C0104
+                                           ; SOURCE LINE # 554
+008E         ?C0103:
+008E 0500        R     INC     i+01H
+0090 E500        R     MOV     A,i+01H
+0092 70A1              JNZ     ?C0101
+0094 0500        R     INC     i
+0096         ?C0118:
+0096 809D              SJMP    ?C0101
+                                           ; SOURCE LINE # 555
+0098         ?C0107:
+0098 22                RET     
+             ; FUNCTION _LCD_ShowPicture (END)
+
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 39  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+OLED_RST . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B5H  1
+P0 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0080H  1
+P1 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0090H  1
+P2 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00A0H  1
+P3 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B0H  1
+T0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B4H  1
+AC . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D6H  1
+T1 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B5H  1
+T2 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0090H  1
+EA . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AFH  1
+_LCD_ShowNum . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  num. . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0004H  2
+  len. . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0006H  1
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0007H  2
+  t. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0009H  1
+  temp . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   000AH  1
+  enshow . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   000BH  1
+Lcd_Init . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+_LCD_Address_Set . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x1 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y1 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0082H  2
+  x2 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  y2 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+OLED_DC. . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B4H  1
+IE . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00A8H  1
+_LCD_WR_DATA8. . . . . . . . . . . . .  PUBLIC   CODE   PROC     000FH  -----
+  dat. . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+EXF2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CEH  1
+RD . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B7H  1
+ES . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ACH  1
+IP . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B8H  1
+asc2_1608. . . . . . . . . . . . . . .  PUBLIC   CODE   ARRAY    0000H  1520
+RI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0098H  1
+OLED_CS. . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B3H  1
+INT0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B2H  1
+CY . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D7H  1
+_LCD_WR_REG. . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  dat. . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+TI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0099H  1
+INT1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B3H  1
+_LCD_Clear . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  Color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0002H  2
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0082H  2
+RCAP2H . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CBH  1
+PS . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BCH  1
+SP . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0081H  1
+T2EX . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0091H  1
+OV . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D2H  1
+RCAP2L . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CAH  1
+LCD_BLK_PIN_NUM. . . . . . . . . . . .  ABSBIT   -----  BIT      0092H  1
+C_T2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C9H  1
+WR . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B6H  1
+RCLK . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CDH  1
+TCLK . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CCH  1
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 40  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+SBUF . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0099H  1
+PCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0087H  1
+SCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0098H  1
+OLED_SDIN. . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B6H  1
+TMOD . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0089H  1
+TCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0088H  1
+_LCD_ShowPicture . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+  y. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0004H  2
+  sizex. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0004H  2
+  sizey. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+  pic. . . . . . . . . . . . . . . . .  AUTO     DATA   PTR      0008H  3
+  i. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    000BH  2
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0004H  2
+  k. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    000DH  2
+_LCD_ShowNum1. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  num. . . . . . . . . . . . . . . . .  AUTO     DATA   FLOAT    0004H  4
+  len. . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0008H  1
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0009H  2
+  t. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   000BH  1
+  temp . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   000CH  1
+  num1 . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    000DH  2
+_LCD_Fill. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  xsta . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  ysta . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  xend . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0004H  2
+  yend . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0008H  2
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0002H  2
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0082H  2
+IE0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0089H  1
+_mypow . . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  m. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0000H  1
+  n. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0001H  1
+  result . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0006H  2
+IE1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008BH  1
+B. . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00F0H  1
+CP_RL2 . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C8H  1
+_Draw_Circle . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x0 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y0 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  r. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0001H  1
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0005H  2
+  a. . . . . . . . . . . . . . . . . .  AUTO     DATA   INT      0007H  2
+  b. . . . . . . . . . . . . . . . . .  AUTO     DATA   INT      0009H  2
+ACC. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00E0H  1
+LCD_RST_PIN_NUM. . . . . . . . . . . .  ABSBIT   -----  BIT      0095H  1
+ET0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A9H  1
+ET1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ABH  1
+TF0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008DH  1
+ET2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ADH  1
+TF1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008FH  1
+TF2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CFH  1
+RB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009AH  1
+TH0. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008CH  1
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 41  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+EX0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A8H  1
+IT0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0088H  1
+TH1. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008DH  1
+TB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009BH  1
+EX1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AAH  1
+IT1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008AH  1
+TH2. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CDH  1
+_LCD_DrawLine. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x1 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+  y1 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0004H  2
+  x2 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  y2 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0008H  2
+  t. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    000AH  2
+  xerr . . . . . . . . . . . . . . . .  AUTO     DATA   INT      000CH  2
+  yerr . . . . . . . . . . . . . . . .  AUTO     DATA   INT      000EH  2
+  delta_x. . . . . . . . . . . . . . .  AUTO     DATA   INT      0010H  2
+  delta_y. . . . . . . . . . . . . . .  AUTO     DATA   INT      0012H  2
+  distance . . . . . . . . . . . . . .  AUTO     DATA   INT      0014H  2
+  incx . . . . . . . . . . . . . . . .  AUTO     DATA   INT      0016H  2
+  incy . . . . . . . . . . . . . . . .  AUTO     DATA   INT      0018H  2
+  uRow . . . . . . . . . . . . . . . .  AUTO     DATA   INT      001AH  2
+  uCol . . . . . . . . . . . . . . . .  AUTO     DATA   INT      001CH  2
+P. . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D0H  1
+SM0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009FH  1
+TL0. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008AH  1
+SM1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009EH  1
+TL1. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008BH  1
+_LCD_DrawPoint . . . . . . . . . . . .  PUBLIC   CODE   PROC     0010H  -----
+  x. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0006H  2
+  y. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0004H  2
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+SM2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009DH  1
+TL2. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CCH  1
+_LCD_ShowString. . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  p. . . . . . . . . . . . . . . . . .  AUTO     DATA   PTR      0004H  3
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0007H  2
+_delay_ms. . . . . . . . . . . . . . .  EXTERN   CODE   PROC     -----  -----
+PT0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B9H  1
+LCD_DC_PIN_NUM . . . . . . . . . . . .  ABSBIT   -----  BIT      0094H  1
+PT1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BBH  1
+RS0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D3H  1
+LCD_CE_PIN_NUM . . . . . . . . . . . .  ABSBIT   -----  BIT      0093H  1
+PT2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BDH  1
+TR0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008CH  1
+RS1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D4H  1
+TR1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008EH  1
+_LCD_ShowChar. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  num. . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0004H  1
+  mode . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0005H  1
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+  temp . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0008H  1
+  pos. . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0001H  1
+C51 COMPILER V9.60.0.0   SPI                                                               03/10/2022 00:19:07 PAGE 42  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+  t. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0009H  1
+  x0 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    000AH  2
+TR2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CAH  1
+PX0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B8H  1
+_LCD_WR_DATA . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  dat. . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0004H  2
+PX1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BAH  1
+DPH. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0083H  1
+_LCD_DrawRectangle . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x1 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y1 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+  x2 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0004H  2
+  y2 . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0006H  2
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0008H  2
+DPL. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0082H  1
+EXEN2. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CBH  1
+REN. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009CH  1
+_LCD_DrawPoint_big . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  x. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0000H  2
+  y. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0082H  2
+  color. . . . . . . . . . . . . . . .  AUTO     DATA   U_INT    0002H  2
+T2CON. . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00C8H  1
+_LCD_Writ_Bus. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  dat. . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0006H  1
+OLED_SCL . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B7H  1
+RXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B0H  1
+TXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B1H  1
+BACK_COLOR . . . . . . . . . . . . . .  PUBLIC   DATA   U_INT    0000H  2
+F0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D5H  1
+PSW. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00D0H  1
+LCD_SCLK_PIN_NUM . . . . . . . . . . .  ABSBIT   -----  BIT      0097H  1
+LCD_SDIN_PIN_NUM . . . . . . . . . . .  ABSBIT   -----  BIT      0096H  1
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2341    ----
+   CONSTANT SIZE    =   1520    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2     141
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  4 WARNING(S),  0 ERROR(S)
