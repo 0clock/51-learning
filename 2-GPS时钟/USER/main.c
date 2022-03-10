@@ -4,10 +4,10 @@
 	用一块TFT彩屏显示了一张图片
 	编写时间：2022-3-10
 */
-#include "config.h"
 
-void main()
-{
+#include "main.h"
+
+void main(){
 	OLED_Init();
 	OLED_Clear();
 	OLED_DrawBMP(0,0,128,8,(unsigned char *)Apple_Logo);//开机动画-苹果logo
@@ -18,10 +18,7 @@ void main()
 	bmp280Convert();
 	Uart_Init();
 	Delay10ms();
-	while(1)
-	{
+	while(1){
 		GUI_MainFuction();
-		//LCD_ShowPicture(0,0,160,80,(unsigned char *)gImage_WXJB);
 	}
 }
-

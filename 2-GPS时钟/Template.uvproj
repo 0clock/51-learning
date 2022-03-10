@@ -55,7 +55,7 @@
           <ListingPath>.\Listings\</ListingPath>
           <HexFormatSelection>0</HexFormatSelection>
           <Merge32K>0</Merge32K>
-          <CreateBatchFile>1</CreateBatchFile>
+          <CreateBatchFile>0</CreateBatchFile>
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
@@ -324,7 +324,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\0.96‘OLED-SPI;.\0.96‘OLED-SPI\BMP;.\USER;.\delay;.\按键;.\BMEBMP280;.\IIC;.\GPS;.\SPI;.\旋转编码器;.\1.54'TFT</IncludePath>
+              <IncludePath>.\Library\inc</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -374,101 +374,6 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>HAREWARE</GroupName>
-          <Files>
-            <File>
-              <FileName>oled.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\0.96‘OLED-SPI\oled.c</FilePath>
-            </File>
-            <File>
-              <FileName>..\..\Users\ThinkPad\Desktop\51库整理\工程案例\0.96‘OLED-SPI\oled.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>$TC_ROOT$\..\..\Users\ThinkPad\Desktop\51库整理\工程案例\0.96‘OLED-SPI\oled.h</FilePath>
-            </File>
-            <File>
-              <FileName>..\..\Users\ThinkPad\Desktop\51库整理\工程案例\0.96‘OLED-SPI\oledfont.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>$TC_ROOT$\..\..\Users\ThinkPad\Desktop\51库整理\工程案例\0.96‘OLED-SPI\oledfont.h</FilePath>
-            </File>
-            <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\按键\key.c</FilePath>
-            </File>
-            <File>
-              <FileName>key.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\按键\key.h</FilePath>
-            </File>
-            <File>
-              <FileName>delay.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\delay\delay.h</FilePath>
-            </File>
-            <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\delay\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>bme280.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\BMEBMP280\bme280.c</FilePath>
-            </File>
-            <File>
-              <FileName>bme280.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\BMEBMP280\bme280.h</FilePath>
-            </File>
-            <File>
-              <FileName>stdint.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\BMEBMP280\stdint.h</FilePath>
-            </File>
-            <File>
-              <FileName>iic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\IIC\iic.c</FilePath>
-            </File>
-            <File>
-              <FileName>iic.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\IIC\iic.h</FilePath>
-            </File>
-            <File>
-              <FileName>GPS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\GPS\GPS.c</FilePath>
-            </File>
-            <File>
-              <FileName>GPS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\GPS\GPS.h</FilePath>
-            </File>
-            <File>
-              <FileName>Rotary_Encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\旋转编码器\Rotary_Encoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>Rotary_Encoder.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\旋转编码器\Rotary_Encoder.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\SPI\SPI.h</FilePath>
-            </File>
-            <File>
-              <FileName>SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\SPI\SPI.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>USER</GroupName>
           <Files>
             <File>
@@ -477,34 +382,64 @@
               <FilePath>.\USER\main.c</FilePath>
             </File>
             <File>
-              <FileName>config.h</FileName>
+              <FileName>main.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\USER\config.h</FilePath>
+              <FilePath>.\USER\main.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>GUI_OLED</GroupName>
+          <GroupName>Library</GroupName>
           <Files>
             <File>
-              <FileName>OLED_GUI.c</FileName>
+              <FileName>bme280.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\0.96‘OLED-SPI\OLED_GUI.c</FilePath>
-            </File>
-            <File>
-              <FileName>OLED_GUI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\0.96‘OLED-SPI\OLED_GUI.h</FilePath>
+              <FilePath>.\Library\src\bme280.c</FilePath>
             </File>
             <File>
               <FileName>BMP.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\0.96‘OLED-SPI\BMP\BMP.c</FilePath>
+              <FilePath>.\Library\src\BMP.c</FilePath>
             </File>
             <File>
-              <FileName>BMP.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\0.96‘OLED-SPI\BMP\BMP.h</FilePath>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\GPS.c</FilePath>
+            </File>
+            <File>
+              <FileName>iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\iic.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>OLED_GUI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\OLED_GUI.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>Rotary_Encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\Rotary_Encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\SPI.c</FilePath>
             </File>
           </Files>
         </Group>

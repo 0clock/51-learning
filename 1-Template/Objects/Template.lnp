@@ -1,3 +1,0 @@
-".\Objects\main.obj" 
-TO ".\Objects\Template" 
-PRINT(".\Listings\Template.m51")
