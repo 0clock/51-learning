@@ -1,0 +1,25 @@
+C51 COMPILER V9.60.0.0   ROTARY_ENCODER                                                    03/10/2022 12:54:20 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE ROTARY_ENCODER
+OBJECT MODULE PLACED IN .\Objects\Rotary_Encoder.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Ðý×ª±àÂëÆ÷\Rotary_Encoder.c LARGE RTX51 OPTIMIZE(8,SPEED) BROWSE INCDIR(
+                    -.\0.96¡®OLED-SPI;.\0.96¡®OLED-SPI\BMP;.\USER;.\delay;.\°´¼ü;.\BMEBMP280;.\IIC;.\GPS;.\SPI;.\Ðý×ª±àÂëÆ÷;.\1.54'TFT) DEBUG
+                    - OBJECTEXTEND PRINT(.\Listings\Rotary_Encoder.lst) TABS(2) OBJECT(.\Objects\Rotary_Encoder.obj)
+
+line level    source
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

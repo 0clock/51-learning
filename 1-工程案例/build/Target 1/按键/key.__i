@@ -1,1 +1,0 @@
-.\按键\key.c PRINT(".\build\Target 1\按键\key.lst") OMF2 TABS(4) CODE NOCOND SYMBOLS OPTIMIZE(8,SPEED) SMALL ROM(LARGE) INCDIR(.\null\INC\Atmel;.\0.96‘OLED-SPI;.\0.96‘OLED-SPI\BMP;.\USER;.\delay;.\按键;.\BMEBMP280;.\IIC;.\GPS;.\SPI;.\旋转编码器;.\1.54'TFT;.\..\..\..\..\..\Keil_v5\C51\INC) DEFINE(__UVISION_VERSION='526') OBJECT(".\build\Target 1\按键\key.o")

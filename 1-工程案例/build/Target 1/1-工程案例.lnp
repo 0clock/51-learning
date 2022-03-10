@@ -1,3 +1,0 @@
-
-".\build\Target 1\0.96‘OLED-SPI\BMP\BMP.o",".\build\Target 1\0.96‘OLED-SPI\OLED_GUI.o",".\build\Target 1\0.96‘OLED-SPI\oled.o",".\build\Target 1\BMEBMP280\bme280.o",".\build\Target 1\GPS\GPS.o",".\build\Target 1\IIC\iic.o",".\build\Target 1\SPI\SPI.o",".\build\Target 1\USER\main.o",".\build\Target 1\delay\delay.o",".\build\Target 1\按键\key.o",".\build\Target 1\旋转编码器\Rotary_Encoder.o" TO ".\build\Target 1\1-工程案例"
-PRINT(".\build\Target 1\1-工程案例.map") REMOVEUNUSED
