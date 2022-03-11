@@ -1,0 +1,514 @@
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN .\build\Target 1\Library\src\delay.o
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.exe .\LIBRARY\SRC\DELAY.C PRINT(.\build\Target 1\Library\src\delay.lst) OMF2
+                    - TABS(4) CODE NOCOND SYMBOLS OPTIMIZE(8,SPEED) SMALL ROM(LARGE) INCDIR(.\..\..\..\..\..\Keil_v5\C51\INC\Atmel;.\Library\
+                    -inc;.\..\..\..\..\..\Keil_v5\C51\INC) DEFINE(__UVISION_VERSION=526) OBJECT(.\build\Target 1\Library\src\delay.o)
+
+line level    source
+
+   1          #include "delay.h"
+   2          
+   3          //@11.0592MHz
+   4          void Delay1ms()     
+   5          {
+   6   1          unsigned char i, j;
+   7   1      
+   8   1          _nop_();
+   9   1          i = 11;
+  10   1          j = 190;
+  11   1          do
+  12   1          {
+  13   2              while (--j);
+  14   2          } while (--i);
+  15   1      }
+  16          
+  17          void Delay10ms()        //@11.0592MHz
+  18          {
+  19   1          unsigned char i, j;
+  20   1      
+  21   1          _nop_();
+  22   1          _nop_();
+  23   1          i = 108;
+  24   1          j = 144;
+  25   1          do
+  26   1          {
+  27   2              while (--j);
+  28   2          } while (--i);
+  29   1      }
+  30          
+  31          void Delay1us()     //@11.0592MHz
+  32          {
+  33   1          _nop_();
+  34   1      }
+  35          
+  36          void Delay10us()        //@11.0592MHz
+  37          {
+  38   1          unsigned char i;
+  39   1      
+  40   1          _nop_();
+  41   1          _nop_();
+  42   1          _nop_();
+  43   1          i = 24;
+  44   1          while (--i);
+  45   1      }
+  46          
+  47          void Delay5us()     //@11.0592MHz
+  48          {
+  49   1          unsigned char i;
+  50   1      
+  51   1          _nop_();
+  52   1          _nop_();
+  53   1          _nop_();
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 2   
+
+  54   1          i = 10;
+  55   1          while (--i);
+  56   1      }
+  57          
+  58          void Delay200ms()       //@11.0592MHz
+  59          {
+  60   1          unsigned char i, j, k;
+  61   1      
+  62   1          i = 9;
+  63   1          j = 104;
+  64   1          k = 139;
+  65   1          do
+  66   1          {
+  67   2              do
+  68   2              {
+  69   3                  while (--k);
+  70   3              } while (--j);
+  71   2          } while (--i);
+  72   1      }
+  73          
+  74          void Delay100ms()       //@11.0592MHz
+  75          {
+  76   1          unsigned char i, j, k;
+  77   1      
+  78   1          i = 5;
+  79   1          j = 52;
+  80   1          k = 195;
+  81   1          do
+  82   1          {
+  83   2              do
+  84   2              {
+  85   3                  while (--k);
+  86   3              } while (--j);
+  87   2          } while (--i);
+  88   1      }
+  89          
+  90          void Delay1000us()      //@11.0592MHz
+  91          {
+  92   1          unsigned char i, j;
+  93   1      
+  94   1          _nop_();
+  95   1          _nop_();
+  96   1          _nop_();
+  97   1          i = 11;
+  98   1          j = 190;
+  99   1          do
+ 100   1          {
+ 101   2              while (--j);
+ 102   2          } while (--i);
+ 103   1      }
+ 104          
+ 105          void Delay1000ms()      //@11.0592MHz
+ 106          {
+ 107   1          unsigned char i, j, k;
+ 108   1      
+ 109   1          _nop_();
+ 110   1          _nop_();
+ 111   1          i = 43;
+ 112   1          j = 6;
+ 113   1          k = 203;
+ 114   1          do
+ 115   1          {
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 3   
+
+ 116   2              do
+ 117   2              {
+ 118   3                  while (--k);
+ 119   3              } while (--j);
+ 120   2          } while (--i);
+ 121   1      }
+ 122          
+ 123          void Delay50us()        //@11.0592MHz
+ 124          {
+ 125   1          unsigned char i;
+ 126   1      
+ 127   1          _nop_();
+ 128   1          _nop_();
+ 129   1          _nop_();
+ 130   1          i = 135;
+ 131   1          while (--i);
+ 132   1      }
+ 133          
+ 134          
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 4   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION Delay1ms (BEGIN)
+                                           ; SOURCE LINE # 4
+                                           ; SOURCE LINE # 5
+                                           ; SOURCE LINE # 8
+0000 00                NOP     
+                                           ; SOURCE LINE # 9
+;---- Variable 'i' assigned to Register 'R7' ----
+0001 7F0B              MOV     R7,#0BH
+                                           ; SOURCE LINE # 10
+;---- Variable 'j' assigned to Register 'R6' ----
+0003 7EBE              MOV     R6,#0BEH
+                                           ; SOURCE LINE # 12
+0005         ?C0004:
+                                           ; SOURCE LINE # 13
+0005 DEFE              DJNZ    R6,?C0004
+                                           ; SOURCE LINE # 14
+0007 DFFC              DJNZ    R7,?C0004
+                                           ; SOURCE LINE # 15
+0009 22                RET     
+             ; FUNCTION Delay1ms (END)
+
+             ; FUNCTION Delay10ms (BEGIN)
+                                           ; SOURCE LINE # 17
+                                           ; SOURCE LINE # 18
+                                           ; SOURCE LINE # 21
+0000 00                NOP     
+                                           ; SOURCE LINE # 22
+0001 00                NOP     
+                                           ; SOURCE LINE # 23
+;---- Variable 'i' assigned to Register 'R7' ----
+0002 7F6C              MOV     R7,#06CH
+                                           ; SOURCE LINE # 24
+;---- Variable 'j' assigned to Register 'R6' ----
+0004 7E90              MOV     R6,#090H
+                                           ; SOURCE LINE # 26
+0006         ?C0010:
+                                           ; SOURCE LINE # 27
+0006 DEFE              DJNZ    R6,?C0010
+                                           ; SOURCE LINE # 28
+0008 DFFC              DJNZ    R7,?C0010
+                                           ; SOURCE LINE # 29
+000A 22                RET     
+             ; FUNCTION Delay10ms (END)
+
+             ; FUNCTION Delay1us (BEGIN)
+                                           ; SOURCE LINE # 31
+                                           ; SOURCE LINE # 32
+                                           ; SOURCE LINE # 33
+0000 00                NOP     
+                                           ; SOURCE LINE # 34
+0001 22                RET     
+             ; FUNCTION Delay1us (END)
+
+             ; FUNCTION Delay10us (BEGIN)
+                                           ; SOURCE LINE # 36
+                                           ; SOURCE LINE # 37
+                                           ; SOURCE LINE # 40
+0000 00                NOP     
+                                           ; SOURCE LINE # 41
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 5   
+
+0001 00                NOP     
+                                           ; SOURCE LINE # 42
+0002 00                NOP     
+                                           ; SOURCE LINE # 43
+;---- Variable 'i' assigned to Register 'R7' ----
+0003 7F18              MOV     R7,#018H
+0005         ?C0014:
+                                           ; SOURCE LINE # 44
+0005 DFFE              DJNZ    R7,?C0014
+                                           ; SOURCE LINE # 45
+0007 22                RET     
+             ; FUNCTION Delay10us (END)
+
+             ; FUNCTION Delay5us (BEGIN)
+                                           ; SOURCE LINE # 47
+                                           ; SOURCE LINE # 48
+                                           ; SOURCE LINE # 51
+0000 00                NOP     
+                                           ; SOURCE LINE # 52
+0001 00                NOP     
+                                           ; SOURCE LINE # 53
+0002 00                NOP     
+                                           ; SOURCE LINE # 54
+;---- Variable 'i' assigned to Register 'R7' ----
+0003 7F0A              MOV     R7,#0AH
+0005         ?C0017:
+                                           ; SOURCE LINE # 55
+0005 DFFE              DJNZ    R7,?C0017
+                                           ; SOURCE LINE # 56
+0007 22                RET     
+             ; FUNCTION Delay5us (END)
+
+             ; FUNCTION Delay200ms (BEGIN)
+                                           ; SOURCE LINE # 58
+                                           ; SOURCE LINE # 59
+                                           ; SOURCE LINE # 62
+;---- Variable 'i' assigned to Register 'R7' ----
+0000 7F09              MOV     R7,#09H
+                                           ; SOURCE LINE # 63
+;---- Variable 'j' assigned to Register 'R6' ----
+0002 7E68              MOV     R6,#068H
+                                           ; SOURCE LINE # 64
+;---- Variable 'k' assigned to Register 'R5' ----
+0004 7D8B              MOV     R5,#08BH
+                                           ; SOURCE LINE # 66
+                                           ; SOURCE LINE # 68
+0006         ?C0026:
+                                           ; SOURCE LINE # 69
+0006 DDFE              DJNZ    R5,?C0026
+                                           ; SOURCE LINE # 70
+0008 DEFC              DJNZ    R6,?C0026
+                                           ; SOURCE LINE # 71
+000A DFFA              DJNZ    R7,?C0026
+                                           ; SOURCE LINE # 72
+000C 22                RET     
+             ; FUNCTION Delay200ms (END)
+
+             ; FUNCTION Delay100ms (BEGIN)
+                                           ; SOURCE LINE # 74
+                                           ; SOURCE LINE # 75
+                                           ; SOURCE LINE # 78
+;---- Variable 'i' assigned to Register 'R7' ----
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 6   
+
+0000 7F05              MOV     R7,#05H
+                                           ; SOURCE LINE # 79
+;---- Variable 'j' assigned to Register 'R6' ----
+0002 7E34              MOV     R6,#034H
+                                           ; SOURCE LINE # 80
+;---- Variable 'k' assigned to Register 'R5' ----
+0004 7DC3              MOV     R5,#0C3H
+                                           ; SOURCE LINE # 82
+                                           ; SOURCE LINE # 84
+0006         ?C0035:
+                                           ; SOURCE LINE # 85
+0006 DDFE              DJNZ    R5,?C0035
+                                           ; SOURCE LINE # 86
+0008 DEFC              DJNZ    R6,?C0035
+                                           ; SOURCE LINE # 87
+000A DFFA              DJNZ    R7,?C0035
+                                           ; SOURCE LINE # 88
+000C 22                RET     
+             ; FUNCTION Delay100ms (END)
+
+             ; FUNCTION Delay1000us (BEGIN)
+                                           ; SOURCE LINE # 90
+                                           ; SOURCE LINE # 91
+                                           ; SOURCE LINE # 94
+0000 00                NOP     
+                                           ; SOURCE LINE # 95
+0001 00                NOP     
+                                           ; SOURCE LINE # 96
+0002 00                NOP     
+                                           ; SOURCE LINE # 97
+;---- Variable 'i' assigned to Register 'R7' ----
+0003 7F0B              MOV     R7,#0BH
+                                           ; SOURCE LINE # 98
+;---- Variable 'j' assigned to Register 'R6' ----
+0005 7EBE              MOV     R6,#0BEH
+                                           ; SOURCE LINE # 100
+0007         ?C0041:
+                                           ; SOURCE LINE # 101
+0007 DEFE              DJNZ    R6,?C0041
+                                           ; SOURCE LINE # 102
+0009 DFFC              DJNZ    R7,?C0041
+                                           ; SOURCE LINE # 103
+000B 22                RET     
+             ; FUNCTION Delay1000us (END)
+
+             ; FUNCTION Delay1000ms (BEGIN)
+                                           ; SOURCE LINE # 105
+                                           ; SOURCE LINE # 106
+                                           ; SOURCE LINE # 109
+0000 00                NOP     
+                                           ; SOURCE LINE # 110
+0001 00                NOP     
+                                           ; SOURCE LINE # 111
+;---- Variable 'i' assigned to Register 'R7' ----
+0002 7F2B              MOV     R7,#02BH
+                                           ; SOURCE LINE # 112
+;---- Variable 'j' assigned to Register 'R6' ----
+0004 7E06              MOV     R6,#06H
+                                           ; SOURCE LINE # 113
+;---- Variable 'k' assigned to Register 'R5' ----
+0006 7DCB              MOV     R5,#0CBH
+                                           ; SOURCE LINE # 115
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 7   
+
+                                           ; SOURCE LINE # 117
+0008         ?C0050:
+                                           ; SOURCE LINE # 118
+0008 DDFE              DJNZ    R5,?C0050
+                                           ; SOURCE LINE # 119
+000A DEFC              DJNZ    R6,?C0050
+                                           ; SOURCE LINE # 120
+000C DFFA              DJNZ    R7,?C0050
+                                           ; SOURCE LINE # 121
+000E 22                RET     
+             ; FUNCTION Delay1000ms (END)
+
+             ; FUNCTION Delay50us (BEGIN)
+                                           ; SOURCE LINE # 123
+                                           ; SOURCE LINE # 124
+                                           ; SOURCE LINE # 127
+0000 00                NOP     
+                                           ; SOURCE LINE # 128
+0001 00                NOP     
+                                           ; SOURCE LINE # 129
+0002 00                NOP     
+                                           ; SOURCE LINE # 130
+;---- Variable 'i' assigned to Register 'R7' ----
+0003 7F87              MOV     R7,#087H
+0005         ?C0053:
+                                           ; SOURCE LINE # 131
+0005 DFFE              DJNZ    R7,?C0053
+                                           ; SOURCE LINE # 132
+0007 22                RET     
+             ; FUNCTION Delay50us (END)
+
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 8   
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+P0 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0080H  1
+P1 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0090H  1
+P2 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00A0H  1
+P3 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B0H  1
+T0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B4H  1
+AC . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D6H  1
+Delay1ms . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0006H  1
+T1 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B5H  1
+T2 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0090H  1
+EA . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AFH  1
+Delay1us . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+IE . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00A8H  1
+Delay5us . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+Delay1000ms. . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0006H  1
+  k. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0005H  1
+EXF2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CEH  1
+RD . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B7H  1
+ES . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ACH  1
+IP . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B8H  1
+RI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0098H  1
+INT0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B2H  1
+CY . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D7H  1
+TI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0099H  1
+INT1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B3H  1
+Delay1000us. . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0006H  1
+RCAP2H . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CBH  1
+PS . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BCH  1
+SP . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0081H  1
+T2EX . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0091H  1
+OV . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D2H  1
+RCAP2L . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CAH  1
+C_T2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C9H  1
+WR . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B6H  1
+RCLK . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CDH  1
+TCLK . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CCH  1
+SBUF . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0099H  1
+PCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0087H  1
+SCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0098H  1
+Delay10ms. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0006H  1
+TMOD . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0089H  1
+TCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0088H  1
+Delay10us. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+IE0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0089H  1
+IE1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008BH  1
+Delay50us. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+B. . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00F0H  1
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 9   
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+CP_RL2 . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C8H  1
+ACC. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00E0H  1
+ET0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A9H  1
+ET1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ABH  1
+TF0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008DH  1
+ET2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ADH  1
+TF1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008FH  1
+TF2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CFH  1
+RB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009AH  1
+TH0. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008CH  1
+EX0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A8H  1
+IT0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0088H  1
+TH1. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008DH  1
+TB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009BH  1
+EX1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AAH  1
+IT1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008AH  1
+TH2. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CDH  1
+P. . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D0H  1
+SM0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009FH  1
+TL0. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008AH  1
+SM1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009EH  1
+TL1. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008BH  1
+SM2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009DH  1
+TL2. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00CCH  1
+PT0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B9H  1
+PT1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BBH  1
+RS0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D3H  1
+PT2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BDH  1
+TR0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008CH  1
+RS1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D4H  1
+TR1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008EH  1
+TR2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CAH  1
+PX0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B8H  1
+PX1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BAH  1
+DPH. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0083H  1
+DPL. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0082H  1
+EXEN2. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CBH  1
+Delay100ms . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0006H  1
+  k. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0005H  1
+REN. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009CH  1
+Delay200ms . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+  j. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0006H  1
+  k. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0005H  1
+T2CON. . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00C8H  1
+RXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B0H  1
+TXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B1H  1
+F0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D5H  1
+PSW. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00D0H  1
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    100    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:49:24 PAGE 10  
+
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

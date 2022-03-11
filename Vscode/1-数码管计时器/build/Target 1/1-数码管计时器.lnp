@@ -1,3 +1,0 @@
-
-".\build\Target 1\__\__\3-数码管计时器\USER\main.o" TO ".\build\Target 1\1-数码管计时器"
-PRINT(".\build\Target 1\1-数码管计时器.map") REMOVEUNUSED

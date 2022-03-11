@@ -1,0 +1,604 @@
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SPI
+OBJECT MODULE PLACED IN .\Objects\SPI.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\SPI.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Library\inc) D
+                    -EBUG OBJECTEXTEND PRINT(.\Listings\SPI.lst) TABS(2) OBJECT(.\Objects\SPI.obj)
+
+line level    source
+
+   1          #include "SPI.h"
+   2          #include "tftfont.h"
+   3          
+   4          u16 BACK_COLOR;   //背景色
+   5          
+   6          /******************************************************************************
+   7                函数说明：LCD串行数据写入函数
+   8                入口数据：dat  要写入的串行数据
+   9                返回值：  无
+  10          ******************************************************************************/
+  11          void LCD_Writ_Bus(u8 dat) 
+  12          { 
+  13   1        u8 i;
+  14   1        LCD_CS_Clr;
+  15   1        for(i=0;i<8;i++)
+  16   1        {       
+  17   2          LCD_SCLK_Clr;
+  18   2          if(dat&0x80)
+  19   2            {
+  20   3              LCD_SDA_Set;
+  21   3            } else {
+  22   3              LCD_SDA_Clr;
+  23   3            }
+  24   2          LCD_SCLk_Set;
+  25   2          dat<<=1;
+  26   2        } 
+  27   1        LCD_CS_Set; 
+  28   1      }
+  29          
+  30          
+  31          /******************************************************************************
+  32                函数说明：LCD写入数据
+  33                入口数据：dat 写入的数据
+  34                返回值：  无
+  35          ******************************************************************************/
+  36          void LCD_WR_DATA8(u8 dat)
+  37          {
+  38   1        LCD_Writ_Bus(dat);
+  39   1      }
+  40          
+  41          
+  42          /******************************************************************************
+  43                函数说明：LCD写入数据
+  44                入口数据：dat 写入的数据
+  45                返回值：  无
+  46          ******************************************************************************/
+  47          void LCD_WR_DATA(u16 dat)
+  48          {
+  49   1        LCD_Writ_Bus(dat>>8);
+  50   1        LCD_Writ_Bus(dat);
+  51   1      }
+  52          
+  53          
+  54          /******************************************************************************
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 2   
+
+  55                函数说明：LCD写入命令
+  56                入口数据：dat 写入的命令
+  57                返回值：  无
+  58          ******************************************************************************/
+  59          void LCD_WR_REG(u8 dat)
+  60          {
+  61   1        LCD_DC_Clr;//写命令
+  62   1        LCD_Writ_Bus(dat);
+  63   1        LCD_DC_Set;//写数据
+  64   1      }
+  65          
+  66          
+  67          /******************************************************************************
+  68                函数说明：设置起始和结束地址
+  69                入口数据：x1,x2 设置列的起始和结束地址
+  70                          y1,y2 设置行的起始和结束地址
+  71                返回值：  无
+  72          ******************************************************************************/
+  73          void LCD_Address_Set(u16 x1,u16 y1,u16 x2,u16 y2)
+  74          {
+  75   1        if(USE_HORIZONTAL==0)
+  76   1        {
+  77   2          LCD_WR_REG(0x2a);//列地址设置
+  78   2          LCD_WR_DATA(x1+24);
+  79   2          LCD_WR_DATA(x2+24);
+  80   2          LCD_WR_REG(0x2b);//行地址设置
+  81   2          LCD_WR_DATA(y1);
+  82   2          LCD_WR_DATA(y2);
+  83   2          LCD_WR_REG(0x2c);//储存器写
+  84   2        }
+  85   1        else if(USE_HORIZONTAL==1)
+  86   1        {
+  87   2          LCD_WR_REG(0x2a);//列地址设置
+  88   2          LCD_WR_DATA(x1+24);
+  89   2          LCD_WR_DATA(x2+24);
+  90   2          LCD_WR_REG(0x2b);//行地址设置
+  91   2          LCD_WR_DATA(y1);
+  92   2          LCD_WR_DATA(y2);
+  93   2          LCD_WR_REG(0x2c);//储存器写
+  94   2        }
+  95   1        else if(USE_HORIZONTAL==2)
+  96   1        {
+  97   2          LCD_WR_REG(0x2a);//列地址设置
+  98   2          LCD_WR_DATA(x1);
+  99   2          LCD_WR_DATA(x2);
+ 100   2          LCD_WR_REG(0x2b);//行地址设置
+ 101   2          LCD_WR_DATA(y1+24);
+ 102   2          LCD_WR_DATA(y2+24);
+ 103   2          LCD_WR_REG(0x2c);//储存器写
+ 104   2        }
+ 105   1        else
+ 106   1        {
+ 107   2          LCD_WR_REG(0x2a);//列地址设置
+ 108   2          LCD_WR_DATA(x1);
+ 109   2          LCD_WR_DATA(x2);
+ 110   2          LCD_WR_REG(0x2b);//行地址设置
+ 111   2          LCD_WR_DATA(y1+24);
+ 112   2          LCD_WR_DATA(y2+24);
+ 113   2          LCD_WR_REG(0x2c);//储存器写
+ 114   2        }
+ 115   1      }
+ 116          
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 3   
+
+ 117          
+ 118          /******************************************************************************
+ 119                函数说明：LCD初始化函数
+ 120                入口数据：无
+ 121                返回值：  无
+ 122          ******************************************************************************/
+ 123          void Lcd_Init(void)
+ 124          { 
+ 125   1        LCD_RES_Clr;
+ 126   1        delay_ms(200);
+ 127   1        LCD_RES_Set;
+ 128   1        delay_ms(20);
+ 129   1        LCD_BLK_Set;
+ 130   1        
+ 131   1        LCD_WR_REG(0x11);//Sleep exit 
+ 132   1        delay_ms(120);                //Delay 120ms 
+ 133   1        LCD_WR_REG(0xB1);     
+ 134   1        LCD_WR_DATA8(0x05);   
+ 135   1        LCD_WR_DATA8(0x3C);   
+ 136   1        LCD_WR_DATA8(0x3C);   
+ 137   1        
+ 138   1        LCD_WR_REG(0xB2);     
+ 139   1        LCD_WR_DATA8(0x05);   
+ 140   1        LCD_WR_DATA8(0x3C);   
+ 141   1        LCD_WR_DATA8(0x3C);   
+ 142   1        
+ 143   1        LCD_WR_REG(0xB3);     
+ 144   1        LCD_WR_DATA8(0x05);   
+ 145   1        LCD_WR_DATA8(0x3C);   
+ 146   1        LCD_WR_DATA8(0x3C);   
+ 147   1        LCD_WR_DATA8(0x05);   
+ 148   1        LCD_WR_DATA8(0x3C);   
+ 149   1        LCD_WR_DATA8(0x3C);   
+ 150   1        
+ 151   1        LCD_WR_REG(0xB4);     //Dot inversion
+ 152   1        LCD_WR_DATA8(0x03);   
+ 153   1        
+ 154   1        LCD_WR_REG(0xC0);     
+ 155   1        LCD_WR_DATA8(0x0E);   
+ 156   1        LCD_WR_DATA8(0x0E);   
+ 157   1        LCD_WR_DATA8(0x04);   
+ 158   1        
+ 159   1        LCD_WR_REG(0xC1);     
+ 160   1        LCD_WR_DATA8(0xC5);   
+ 161   1        
+ 162   1        LCD_WR_REG(0xC2);     
+ 163   1        LCD_WR_DATA8(0x0d);   
+ 164   1        LCD_WR_DATA8(0x00);   
+ 165   1        
+ 166   1        LCD_WR_REG(0xC3);     
+ 167   1        LCD_WR_DATA8(0x8D);   
+ 168   1        LCD_WR_DATA8(0x2A);   
+ 169   1        
+ 170   1        LCD_WR_REG(0xC4);     
+ 171   1        LCD_WR_DATA8(0x8D);   
+ 172   1        LCD_WR_DATA8(0xEE);   
+ 173   1        
+ 174   1        LCD_WR_REG(0xC5);     //VCOM
+ 175   1        LCD_WR_DATA8(0x06); //1D  .06
+ 176   1        
+ 177   1        
+ 178   1        LCD_WR_REG(0x36);     //MX, MY, RGB mode
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 4   
+
+ 179   1        if(USE_HORIZONTAL==0)LCD_WR_DATA8(0x08);
+ 180   1        else if(USE_HORIZONTAL==1)LCD_WR_DATA8(0xC8);
+ 181   1        else if(USE_HORIZONTAL==2)LCD_WR_DATA8(0x78);
+ 182   1        else LCD_WR_DATA8(0xA8);  
+ 183   1        
+ 184   1        LCD_WR_REG(0x3A); 
+ 185   1        LCD_WR_DATA8(0x55);
+ 186   1        
+ 187   1        LCD_WR_REG(0xE0);     
+ 188   1        LCD_WR_DATA8(0x0b);   
+ 189   1        LCD_WR_DATA8(0x17);   
+ 190   1        LCD_WR_DATA8(0x0a);   
+ 191   1        LCD_WR_DATA8(0x0d);   
+ 192   1        LCD_WR_DATA8(0x1a);   
+ 193   1        LCD_WR_DATA8(0x19);   
+ 194   1        LCD_WR_DATA8(0x16);   
+ 195   1        LCD_WR_DATA8(0x1d);   
+ 196   1        LCD_WR_DATA8(0x21);   
+ 197   1        LCD_WR_DATA8(0x26);   
+ 198   1        LCD_WR_DATA8(0x37);   
+ 199   1        LCD_WR_DATA8(0x3c);   
+ 200   1        LCD_WR_DATA8(0x00);   
+ 201   1        LCD_WR_DATA8(0x09);   
+ 202   1        LCD_WR_DATA8(0x05);   
+ 203   1        LCD_WR_DATA8(0x10);   
+ 204   1        
+ 205   1        LCD_WR_REG(0xE1);     
+ 206   1        LCD_WR_DATA8(0x0c);   
+ 207   1        LCD_WR_DATA8(0x19);   
+ 208   1        LCD_WR_DATA8(0x09);   
+ 209   1        LCD_WR_DATA8(0x0d);   
+ 210   1        LCD_WR_DATA8(0x1b);   
+ 211   1        LCD_WR_DATA8(0x19);   
+ 212   1        LCD_WR_DATA8(0x15);   
+ 213   1        LCD_WR_DATA8(0x1d);   
+ 214   1        LCD_WR_DATA8(0x21);   
+ 215   1        LCD_WR_DATA8(0x26);   
+ 216   1        LCD_WR_DATA8(0x39);   
+ 217   1        LCD_WR_DATA8(0x3E);   
+ 218   1        LCD_WR_DATA8(0x00);   
+ 219   1        LCD_WR_DATA8(0x09);   
+ 220   1        LCD_WR_DATA8(0x05);   
+ 221   1        LCD_WR_DATA8(0x10);   
+ 222   1        
+ 223   1        delay_ms (120);
+ 224   1        LCD_WR_REG(0x29);     //Display on
+ 225   1      } 
+ 226          
+ 227          
+ 228          /******************************************************************************
+ 229                函数说明：LCD清屏函数
+ 230                入口数据：无
+ 231                返回值：  无
+ 232          ******************************************************************************/
+ 233          void LCD_Clear(u16 Color)
+ 234          {
+ 235   1        u16 i,j;    
+ 236   1        LCD_Address_Set(0,0,LCD_W-1,LCD_H-1);
+ 237   1        for(i=0;i<LCD_W;i++)
+ 238   1        {
+ 239   2          for (j=0;j<LCD_H;j++)
+ 240   2          {
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 5   
+
+ 241   3            LCD_WR_DATA(Color);
+ 242   3          }
+ 243   2        }
+ 244   1      }
+ 245          
+ 246          
+ 247          /******************************************************************************
+ 248                函数说明：LCD显示汉字
+ 249                入口数据：x,y   起始坐标
+ 250                          index 汉字的序号
+ 251                          size  字号
+ 252                返回值：  无
+ 253          *****************************************************************************
+ 254          void LCD_ShowChinese(u16 x,u16 y,u8 index,u8 size,u16 color)  
+ 255          {  
+ 256            u8 i,j,size1;
+ 257            const u8 *temp;
+ 258            if(size==16){temp=Hzk16;}//选择字号
+ 259            if(size==32){temp=Hzk32;}
+ 260            LCD_Address_Set(x,y,x+size-1,y+size-1); //设置一个汉字的区域
+ 261            size1=size*size/8;//一个汉字所占的字节
+ 262            temp+=index*size1;//写入的起始位置
+ 263            for(j=0;j<size1;j++)
+ 264            {
+ 265              for(i=0;i<8;i++)
+ 266              {
+ 267                if((*temp&(1<<i))!=0)//从数据的低位开始读
+ 268                {
+ 269                  LCD_WR_DATA(color);//点亮
+ 270                }
+ 271                else
+ 272                {
+ 273                  LCD_WR_DATA(BACK_COLOR);//不点亮
+ 274                }
+ 275              }
+ 276              temp++;
+ 277            }
+ 278          }
+ 279          
+ 280          
+ 281          /******************************************************************************
+ 282                函数说明：LCD显示汉字
+ 283                入口数据：x,y   起始坐标
+ 284                返回值：  无
+ 285          ******************************************************************************/
+ 286          void LCD_DrawPoint(u16 x,u16 y,u16 color)
+ 287          {
+ 288   1        LCD_Address_Set(x,y,x,y);//设置光标位置 
+ 289   1        LCD_WR_DATA(color);
+ 290   1      } 
+ 291          
+ 292          
+ 293          /******************************************************************************
+ 294                函数说明：LCD画一个大的点
+ 295                入口数据：x,y   起始坐标
+ 296                返回值：  无
+ 297          ******************************************************************************/
+ 298          void LCD_DrawPoint_big(u16 x,u16 y,u16 color)
+ 299          {
+ 300   1        LCD_Fill(x-1,y-1,x+1,y+1,color);
+ 301   1      } 
+ 302          
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 6   
+
+ 303          
+ 304          /******************************************************************************
+ 305                函数说明：在指定区域填充颜色
+ 306                入口数据：xsta,ysta   起始坐标
+ 307                          xend,yend   终止坐标
+ 308                返回值：  无
+ 309          ******************************************************************************/
+ 310          void LCD_Fill(u16 xsta,u16 ysta,u16 xend,u16 yend,u16 color)
+ 311          {          
+ 312   1        u16 i,j; 
+ 313   1        LCD_Address_Set(xsta,ysta,xend,yend);      //设置光标位置 
+ 314   1        for(i=ysta;i<=yend;i++)
+ 315   1        {                               
+ 316   2          for(j=xsta;j<=xend;j++)LCD_WR_DATA(color);//设置光标位置      
+ 317   2        }                   
+ 318   1      }
+ 319          
+ 320          
+ 321          /******************************************************************************
+ 322                函数说明：画线
+ 323                入口数据：x1,y1   起始坐标
+ 324                          x2,y2   终止坐标
+ 325                返回值：  无
+ 326          ******************************************************************************/
+ 327          void LCD_DrawLine(u16 x1,u16 y1,u16 x2,u16 y2,u16 color)
+ 328          {
+ 329   1        u16 t; 
+ 330   1        int xerr=0,yerr=0,delta_x,delta_y,distance;
+ 331   1        int incx,incy,uRow,uCol;
+ 332   1        delta_x=x2-x1; //计算坐标增量 
+ 333   1        delta_y=y2-y1;
+ 334   1        uRow=x1;//画线起点坐标
+ 335   1        uCol=y1;
+ 336   1        if(delta_x>0)incx=1; //设置单步方向 
+ 337   1        else if (delta_x==0)incx=0;//垂直线 
+ 338   1        else {incx=-1;delta_x=-delta_x;}
+ 339   1        if(delta_y>0)incy=1;
+ 340   1        else if (delta_y==0)incy=0;//水平线 
+ 341   1        else {incy=-1;delta_y=-delta_x;}
+ 342   1        if(delta_x>delta_y)distance=delta_x; //选取基本增量坐标轴 
+ 343   1        else distance=delta_y;
+ 344   1        for(t=0;t<distance+1;t++)
+ 345   1        {
+ 346   2          LCD_DrawPoint(uRow,uCol,color);//画点
+ 347   2          xerr+=delta_x;
+ 348   2          yerr+=delta_y;
+ 349   2          if(xerr>distance)
+ 350   2          {
+ 351   3            xerr-=distance;
+ 352   3            uRow+=incx;
+ 353   3          }
+ 354   2          if(yerr>distance)
+ 355   2          {
+ 356   3            yerr-=distance;
+ 357   3            uCol+=incy;
+ 358   3          }
+ 359   2        }
+ 360   1      }
+ 361          
+ 362          
+ 363          /******************************************************************************
+ 364                函数说明：画矩形
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 7   
+
+ 365                入口数据：x1,y1   起始坐标
+ 366                          x2,y2   终止坐标
+ 367                返回值：  无
+ 368          ******************************************************************************/
+ 369          void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2,u16 color)
+ 370          {
+ 371   1        LCD_DrawLine(x1,y1,x2,y1,color);
+ 372   1        LCD_DrawLine(x1,y1,x1,y2,color);
+ 373   1        LCD_DrawLine(x1,y2,x2,y2,color);
+ 374   1        LCD_DrawLine(x2,y1,x2,y2,color);
+ 375   1      }
+ 376          
+ 377          
+ 378          /******************************************************************************
+ 379                函数说明：画圆
+ 380                入口数据：x0,y0   圆心坐标
+ 381                          r       半径
+ 382                返回值：  无
+ 383          ******************************************************************************/
+ 384          void Draw_Circle(u16 x0,u16 y0,u8 r,u16 color)
+ 385          {
+ 386   1        int a,b;
+ 387   1        a=0;b=r;    
+ 388   1        while(a<=b)
+ 389   1        {
+ 390   2          LCD_DrawPoint(x0-b,y0-a,color);             //3           
+ 391   2          LCD_DrawPoint(x0+b,y0-a,color);             //0           
+ 392   2          LCD_DrawPoint(x0-a,y0+b,color);             //1                
+ 393   2          LCD_DrawPoint(x0-a,y0-b,color);             //2             
+ 394   2          LCD_DrawPoint(x0+b,y0+a,color);             //4               
+ 395   2          LCD_DrawPoint(x0+a,y0-b,color);             //5
+ 396   2          LCD_DrawPoint(x0+a,y0+b,color);             //6 
+ 397   2          LCD_DrawPoint(x0-b,y0+a,color);             //7
+ 398   2          a++;
+ 399   2          if((a*a+b*b)>(r*r))//判断要画的点是否过远
+ 400   2          {
+ 401   3            b--;
+ 402   3          }
+ 403   2        }
+ 404   1      }
+ 405          
+ 406          
+ 407          /******************************************************************************
+ 408                函数说明：显示字符
+ 409                入口数据：x,y    起点坐标
+ 410                          num    要显示的字符
+ 411                          mode   1叠加方式  0非叠加方式
+ 412                返回值：  无
+ 413          ******************************************************************************/
+ 414          void LCD_ShowChar(u16 x,u16 y,u8 num,u8 mode,u16 color)
+ 415          {
+ 416   1        u8 temp;
+ 417   1        u8 pos,t;
+ 418   1        u16 x0=x;    
+ 419   1        if(x>LCD_W-16||y>LCD_H-16)return;     //设置窗口       
+ 420   1        num=num-' ';//得到偏移后的值
+ 421   1        LCD_Address_Set(x,y,x+8-1,y+16-1);      //设置光标位置 
+ 422   1        if(!mode) //非叠加方式
+ 423   1        {
+ 424   2          for(pos=0;pos<16;pos++)
+ 425   2          { 
+ 426   3            temp=asc2_1608[(u16)num*16+pos];     //调用1608字体
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 8   
+
+ 427   3            for(t=0;t<8;t++)
+ 428   3            {                 
+ 429   4              if(temp&0x01)LCD_WR_DATA(color);
+ 430   4              else LCD_WR_DATA(BACK_COLOR);
+ 431   4              temp>>=1;
+ 432   4              x++;
+ 433   4            }
+ 434   3            x=x0;
+ 435   3            y++;
+ 436   3          } 
+ 437   2        }else//叠加方式
+ 438   1        {
+ 439   2          for(pos=0;pos<16;pos++)
+ 440   2          {
+ 441   3            temp=asc2_1608[(u16)num*16+pos];     //调用1608字体
+ 442   3            for(t=0;t<8;t++)
+ 443   3            {                 
+ 444   4              if(temp&0x01)LCD_DrawPoint(x+t,y+pos,color);//画一个点     
+ 445   4              temp>>=1; 
+ 446   4            }
+ 447   3          }
+ 448   2        }             
+ 449   1      }
+ 450          
+ 451          
+ 452          /******************************************************************************
+ 453                函数说明：显示字符串
+ 454                入口数据：x,y    起点坐标
+ 455                          *p     字符串起始地址
+ 456                返回值：  无
+ 457          ******************************************************************************/
+ 458          void LCD_ShowString(u16 x,u16 y,const u8 *p,u16 color)
+ 459          {         
+ 460   1          while(*p!='\0')
+ 461   1          {       
+ 462   2              if(x>LCD_W-16){x=0;y+=16;}
+ 463   2              if(y>LCD_H-16){y=x=0;LCD_Clear(RED);}
+ 464   2              LCD_ShowChar(x,y,*p,0,color);
+ 465   2              x+=8;
+ 466   2              p++;
+ 467   2          }  
+ 468   1      }
+ 469          
+ 470          
+ 471          /******************************************************************************
+ 472                函数说明：显示数字
+ 473                入口数据：m底数，n指数
+ 474                返回值：  无
+ 475          ******************************************************************************/
+ 476          u32 mypow(u8 m,u8 n)
+ 477          {
+ 478   1        u32 result=1;  
+ 479   1        while(n--)result*=m;    
+ 480   1        return result;
+ 481   1      }
+ 482          
+ 483          
+ 484          /******************************************************************************
+ 485                函数说明：显示数字
+ 486                入口数据：x,y    起点坐标
+ 487                          num    要显示的数字
+ 488                          len    要显示的数字个数
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 9   
+
+ 489                返回值：  无
+ 490          ******************************************************************************/
+ 491          void LCD_ShowNum(u16 x,u16 y,u16 num,u8 len,u16 color)
+ 492          {           
+ 493   1        u8 t,temp;
+ 494   1        u8 enshow=0;
+ 495   1        for(t=0;t<len;t++)
+ 496   1        {
+ 497   2          temp=(num/mypow(10,len-t-1))%10;
+ 498   2          if(enshow==0&&t<(len-1))
+ 499   2          {
+ 500   3            if(temp==0)
+ 501   3            {
+ 502   4              LCD_ShowChar(x+8*t,y,' ',0,color);
+ 503   4              continue;
+ 504   4            }else enshow=1; 
+ 505   3          }
+ 506   2          LCD_ShowChar(x+8*t,y,temp+48,0,color); 
+ 507   2        }
+ 508   1      } 
+ 509          
+ 510          
+ 511          /******************************************************************************
+ 512                函数说明：显示小数
+ 513                入口数据：x,y    起点坐标
+ 514                          num    要显示的小数
+ 515                          len    要显示的数字个数
+ 516                返回值：  无
+ 517          ******************************************************************************/
+ 518          void LCD_ShowNum1(u16 x,u16 y,float num,u8 len,u16 color)
+ 519          {           
+ 520   1        u8 t,temp;
+ 521   1        u16 num1;
+ 522   1        num1=num*100;
+ 523   1        for(t=0;t<len;t++)
+ 524   1        {
+ 525   2          temp=(num1/mypow(10,len-t-1))%10;
+ 526   2          if(t==(len-2))
+ 527   2          {
+ 528   3            LCD_ShowChar(x+8*(len-2),y,'.',0,color);
+ 529   3            t++;
+ 530   3            len+=1;
+ 531   3          }
+ 532   2          LCD_ShowChar(x+8*t,y,temp+48,0,color);
+ 533   2        }
+ 534   1      }
+ 535          
+ 536          
+ 537          /******************************************************************************
+ 538                函数说明：显示图片
+ 539                入口数据：x,y    起点坐标
+ 540                返回值：  无
+ 541          ******************************************************************************/
+ 542          void LCD_ShowPicture(u16 x,u16 y,u16 sizex,u16 sizey,const u8 pic[])
+ 543          {
+ 544   1        u32 i,j,k=0;
+ 545   1        LCD_Address_Set(x,y,x+sizex-1,y+sizey-1);
+ 546   1        for(i=0;i<sizex;i++)
+ 547   1        {
+ 548   2          for(j=0;j<sizey;j++)
+ 549   2          {
+ 550   3            LCD_WR_DATA8(pic[k*2+1]);
+C51 COMPILER V9.60.0.0   SPI                                                               03/11/2022 13:47:24 PAGE 10  
+
+ 551   3            LCD_WR_DATA8(pic[k*2]);
+ 552   3            k++;
+ 553   3          }
+ 554   2        }
+ 555   1      }
+ 556          
+ 557          
+ 558          
+*** WARNING C294 IN LINE 77 OF Library\src\SPI.c: unreachable code
+*** WARNING C294 IN LINE 87 OF Library\src\SPI.c: unreachable code
+*** WARNING C294 IN LINE 107 OF Library\src\SPI.c: unreachable code
+*** WARNING C294 IN LINE 182 OF Library\src\SPI.c: unreachable code
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   3416    ----
+   CONSTANT SIZE    =   1520    ----
+   XDATA SIZE       =      2     151
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  4 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,36 @@
+[2022-03-11 13:43:03]	compilation failed at : "c:\Users\ThinkPad\Desktop\89C51\3-数码管计时器\Library\src\GPS.c", exit code: 2
+  at unify_builder.Program.Main (System.String[] args) [0x0187a] in <67d11e1b30504dd6babd321425698ba1>:0 
+---
+C51 COMPILER V9.60.0.0 - SN: K1DZC-EWTP2C
+COPYRIGHT Copyright (C) 2012 - 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
+*** WARNING C318 IN LINE 1 OF .\LIBRARY\SRC\GPS.C: can't open file 'GPS.h'
+*** ERROR C202 IN LINE 3 OF .\LIBRARY\SRC\GPS.C: 'gpsRxBufferLength': undefined identifier
+*** ERROR C136 IN LINE 3 OF .\LIBRARY\SRC\GPS.C: invalid dimension size: [0]
+*** ERROR C129 IN LINE 6 OF .\LIBRARY\SRC\GPS.C: missing ';' before 'Save_Data'
+C51 COMPILATION COMPLETE.  1 WARNING(S),  3 ERROR(S)
+
+[2022-03-11 13:47:55]	compilation failed at : "c:\Users\ThinkPad\Desktop\89C51\3-数码管计时器\Library\src\GPS.c", exit code: 2
+  at unify_builder.Program.Main (System.String[] args) [0x0187a] in <67d11e1b30504dd6babd321425698ba1>:0 
+---
+C51 COMPILER V9.60.0.0 - SN: K1DZC-EWTP2C
+COPYRIGHT Copyright (C) 2012 - 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
+*** WARNING C318 IN LINE 1 OF .\LIBRARY\SRC\GPS.C: can't open file 'GPS.h'
+*** ERROR C202 IN LINE 3 OF .\LIBRARY\SRC\GPS.C: 'gpsRxBufferLength': undefined identifier
+*** ERROR C136 IN LINE 3 OF .\LIBRARY\SRC\GPS.C: invalid dimension size: [0]
+*** ERROR C129 IN LINE 6 OF .\LIBRARY\SRC\GPS.C: missing ';' before 'Save_Data'
+C51 COMPILATION COMPLETE.  1 WARNING(S),  3 ERROR(S)
+
+[2022-03-11 13:48:16]	compilation failed at : "c:\Users\ThinkPad\Desktop\89C51\3-数码管计时器\Library\src\GPS.c", exit code: 2
+  at unify_builder.Program.Main (System.String[] args) [0x0187a] in <67d11e1b30504dd6babd321425698ba1>:0 
+---
+C51 COMPILER V9.60.0.0 - SN: K1DZC-EWTP2C
+COPYRIGHT Copyright (C) 2012 - 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
+*** WARNING C318 IN LINE 1 OF .\LIBRARY\SRC\GPS.C: can't open file 'GPS.h'
+*** ERROR C202 IN LINE 3 OF .\LIBRARY\SRC\GPS.C: 'gpsRxBufferLength': undefined identifier
+*** ERROR C136 IN LINE 3 OF .\LIBRARY\SRC\GPS.C: invalid dimension size: [0]
+*** ERROR C129 IN LINE 6 OF .\LIBRARY\SRC\GPS.C: missing ';' before 'Save_Data'
+C51 COMPILATION COMPLETE.  1 WARNING(S),  3 ERROR(S)
+
+[2022-03-11 13:49:24]	[done]
+	build successfully !
+

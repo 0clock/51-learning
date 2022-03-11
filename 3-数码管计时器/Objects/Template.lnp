@@ -1,0 +1,13 @@
+".\Objects\main.obj",
+".\Objects\bme280.obj",
+".\Objects\BMP.obj",
+".\Objects\delay.obj",
+".\Objects\GPS.obj",
+".\Objects\iic.obj",
+".\Objects\key.obj",
+".\Objects\oled.obj",
+".\Objects\OLED_GUI.obj",
+".\Objects\Rotary_Encoder.obj",
+".\Objects\SPI.obj" 
+TO ".\Objects\Template" 
+PRINT(".\Listings\Template.m51")

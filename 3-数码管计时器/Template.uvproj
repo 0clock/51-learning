@@ -186,7 +186,7 @@
         </Utilities>
         <Target51>
           <Target51Misc>
-            <MemoryModel>0</MemoryModel>
+            <MemoryModel>2</MemoryModel>
             <RTOS>0</RTOS>
             <RomSize>2</RomSize>
             <DataHold>0</DataHold>
@@ -233,7 +233,7 @@
               <RCB>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x10000</Size>
+                <Size>0xffff</Size>
               </RCB>
               <RXB>
                 <Type>0</Type>
@@ -324,7 +324,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>.\Library\inc</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -390,6 +390,58 @@
         </Group>
         <Group>
           <GroupName>Library</GroupName>
+          <Files>
+            <File>
+              <FileName>bme280.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\bme280.c</FilePath>
+            </File>
+            <File>
+              <FileName>BMP.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\BMP.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\GPS.c</FilePath>
+            </File>
+            <File>
+              <FileName>iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\iic.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>OLED_GUI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\OLED_GUI.c</FilePath>
+            </File>
+            <File>
+              <FileName>Rotary_Encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\Rotary_Encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\SPI.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

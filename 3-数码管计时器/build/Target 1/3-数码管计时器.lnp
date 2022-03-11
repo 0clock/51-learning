@@ -1,0 +1,3 @@
+
+".\build\Target 1\Library\src\BMP.o",".\build\Target 1\Library\src\GPS.o",".\build\Target 1\Library\src\OLED_GUI.o",".\build\Target 1\Library\src\Rotary_Encoder.o",".\build\Target 1\Library\src\SPI.o",".\build\Target 1\Library\src\bme280.o",".\build\Target 1\Library\src\delay.o",".\build\Target 1\Library\src\iic.o",".\build\Target 1\Library\src\key.o",".\build\Target 1\Library\src\oled.o",".\build\Target 1\USER\main.o" TO ".\build\Target 1\3-数码管计时器"
+PRINT(".\build\Target 1\3-数码管计时器.map") REMOVEUNUSED

@@ -3,6 +3,7 @@
 
 
 void main(){
+	Lcd_Init(); 
 	while(1){
 		
 	}

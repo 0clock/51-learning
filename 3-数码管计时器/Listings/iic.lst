@@ -1,0 +1,96 @@
+C51 COMPILER V9.60.0.0   IIC                                                               03/11/2022 13:47:23 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE IIC
+OBJECT MODULE PLACED IN .\Objects\iic.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\iic.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Library\inc) D
+                    -EBUG OBJECTEXTEND PRINT(.\Listings\iic.lst) TABS(2) OBJECT(.\Objects\iic.obj)
+
+line level    source
+
+   1          #include "iic.h"
+   2          
+   3          
+   4          void iic_start()   
+   5          {
+   6   1        SDA=1;
+   7   1        SCL=1;
+   8   1        Delay5us();
+   9   1        SDA=0;
+  10   1        Delay5us();
+  11   1        SCL=0;
+  12   1      }
+  13          
+  14          void iic_stop()  
+  15          {
+  16   1        SDA=0;
+  17   1        SCL=1;
+  18   1        Delay5us();
+  19   1        SDA=1;
+  20   1        Delay5us();
+  21   1        SCL=0;
+  22   1      }
+  23          
+  24          void iic_ack()   
+  25          {
+  26   1        uchar i=0;
+  27   1        SCL=1;
+  28   1        Delay5us();
+  29   1        while((SDA==1) && (i<255))
+  30   1            i++;
+  31   1        SCL=0;
+  32   1        Delay5us();
+  33   1      }
+  34          
+  35          void iic_send_byte(uchar bat)  
+  36          {
+  37   1        uchar i,temp;
+  38   1        temp=bat;
+  39   1        for(i=0;i<=7;i++)
+  40   1        {
+  41   2          temp=temp<<1;
+  42   2          SCL=0;
+  43   2          SDA=CY;
+  44   2          Delay5us();
+  45   2          SCL=1;
+  46   2          Delay5us();
+  47   2        }
+  48   1        SCL=0;
+  49   1        Delay5us();
+  50   1        SDA=1;
+  51   1        Delay5us();
+  52   1      }
+  53          
+  54          unsigned char iic_rev()  
+C51 COMPILER V9.60.0.0   IIC                                                               03/11/2022 13:47:23 PAGE 2   
+
+  55          {
+  56   1        uchar temp,i;
+  57   1        SCL=0;
+  58   1        Delay5us();
+  59   1        SDA=1;
+  60   1        for(i=0;i<=7;i++)
+  61   1        {
+  62   2         SCL=1;
+  63   2         Delay5us();
+  64   2         temp=(temp<<1)|SDA;
+  65   2         SCL=0;
+  66   2         Delay5us();
+  67   2        }
+  68   1        Delay5us();
+  69   1        return temp;
+  70   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    190    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       5
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
