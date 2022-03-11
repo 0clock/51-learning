@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              03/11/2022 13:47:23 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              03/12/2022 02:55:10 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
@@ -8,22 +8,22 @@ COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE USER\main.c LARGE OPTIMIZE(8,SPE
 
 line level    source
 
-   1          
-   2          #include "main.h"
-   3          
+   1          #include "main.h"
+   2          
+   3          uint TIME[8];
    4          
    5          void main(){
-   6   1        Lcd_Init(); 
+   6   1        InitDS1302();
    7   1        while(1){
-   8   2          
+   8   2          DigDisplay(2, DS1302SingleRead(5));
    9   2        }
   10   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =      5    ----
+   CODE SIZE        =     17    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =     16    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

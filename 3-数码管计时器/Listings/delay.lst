@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:47:23 PAGE 1   
+C51 COMPILER V9.60.0.0   DELAY                                                             03/12/2022 02:03:00 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DELAY
@@ -11,128 +11,128 @@ line level    source
    1          #include "delay.h"
    2          
    3          //@11.0592MHz
-   4          void Delay1ms()   
-   5          {
-   6   1        unsigned char i, j;
-   7   1      
-   8   1        _nop_();
-   9   1        i = 11;
-  10   1        j = 190;
-  11   1        do
-  12   1        {
-  13   2          while (--j);
-  14   2        } while (--i);
-  15   1      }
+   4          //void Delay1ms()   
+   5          //{
+   6          //  unsigned char i, j;
+   7          
+   8          //  _nop_();
+   9          //  i = 11;
+  10          //  j = 190;
+  11          //  do
+  12          //  {
+  13          //    while (--j);
+  14          //  } while (--i);
+  15          //}
   16          
-  17          void Delay10ms()    //@11.0592MHz
-  18          {
-  19   1        unsigned char i, j;
-  20   1      
-  21   1        _nop_();
-  22   1        _nop_();
-  23   1        i = 108;
-  24   1        j = 144;
-  25   1        do
-  26   1        {
-  27   2          while (--j);
-  28   2        } while (--i);
-  29   1      }
+  17          //void Delay10ms()    //@11.0592MHz
+  18          //{
+  19          //  unsigned char i, j;
+  20          
+  21          //  _nop_();
+  22          //  _nop_();
+  23          //  i = 108;
+  24          //  j = 144;
+  25          //  do
+  26          //  {
+  27          //    while (--j);
+  28          //  } while (--i);
+  29          //}
   30          
-  31          void Delay1us()   //@11.0592MHz
-  32          {
-  33   1        _nop_();
-  34   1      }
+  31          //void Delay1us()   //@11.0592MHz
+  32          //{
+  33          //  _nop_();
+  34          //}
   35          
-  36          void Delay10us()    //@11.0592MHz
-  37          {
-  38   1        unsigned char i;
-  39   1      
-  40   1        _nop_();
-  41   1        _nop_();
-  42   1        _nop_();
-  43   1        i = 24;
-  44   1        while (--i);
-  45   1      }
+  36          //void Delay10us()    //@11.0592MHz
+  37          //{
+  38          //  unsigned char i;
+  39          
+  40          //  _nop_();
+  41          //  _nop_();
+  42          //  _nop_();
+  43          //  i = 24;
+  44          //  while (--i);
+  45          //}
   46          
-  47          void Delay5us()   //@11.0592MHz
-  48          {
-  49   1        unsigned char i;
-  50   1      
-  51   1        _nop_();
-  52   1        _nop_();
-  53   1        _nop_();
-  54   1        i = 10;
-C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:47:23 PAGE 2   
+  47          //void Delay5us()   //@11.0592MHz
+  48          //{
+  49          //  unsigned char i;
+  50          
+  51          //  _nop_();
+  52          //  _nop_();
+  53          //  _nop_();
+  54          //  i = 10;
+C51 COMPILER V9.60.0.0   DELAY                                                             03/12/2022 02:03:00 PAGE 2   
 
-  55   1        while (--i);
-  56   1      }
+  55          //  while (--i);
+  56          //}
   57          
-  58          void Delay200ms()   //@11.0592MHz
-  59          {
-  60   1        unsigned char i, j, k;
-  61   1      
-  62   1        i = 9;
-  63   1        j = 104;
-  64   1        k = 139;
-  65   1        do
-  66   1        {
-  67   2          do
-  68   2          {
-  69   3            while (--k);
-  70   3          } while (--j);
-  71   2        } while (--i);
-  72   1      }
+  58          //void Delay200ms()   //@11.0592MHz
+  59          //{
+  60          //  unsigned char i, j, k;
+  61          
+  62          //  i = 9;
+  63          //  j = 104;
+  64          //  k = 139;
+  65          //  do
+  66          //  {
+  67          //    do
+  68          //    {
+  69          //      while (--k);
+  70          //    } while (--j);
+  71          //  } while (--i);
+  72          //}
   73          
-  74          void Delay100ms()   //@11.0592MHz
-  75          {
-  76   1        unsigned char i, j, k;
-  77   1      
-  78   1        i = 5;
-  79   1        j = 52;
-  80   1        k = 195;
-  81   1        do
-  82   1        {
-  83   2          do
-  84   2          {
-  85   3            while (--k);
-  86   3          } while (--j);
-  87   2        } while (--i);
-  88   1      }
+  74          //void Delay100ms()   //@11.0592MHz
+  75          //{
+  76          //  unsigned char i, j, k;
+  77          
+  78          //  i = 5;
+  79          //  j = 52;
+  80          //  k = 195;
+  81          //  do
+  82          //  {
+  83          //    do
+  84          //    {
+  85          //      while (--k);
+  86          //    } while (--j);
+  87          //  } while (--i);
+  88          //}
   89          
-  90          void Delay1000us()    //@11.0592MHz
-  91          {
-  92   1        unsigned char i, j;
-  93   1      
-  94   1        _nop_();
-  95   1        _nop_();
-  96   1        _nop_();
-  97   1        i = 11;
-  98   1        j = 190;
-  99   1        do
- 100   1        {
- 101   2          while (--j);
- 102   2        } while (--i);
- 103   1      }
+  90          //void Delay1000us()    //@11.0592MHz
+  91          //{
+  92          //  unsigned char i, j;
+  93          
+  94          //  _nop_();
+  95          //  _nop_();
+  96          //  _nop_();
+  97          //  i = 11;
+  98          //  j = 190;
+  99          //  do
+ 100          //  {
+ 101          //    while (--j);
+ 102          //  } while (--i);
+ 103          //}
  104          
- 105          void Delay1000ms()    //@11.0592MHz
- 106          {
- 107   1        unsigned char i, j, k;
- 108   1      
- 109   1        _nop_();
- 110   1        _nop_();
- 111   1        i = 43;
- 112   1        j = 6;
- 113   1        k = 203;
- 114   1        do
- 115   1        {
- 116   2          do
-C51 COMPILER V9.60.0.0   DELAY                                                             03/11/2022 13:47:23 PAGE 3   
+ 105          //void Delay1000ms()    //@11.0592MHz
+ 106          //{
+ 107          //  unsigned char i, j, k;
+ 108          
+ 109          //  _nop_();
+ 110          //  _nop_();
+ 111          //  i = 43;
+ 112          //  j = 6;
+ 113          //  k = 203;
+ 114          //  do
+ 115          //  {
+ 116          //    do
+C51 COMPILER V9.60.0.0   DELAY                                                             03/12/2022 02:03:00 PAGE 3   
 
- 117   2          {
- 118   3            while (--k);
- 119   3          } while (--j);
- 120   2        } while (--i);
- 121   1      }
+ 117          //    {
+ 118          //      while (--k);
+ 119          //    } while (--j);
+ 120          //  } while (--i);
+ 121          //}
  122          
  123          void Delay50us()    //@11.0592MHz
  124          {
@@ -149,7 +149,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    100    ----
+   CODE SIZE        =      8    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

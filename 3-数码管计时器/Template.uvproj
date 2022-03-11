@@ -392,14 +392,9 @@
           <GroupName>Library</GroupName>
           <Files>
             <File>
-              <FileName>bme280.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\bme280.c</FilePath>
-            </File>
-            <File>
-              <FileName>BMP.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\BMP.c</FilePath>
+              <FileName>delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Library\inc\delay.h</FilePath>
             </File>
             <File>
               <FileName>delay.c</FileName>
@@ -407,39 +402,19 @@
               <FilePath>.\Library\src\delay.c</FilePath>
             </File>
             <File>
-              <FileName>GPS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\GPS.c</FilePath>
+              <FileName>digitron.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Library\inc\digitron.h</FilePath>
             </File>
             <File>
-              <FileName>iic.c</FileName>
+              <FileName>digitron.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Library\src\iic.c</FilePath>
+              <FilePath>.\Library\src\digitron.c</FilePath>
             </File>
             <File>
-              <FileName>key.c</FileName>
+              <FileName>DS1302.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Library\src\key.c</FilePath>
-            </File>
-            <File>
-              <FileName>oled.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\oled.c</FilePath>
-            </File>
-            <File>
-              <FileName>OLED_GUI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\OLED_GUI.c</FilePath>
-            </File>
-            <File>
-              <FileName>Rotary_Encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\Rotary_Encoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\SPI.c</FilePath>
+              <FilePath>.\Library\src\DS1302.c</FilePath>
             </File>
           </Files>
         </Group>
