@@ -15,6 +15,9 @@ struct sTime {  //日期时间结构体定义
     unsigned char week;  //星期
 };
 
+
+
+
 /* 发送一个字节到DS1302通信总线上 */
 void DS1302ByteWrite(unsigned char dat)
 {

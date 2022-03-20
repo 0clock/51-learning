@@ -1,0 +1,1 @@
+"Library\src\DS1302.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\Library\inc) DEBUG OBJECTEXTEND PRINT(.\Listings\DS1302.lst) TABS (2) OBJECT(.\Objects\DS1302.obj)
