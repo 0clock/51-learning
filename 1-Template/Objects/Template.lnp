@@ -1,0 +1,4 @@
+".\Objects\main.obj" 
+TO ".\Objects\Template" 
+RTX51 
+PRINT(".\Listings\Template.map") REMOVEUNUSED 

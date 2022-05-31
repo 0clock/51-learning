@@ -1,1 +1,0 @@
-"Library\src\digitron.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\Library\inc) DEBUG OBJECTEXTEND PRINT(.\Listings\digitron.lst) TABS (2) OBJECT(.\Objects\digitron.obj)

@@ -1,6 +1,0 @@
-".\Objects\main.obj",
-".\Objects\delay.obj",
-".\Objects\digitron.obj",
-".\Objects\DS1302.obj" 
-TO ".\Objects\Template" 
-PRINT(".\Listings\Template.m51")
