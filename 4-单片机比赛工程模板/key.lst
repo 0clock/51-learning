@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   KEY                                                               04/21/2023 13:03:53 PAGE 1   
+C51 COMPILER V9.60.7.0   KEY                                                               04/21/2023 17:04:03 PAGE 1   
 
 
-C51 COMPILER V9.60.0.0, COMPILATION OF MODULE KEY
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE KEY
 OBJECT MODULE PLACED IN .\OBJ\key.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\key.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR(.\
-                    -Library\inc;.\USER) PRINT(.\key.lst) TABS(2) OBJECT(.\OBJ\key.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\key.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) BROWSE IN
+                    -CDIR(.\Library\inc;.\USER) PRINT(.\key.lst) TABS(2) OBJECT(.\OBJ\key.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52   1        if(key2==0){Delay_Ms(20);while(key2==0);Delay_Ms(20);KeyNumber=2;}
   53   1        if(key3==0){Delay_Ms(20);while(key3==0);Delay_Ms(20);KeyNumber=3;}
   54   1        if(key4==0){Delay_Ms(20);while(key4==0);Delay_Ms(20);KeyNumber=4;}
-C51 COMPILER V9.60.0.0   KEY                                                               04/21/2023 13:03:53 PAGE 2   
+C51 COMPILER V9.60.7.0   KEY                                                               04/21/2023 17:04:03 PAGE 2   
 
   55   1        return KeyNumber;
   56   1      }
@@ -71,7 +71,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    296    ----
+   CODE SIZE        =    284    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =      1       2
    PDATA SIZE       =   ----    ----

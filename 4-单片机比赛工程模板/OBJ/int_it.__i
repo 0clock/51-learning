@@ -1,1 +1,1 @@
-"Library\src\int_it.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) INCDIR(.\Library\inc;.\USER) PRINT(.\int_it.lst) TABS (2) OBJECT(.\OBJ\int_it.obj)
+"Library\src\int_it.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) BROWSE INCDIR(.\Library\inc;.\USER) PRINT(.\int_it.lst) TABS (2) OBJECT(.\OBJ\int_it.obj)

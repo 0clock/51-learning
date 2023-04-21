@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   PWM                                                               04/21/2023 13:03:51 PAGE 1   
+C51 COMPILER V9.60.7.0   PWM                                                               04/21/2023 17:04:02 PAGE 1   
 
 
-C51 COMPILER V9.60.0.0, COMPILATION OF MODULE PWM
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE PWM
 OBJECT MODULE PLACED IN .\OBJ\PWM.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\PWM.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR(.\
-                    -Library\inc;.\USER) PRINT(.\PWM.lst) TABS(2) OBJECT(.\OBJ\PWM.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\PWM.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) BROWSE IN
+                    -CDIR(.\Library\inc;.\USER) PRINT(.\PWM.lst) TABS(2) OBJECT(.\OBJ\PWM.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   50          //  TR0=1;         //¿ª¶¨Ê±Æ÷0
   51          //}
 
-C51 COMPILER V9.60.0.0   PWM                                                               04/21/2023 13:03:51 PAGE 2   
+C51 COMPILER V9.60.7.0   PWM                                                               04/21/2023 17:04:02 PAGE 2   
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

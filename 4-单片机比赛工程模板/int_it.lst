@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   INT_IT                                                            04/21/2023 13:03:50 PAGE 1   
+C51 COMPILER V9.60.7.0   INT_IT                                                            04/21/2023 17:04:01 PAGE 1   
 
 
-C51 COMPILER V9.60.0.0, COMPILATION OF MODULE INT_IT
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE INT_IT
 OBJECT MODULE PLACED IN .\OBJ\int_it.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\int_it.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR
-                    -(.\Library\inc;.\USER) PRINT(.\int_it.lst) TABS(2) OBJECT(.\OBJ\int_it.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\int_it.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) BROWSE
+                    - INCDIR(.\Library\inc;.\USER) PRINT(.\int_it.lst) TABS(2) OBJECT(.\OBJ\int_it.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    HDATA SIZE       =   ----    ----
    XDATA CONST SIZE =   ----    ----
    FAR CONST SIZE   =   ----    ----
-C51 COMPILER V9.60.0.0   INT_IT                                                            04/21/2023 13:03:50 PAGE 2   
+C51 COMPILER V9.60.7.0   INT_IT                                                            04/21/2023 17:04:01 PAGE 2   
 
 END OF MODULE INFORMATION.
 

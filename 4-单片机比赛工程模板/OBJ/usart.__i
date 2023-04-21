@@ -1,1 +1,1 @@
-"Library\src\usart.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) INCDIR(.\Library\inc;.\USER) PRINT(.\usart.lst) TABS (2) OBJECT(.\OBJ\usart.obj)
+"Library\src\usart.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) BROWSE INCDIR(.\Library\inc;.\USER) PRINT(.\usart.lst) TABS (2) OBJECT(.\OBJ\usart.obj)

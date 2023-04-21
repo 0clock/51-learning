@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 1   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 1   
 
 
-C51 COMPILER V9.60.0.0, COMPILATION OF MODULE PARALLEL_12864
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE PARALLEL_12864
 OBJECT MODULE PLACED IN .\OBJ\parallel_12864.obj
 COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\parallel_12864.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED
-                    -) INCDIR(.\Library\inc;.\USER) PRINT(.\parallel_12864.lst) TABS(2) OBJECT(.\OBJ\parallel_12864.obj)
+                    -) BROWSE INCDIR(.\Library\inc;.\USER) PRINT(.\parallel_12864.lst) TABS(2) OBJECT(.\OBJ\parallel_12864.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          /*********************************************************************************************************
   54          ** 函数名称 ：Write_12864_Data(uchar date)
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 2   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 2   
 
   55          ** 函数功能 ：写数据
   56          ** 函数说明 ：
@@ -126,7 +126,7 @@ line level    source
  114          ** 入口参数 ：待写入的指令
  115          ** 出口参数 ：无
  116          *********************************************************************************************************/
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 3   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 3   
 
  117          void Write_12864_Com(uchar commod)//写指令
  118          {
@@ -190,7 +190,7 @@ line level    source
  174   2          p = ++str;
  175   2        } 
  176   1      }
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 4   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 4   
 
  177          
  178          /*********************************************************************************************************
@@ -254,7 +254,7 @@ line level    source
  235   1           
  236   1        for (;COUNT3 != 0;COUNT3 --) 
  237   1        { 
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 5   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 5   
 
  238   2          LCD_Y = 0X80; //上半屏
  239   2          COUNT2 = 0X20;//32 
@@ -318,7 +318,7 @@ line level    source
  297   1        uchar COUNT3 = 0X02,COUNT1,COUNT2,LCD_X = 0X80,LCD_Y;
  298   1           
  299   1        for (;COUNT3 != 0;COUNT3 --) 
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 6   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 6   
 
  300   1        { 
  301   2          LCD_Y = 0X80; 
@@ -382,7 +382,7 @@ line level    source
  359   2        }
  360   1        Write_12864_Com(draw_on);
  361   1        Write_12864_Com(basic_commod);  
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 7   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 7   
 
  362   1      }
  363          /*********************************************************************************************************
@@ -434,7 +434,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   2074    ----
+   CODE SIZE        =   2007    ----
    CONSTANT SIZE    =     32    ----
    XDATA SIZE       =   ----      72
    PDATA SIZE       =   ----    ----
@@ -447,7 +447,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    FAR CONST SIZE   =   ----    ----
 END OF MODULE INFORMATION.
 
-C51 COMPILER V9.60.0.0   PARALLEL_12864                                                    04/21/2023 13:03:51 PAGE 8   
+C51 COMPILER V9.60.7.0   PARALLEL_12864                                                    04/21/2023 17:04:02 PAGE 8   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

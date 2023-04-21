@@ -1,1 +1,1 @@
-"Library\src\parallel_12864.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) INCDIR(.\Library\inc;.\USER) PRINT(.\parallel_12864.lst) TABS (2) OBJECT(.\OBJ\parallel_12864.obj)
+"Library\src\parallel_12864.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) BROWSE INCDIR(.\Library\inc;.\USER) PRINT(.\parallel_12864.lst) TABS (2) OBJECT(.\OBJ\parallel_12864.obj)

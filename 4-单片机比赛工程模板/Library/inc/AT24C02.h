@@ -6,7 +6,6 @@
 *********************************************************************************************************/
 #ifndef _AT24C02_H_
 #define _AT24C02_H_
-
   #ifndef uchar
 	#define uchar unsigned char
   #endif
@@ -14,11 +13,8 @@
   #ifndef uint
 	#define uint  unsigned int
   #endif
-
 #include"intrins.h"
 #include "STC12C5A60S2.H" 
-
-
 sbit AT24C02_SDA=P2^7;//双向数据端口
 sbit AT24C02_SCL=P2^6;//串行时钟
 /*********************************************************************************************************

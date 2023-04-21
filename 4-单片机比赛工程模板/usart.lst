@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   USART                                                             04/21/2023 13:03:52 PAGE 1   
+C51 COMPILER V9.60.7.0   USART                                                             04/21/2023 17:04:02 PAGE 1   
 
 
-C51 COMPILER V9.60.0.0, COMPILATION OF MODULE USART
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE USART
 OBJECT MODULE PLACED IN .\OBJ\usart.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\usart.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR(
-                    -.\Library\inc;.\USER) PRINT(.\usart.lst) TABS(2) OBJECT(.\OBJ\usart.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\usart.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) BROWSE 
+                    -INCDIR(.\Library\inc;.\USER) PRINT(.\usart.lst) TABS(2) OBJECT(.\OBJ\usart.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52          ** 函数功能 ：发送一个字符
   53          ** 入口参数 ：d：待发送的字符
   54          ** 出口参数 ：无
-C51 COMPILER V9.60.0.0   USART                                                             04/21/2023 13:03:52 PAGE 2   
+C51 COMPILER V9.60.7.0   USART                                                             04/21/2023 17:04:02 PAGE 2   
 
   55          *********************************************************************************************************/
   56          void Send_Byte(unsigned char c)
@@ -126,7 +126,7 @@ line level    source
  112          功能描述：  实现485双向通信
  113          硬件连接：  用3位杜邦线分别将J9_0与J17_RO、J9_1与J17_DI以及J9_2与J17_RE连接,
  114                      用1位杜邦线将J11_0与J7_S17连接,用1位杜邦线将J10_0与J13_8连接,
-C51 COMPILER V9.60.0.0   USART                                                             04/21/2023 13:03:52 PAGE 3   
+C51 COMPILER V9.60.7.0   USART                                                             04/21/2023 17:04:02 PAGE 3   
 
  115                      将甲板和乙板RS485接口的A、B对应（即A对A，B对B）连接。
  116          */
@@ -165,7 +165,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    170    ----
+   CODE SIZE        =    169    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     12       3
    PDATA SIZE       =   ----    ----

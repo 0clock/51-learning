@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   AS608                                                             04/21/2023 13:03:52 PAGE 1   
+C51 COMPILER V9.60.7.0   AS608                                                             04/21/2023 17:04:03 PAGE 1   
 
 
-C51 COMPILER V9.60.0.0, COMPILATION OF MODULE AS608
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE AS608
 OBJECT MODULE PLACED IN .\OBJ\as608.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\as608.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR(
-                    -.\Library\inc;.\USER) PRINT(.\as608.lst) TABS(2) OBJECT(.\OBJ\as608.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\as608.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) BROWSE 
+                    -INCDIR(.\Library\inc;.\USER) PRINT(.\as608.lst) TABS(2) OBJECT(.\OBJ\as608.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   49   1      
   50   1        for (i=0;i<ucLength;i++)
   51   1           FPM10A_RECEICE_BUFFER[i] = Uart_Receive_Byte();
-C51 COMPILER V9.60.0.0   AS608                                                             04/21/2023 13:03:52 PAGE 2   
+C51 COMPILER V9.60.7.0   AS608                                                             04/21/2023 17:04:03 PAGE 2   
 
   52   1      }
   53          
@@ -126,7 +126,7 @@ line level    source
  111   1          for(i=0;i<6;i++) //命令合并指纹模版
  112   1           {
  113   2            Send_Byte(FPM10A_Delete_All_Model[i]);   
-C51 COMPILER V9.60.0.0   AS608                                                             04/21/2023 13:03:52 PAGE 3   
+C51 COMPILER V9.60.7.0   AS608                                                             04/21/2023 17:04:03 PAGE 3   
 
  114   2           }  
  115   1      }
@@ -190,7 +190,7 @@ line level    source
  173   2      //        if(KEY_CANCEL == 0) 
  174   2      //         {
  175   2      //          while(KEY_CANCEL==0);
-C51 COMPILER V9.60.0.0   AS608                                                             04/21/2023 13:03:52 PAGE 4   
+C51 COMPILER V9.60.7.0   AS608                                                             04/21/2023 17:04:03 PAGE 4   
 
  176   2      //          break;
  177   2      //          }
@@ -254,7 +254,7 @@ line level    source
  235   1        unsigned char id_show[]={0,0,0};
  236   1      
  237   1          //LCD1602_Display(0x80," Please  finger ",0,16);
-C51 COMPILER V9.60.0.0   AS608                                                             04/21/2023 13:03:52 PAGE 5   
+C51 COMPILER V9.60.7.0   AS608                                                             04/21/2023 17:04:03 PAGE 5   
 
  238   1          //LCD1602_Display(0xc0,"                ",0,16);
  239   1          FPM10A_Cmd_Get_Img(); //获得指纹图像
@@ -318,7 +318,7 @@ line level    source
  297   1      }
  298          
  299          void Device_Check(void){
-C51 COMPILER V9.60.0.0   AS608                                                             04/21/2023 13:03:52 PAGE 6   
+C51 COMPILER V9.60.7.0   AS608                                                             04/21/2023 17:04:03 PAGE 6   
 
  300   1          unsigned char i=0;
  301   1          FPM10A_RECEICE_BUFFER[9]=1;                  //串口数组第九位可判断是否通信正常
@@ -382,7 +382,7 @@ line level    source
  358          //      LCD1602_Display(0x80,  "  ",0,2);
  359          //      LCD1602_Display(0xc0,  "  ",0,2);
  360          //      LCD1602_Display(0xc0+8," *",0,2); 
-C51 COMPILER V9.60.0.0   AS608                                                             04/21/2023 13:03:52 PAGE 7   
+C51 COMPILER V9.60.7.0   AS608                                                             04/21/2023 17:04:03 PAGE 7   
 
  361          //    }     
  362          //    //确认键
@@ -425,7 +425,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    989    ----
+   CODE SIZE        =    933    ----
    CONSTANT SIZE    =     82    ----
    XDATA SIZE       =     41      29
    PDATA SIZE       =   ----    ----

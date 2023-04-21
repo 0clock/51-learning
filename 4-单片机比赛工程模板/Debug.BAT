@@ -1,4 +1,4 @@
-SET C51INC=C:\Keil_v5\C51\Inc;C:\Keil_v5\C51\Inc\STC
+SET C51INC=C:\Keil_v5\C51\Inc
 SET C51LIB=C:\Keil_v5\C51\Lib
 SET CPU_TYPE=STC12C5A60S2
 SET CPU_VENDOR=STC
@@ -7,16 +7,16 @@ SET CPU_XTAL=0x02AEA540
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\main.__i"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\ADC.__i"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\AT24C02.__i"
-"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\Digital_tube.__i"
+"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\DIGITA~1.__I"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\DS18B20.__i"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\ds1302.__i"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\int_it.__i"
-"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\IO_expand.__i"
+"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\IO_EXP~1.__I"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\LCD1602.__i"
-"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\parallel_12864.__i"
+"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\PARALL~1.__I"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\PCF8591.__i"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\PWM.__i"
-"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\stepper_motor.__i"
+"C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\STEPPE~1.__I"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\time.__i"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\usart.__i"
 "C:\Keil_v5\C51\BIN\C51.EXE" @".\OBJ\HX711.__i"

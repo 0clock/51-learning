@@ -1,1 +1,1 @@
-"USER\main.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) INCDIR(.\Library\inc;.\USER) PRINT(.\main.lst) TABS (2) OBJECT(.\OBJ\main.obj)
+"USER\main.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) BROWSE INCDIR(.\Library\inc;.\USER) PRINT(.\main.lst) TABS (2) OBJECT(.\OBJ\main.obj)
