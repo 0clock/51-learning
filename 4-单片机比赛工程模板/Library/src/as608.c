@@ -1,6 +1,6 @@
 #include <STC12C5A60S2.h>
 #include "AS608.h"
-#include "key.h"
+//#include "key.h"
 #include "usart.h"
 //#include "lcd_1602.h"
 #include "parallel_12864.h"
@@ -28,8 +28,7 @@ volatile unsigned char  FPM10A_Save_Finger[9]={0x01,0x00,0x06,0x06,0x01,0x00,0x0
 //volatile:系统总是重新从它所在的内存读取数据，即使它前面的指令刚刚从该处读取过数据
 /*------------------ FINGERPRINT命令字 --------------------------*/
  //发送包头
-void FPM10A_Cmd_Send_Pack_Head(void)
-{
+void FPM10A_Cmd_Send_Pack_Head(void){
 	int i;	
 	for(i=0;i<6;i++) //包头
    {
@@ -37,18 +36,15 @@ void FPM10A_Cmd_Send_Pack_Head(void)
     }		
 }
 //发送指令
-void FPM10A_Cmd_Check(void)
-{
+void FPM10A_Cmd_Check(void){
 	int i=0;
 	FPM10A_Cmd_Send_Pack_Head(); //发送通信协议包头
-	for(i=0;i<10;i++)
-	 {		
+	for(i=0;i<10;i++){		
 		Send_Byte(FPM10A_Get_Device[i]);
 	  }
 }
 //接收反馈数据缓冲
-void FPM10A_Receive_Data(unsigned char ucLength)
-{
+void FPM10A_Receive_Data(unsigned char ucLength){
   unsigned char i;
 
   for (i=0;i<ucLength;i++)
@@ -56,8 +52,7 @@ void FPM10A_Receive_Data(unsigned char ucLength)
 }
 
 //FINGERPRINT_获得指纹图像命令
-void FPM10A_Cmd_Get_Img(void)
-{
+void FPM10A_Cmd_Get_Img(void){
     unsigned char i;
     FPM10A_Cmd_Send_Pack_Head(); //发送通信协议包头
     for(i=0;i<6;i++) //发送命令 0x1d
@@ -66,8 +61,7 @@ void FPM10A_Cmd_Get_Img(void)
 	}
 }
 //讲图像转换成特征码存放在Buffer1中
-void FINGERPRINT_Cmd_Img_To_Buffer1(void)
-{
+void FINGERPRINT_Cmd_Img_To_Buffer1(void){
  	unsigned char i;
 	FPM10A_Cmd_Send_Pack_Head(); //发送通信协议包头      
    	for(i=0;i<7;i++)   //发送命令 将图像转换成 特征码 存放在 CHAR_buffer1
@@ -76,8 +70,7 @@ void FINGERPRINT_Cmd_Img_To_Buffer1(void)
    	  }
 }
 //将图像转换成特征码存放在Buffer2中
-void FINGERPRINT_Cmd_Img_To_Buffer2(void)
-{
+void FINGERPRINT_Cmd_Img_To_Buffer2(void){
      unsigned char i;
      for(i=0;i<6;i++)    //发送包头
 	 {
@@ -89,8 +82,7 @@ void FINGERPRINT_Cmd_Img_To_Buffer2(void)
    	  }
 }
 //搜索全部用户999枚
-void FPM10A_Cmd_Search_Finger(void)
-{
+void FPM10A_Cmd_Search_Finger(void){
        unsigned char i;	   	    
 			 FPM10A_Cmd_Send_Pack_Head(); //发送通信协议包头
        for(i=0;i<11;i++)
@@ -99,8 +91,7 @@ void FPM10A_Cmd_Search_Finger(void)
    		   }
 }
 
-void FPM10A_Cmd_Reg_Model(void)
-{
+void FPM10A_Cmd_Reg_Model(void){
        unsigned char i;	   
 	    
 			 FPM10A_Cmd_Send_Pack_Head(); //发送通信协议包头
@@ -113,8 +104,7 @@ void FPM10A_Cmd_Reg_Model(void)
 
 }
 //删除指纹模块里的所有指纹模版
-void FINGERPRINT_Cmd_Delete_All_Model(void)
-{
+void FINGERPRINT_Cmd_Delete_All_Model(void){
      unsigned char i;    
     for(i=0;i<6;i++) //包头
       Send_Byte(FPM10A_Pack_Head[i]);   
@@ -124,8 +114,7 @@ void FINGERPRINT_Cmd_Delete_All_Model(void)
 		 }	
 }
 //保存指纹
-void FPM10A_Cmd_Save_Finger( unsigned int storeID )
-{
+void FPM10A_Cmd_Save_Finger( unsigned int storeID ){
        unsigned long temp = 0;
 		   unsigned char i;
        FPM10A_Save_Finger[5] =(storeID&0xFF00)>>8;
@@ -139,13 +128,12 @@ void FPM10A_Cmd_Save_Finger( unsigned int storeID )
       		Send_Byte(FPM10A_Save_Finger[i]);      //发送命令 将图像转换成 特征码 存放在 CHAR_buffer1
 }
 //添加指纹
-void FPM10A_Add_Fingerprint(unsigned int finger_id)
-{
+void FPM10A_Add_Fingerprint(unsigned int finger_id){
 	unsigned char id_show[]={0,0,0};
 	//LCD1602_WriteCMD(0x01); //清屏
 	//finger_id=0;  
 	while(1)
-	{
+		{
 	//LCD1602_Display(0x80,"   Add  finger  ",0,16);
 	//LCD1602_Display(0xc0,"    ID is       ",0,16);
 	//按返回键直接回到主菜单
@@ -242,8 +230,7 @@ void FPM10A_Add_Fingerprint(unsigned int finger_id)
 }
 
 //搜索指纹
-int FPM10A_Find_Fingerprint()
-{
+int FPM10A_Find_Fingerprint(){
 	unsigned int find_fingerid = 0;
 	unsigned char id_show[]={0,0,0};
 
@@ -289,37 +276,27 @@ int FPM10A_Find_Fingerprint()
 			return -1;
 }
 //删除所有存贮的指纹库
-void FPM10A_Delete_All_Fingerprint()
-{
+void FPM10A_Delete_All_Fingerprint(){
 		unsigned char i=0;
-				//LCD1602_Display(0x80,"   empty all    ",0,16);
-				//LCD1602_Display(0xc0,"   Yes or no ?  ",0,16); 
-		do
+		//LCD1602_Display(0x80,"   empty all    ",0,16);
+		//LCD1602_Display(0xc0,"   Yes or no ?  ",0,16); 
+		//LCD1602_Display(0x80,"   emptying     ",0,16);
+		//LCD1602_Display(0xc0,"                ",0,16); 
+		Delay_Ms(300);
+		//LCD1602_WriteCMD(0xc0);
+		for(i=0;i<16;i++)
 		 {
-			if(KEY_OK==0)
-			{
-				while(KEY_OK==0);
-				//LCD1602_Display(0x80,"   emptying     ",0,16);
-				//LCD1602_Display(0xc0,"                ",0,16); 
-				Delay_Ms(300);
-				//LCD1602_WriteCMD(0xc0);
-				for(i=0;i<16;i++)
-				 {
-					//LCD1602_WriteDAT(42);
-					Delay_Ms(100);
-				 }
-				FINGERPRINT_Cmd_Delete_All_Model();
-			  FPM10A_Receive_Data(12); 
-				//LCD1602_Display(0x80,"   All empty    ",0,16);
-				//LCD1602_Display(0xc0,"                ",0,16);
-				Buzz_Times(3);
-				break;
-			}
-		 }while(KEY_CANCEL==1);
+			//LCD1602_WriteDAT(42);
+			Delay_Ms(100);
+		 }
+		FINGERPRINT_Cmd_Delete_All_Model();
+		FPM10A_Receive_Data(12); 
+		//LCD1602_Display(0x80,"   All empty    ",0,16);
+		//LCD1602_Display(0xc0,"                ",0,16);
+		Buzz_Times(3);
 }
 
-void Device_Check(void)
-{
+void Device_Check(void){
 		unsigned char i=0;
 		FPM10A_RECEICE_BUFFER[9]=1;				           //串口数组第九位可判断是否通信正常
 		//LCD1602_Display(0xc0,"Loading",0,7);	           //设备加载中界面							   

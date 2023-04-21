@@ -1,12 +1,25 @@
-#ifndef _KEY_H_
-#define _KEY_H_
-#include<STC12C5A60S2.h>
 
-//定义按键输入端口
-sbit KEY_DOWN=P1^4;
-sbit KEY_OK=P1^5;
-sbit KEY_CANCEL=P1^6;
+/***************************************************************************************************    
+工程名称：	4x4key
 
-void Key_Init(void);
+维护记录：  2011-8-22
+***************************************************************************************************/
+#ifndef _4_4_KEY_H_
+#define _4_4_KEY_H_
 
+#include "STC12C5A60S2.H"      //包含头文件
+#ifndef uchar
+	#define uchar unsigned char
+#endif
+#ifndef uint
+	#define uint  unsigned int
+#endif
+#define GPIO_KEY P3
+
+extern uchar KeyValue ; 
+extern void Delay_Ms(uint time);
+//**************************************************************************************************
+//矩阵键盘扫描函数  需要delayms()函数
+//**************************************************************************************************
+extern void KeyDown(void);                   
 #endif

@@ -50,12 +50,12 @@
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
-          <DebugInformation>1</DebugInformation>
-          <BrowseInformation>1</BrowseInformation>
+          <DebugInformation>0</DebugInformation>
+          <BrowseInformation>0</BrowseInformation>
           <ListingPath>.\</ListingPath>
           <HexFormatSelection>0</HexFormatSelection>
           <Merge32K>0</Merge32K>
-          <CreateBatchFile>0</CreateBatchFile>
+          <CreateBatchFile>1</CreateBatchFile>
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
@@ -177,7 +177,7 @@
           </Flash1>
           <bUseTDR>0</bUseTDR>
           <Flash2></Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -315,7 +315,7 @@
             <UseInterruptVector>1</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
             <Optimize>8</Optimize>
-            <WarningLevel>2</WarningLevel>
+            <WarningLevel>1</WarningLevel>
             <SizeSpeed>1</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
             <ACallAJmp>0</ACallAJmp>
@@ -396,11 +396,6 @@
         <Group>
           <GroupName>Library</GroupName>
           <Files>
-            <File>
-              <FileName>4_4_key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Library\src\4_4_key.c</FilePath>
-            </File>
             <File>
               <FileName>ADC.c</FileName>
               <FileType>1</FileType>
@@ -495,6 +490,11 @@
               <FileName>mpu6050.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Library\src\mpu6050.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Library\src\key.c</FilePath>
             </File>
           </Files>
         </Group>
