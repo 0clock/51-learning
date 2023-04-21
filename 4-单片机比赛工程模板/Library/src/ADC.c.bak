@@ -17,6 +17,7 @@ void ADC_Init(unsigned char port)
 	P1ASF=port;//设置AD转换通道
 	ADC_RES=0;//清空转换结果
 	ADC_CONTR=ADC_POWER | ADC_SPEEDLL_540;//打开AD转化器电源
+
 //	IE=0XA0;//开启总中断，ADC中断
 	_nop_();
 	_nop_();

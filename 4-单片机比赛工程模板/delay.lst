@@ -1,0 +1,74 @@
+C51 COMPILER V9.60.0.0   DELAY                                                             04/21/2023 13:03:52 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN .\OBJ\delay.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\delay.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR(
+                    -.\Library\inc;.\USER) PRINT(.\delay.lst) TABS(2) OBJECT(.\OBJ\delay.obj)
+
+line level    source
+
+   1          #include"delay.h"
+   2          
+   3           /********************************************************************************************************
+             -*
+   4          ** 函数功能 ：延时函数
+   5          ** 函数说明 ：利用软件延时，占用CPU，经调试最小单位大约为1us
+   6          ** 入口参数 ：time:需要延时的时间，单位us
+   7          ** 出口参数 ：无
+   8          *********************************************************************************************************/
+             -                 
+   9          void Delay_Us(uchar n)
+  10          {
+  11   1          while (n--)
+  12   1          {
+  13   2              _nop_();
+  14   2              _nop_();
+  15   2          }
+  16   1      }
+  17          /*********************************************************************************************************
+  18          ** 函数功能 ：延时函数
+  19          ** 函数说明 ：利用软件延时，占用CPU，经调试最小单位大约为1ms
+  20          ** 入口参数 ：time:需要延时的时间，单位ms
+  21          ** 出口参数 ：无
+  22          *********************************************************************************************************/
+  23          void Delay_Ms(uint time)
+  24          {
+  25   1        uint i,j;
+  26   1        for(i = 0;i < time;i ++)
+  27   1          for(j = 0;j < 930;j ++);
+  28   1      }
+  29          
+  30          
+  31           /********************************************************************************************************
+             -*
+  32          函数功能 ：延时函数
+  33          
+  34          不知道多久
+  35          ***********************************************************************************/
+  36          void Delay(uint time)             //int型数据为16位,所以最大值为65535            
+  37          {
+  38   1        uint  i,j;                  //定义变量i,j,用于循环语句 
+  39   1        for(i=0;i<time;i++)         //for循环,循环50*time次
+  40   1            for(j=0;j<50;j++);       //for循环,循环50次
+  41   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     75    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.60.0.0   DELAY                                                             04/21/2023 13:03:52 PAGE 2   
+
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

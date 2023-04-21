@@ -1,0 +1,1 @@
+"Library\src\buzz.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) INCDIR(.\Library\inc;.\USER) PRINT(.\buzz.lst) TABS (2) OBJECT(.\OBJ\buzz.obj)

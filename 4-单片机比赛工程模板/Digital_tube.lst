@@ -1,0 +1,83 @@
+C51 COMPILER V9.60.0.0   DIGITAL_TUBE                                                      04/21/2023 13:03:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DIGITAL_TUBE
+OBJECT MODULE PLACED IN .\OBJ\Digital_tube.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\Digital_tube.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) 
+                    -INCDIR(.\Library\inc;.\USER) PRINT(.\Digital_tube.lst) TABS(2) OBJECT(.\OBJ\Digital_tube.obj)
+
+line level    source
+
+   1          
+   2          /***************************************************************************************************    
+   3          工程名称：  smg_scan
+   4          功能描述：  控制数码管8位动态扫描显示01234567 
+   5          硬件连接：  用8位杜邦线将J8与J12连接，2位杜邦线分别将J11_0与J15_DS1、J11_1与J15_DS2连接。
+   6          维护记录：  2011-8-22
+   7          ***************************************************************************************************/
+   8          
+   9          #include "Digital_tube.h"
+  10          
+  11          uchar wei = 0;
+  12          
+  13          
+  14          uchar code dis[16]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,
+  15                             //  0    1    2    3    4    5    6    7    
+  16                               0x7F,0x6F,0x77,0x7C,0x39,0x5E,0x79,0x71};//0~F的段码
+  17                             //  8    9    A    B    C    D    E    F  
+  18          
+  19          //**************************************************************************************************
+  20          //动态扫描函数
+  21          //**************************************************************************************************
+  22          void scan()
+  23          {
+  24   1         static uchar i=0;
+  25   1      
+  26   1           SMG=~wei;                 //由于共阴，低电平来选通某1位，所以需取反
+  27   1           LE1=1;                   //锁存位
+  28   1           LE1=0;                   //断开锁存,位选573的Q7~Q0仍保持 
+  29   1           wei<<=1;                 //左移一位 
+  30   1      
+  31   1           SMG=dis[i];               //0~7的编码
+  32   1           LE2=1;                   //锁存段码
+  33   1           LE2=0;                   //断开锁存,段选573的Q7~Q0仍保持
+  34   1           i++;                     //i加1
+  35   1           Delay(10);               //延时保持一下,延时过大会闪动，延时过小会有暗影    
+  36   1           
+  37   1           if(i==8){i=0;wei=0x01;}  //共8位,扫描到第8位时，重新扫描
+  38   1            
+  39   1      }
+  40          //**************************************************************************************************
+  41          //主函数
+  42          //**************************************************************************************************
+  43          //void main()                   //主函数
+  44          //{
+  45          //     wei=0x01;                //初始化位为0x01,即为最高位
+  46          //     i=0;                     //初始化段码为0
+  47          //     while(1)                 //进入while死循环
+  48          //      {
+  49          //        scan();               //数码管扫描函数
+  50          //      }         
+  51          //}
+  52          
+  53          
+
+C51 COMPILER V9.60.0.0   DIGITAL_TUBE                                                      04/21/2023 13:03:50 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     56    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =      2    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

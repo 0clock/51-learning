@@ -1,0 +1,1 @@
+"Library\src\as608.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) INCDIR(.\Library\inc;.\USER) PRINT(.\as608.lst) TABS (2) OBJECT(.\OBJ\as608.obj)

@@ -8,6 +8,7 @@
 uchar KeyValue = 16;
 
 
+
 //**************************************************************************************************
 //矩阵键盘扫描函数
 //**************************************************************************************************
@@ -39,9 +40,19 @@ void KeyDown(void){
 			}
 		}
 	}
+} 
+/**
+  * @brief  获取独立按键键码
+  * @param  无
+  * @retval 按下按键的键码，范围：0~4，无按键按下时返回值为0
+  */
+unsigned char KeyScan(){
+	unsigned char KeyNumber=0;
+	if(key1==0){Delay_Ms(20);while(key1==0);Delay_Ms(20);KeyNumber=1;}
+	if(key2==0){Delay_Ms(20);while(key2==0);Delay_Ms(20);KeyNumber=2;}
+	if(key3==0){Delay_Ms(20);while(key3==0);Delay_Ms(20);KeyNumber=3;}
+	if(key4==0){Delay_Ms(20);while(key4==0);Delay_Ms(20);KeyNumber=4;}
+	return KeyNumber;
 }
-
-
-
                          
 

@@ -1,0 +1,83 @@
+C51 COMPILER V9.60.0.0   PWM                                                               04/21/2023 13:03:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE PWM
+OBJECT MODULE PLACED IN .\OBJ\PWM.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\PWM.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR(.\
+                    -Library\inc;.\USER) PRINT(.\PWM.lst) TABS(2) OBJECT(.\OBJ\PWM.obj)
+
+line level    source
+
+   1          /*********************************************************************************************************
+   2          ** 工程功能 ：PWM输出
+   3          ** 工程作者 ：Blue Sky Teams——WCW
+   4          ** 工程版本 ：V1.0
+   5          *********************************************************************************************************/
+   6          
+   7          #include "PWM.h"
+   8          
+   9          //详细的介绍请参看STC12C5A60S2.pdf中第10章 STC12C5A60S2系列单片机PCA/PWM的应用
+  10          
+  11          #define thx0 0xFF
+  12          #define tlx0 0xFF  
+  13          /*********************************************************************************************************
+  14          ** 函数功能 ：初始化PCA
+  15          ** 函数说明 ：把PCA的时钟源设置为timer0的溢出频率；
+  16          ** 入口参数 ：无
+  17          ** 出口参数 ：无
+  18          *********************************************************************************************************/
+  19          void PCA_init()
+  20          {
+  21   1        CMOD=0X80;  //CIDL=1;在空闲模式下停止PCA计数器工作；
+  22   1              //0X84  时钟源设置为timer0的溢出频率；
+  23   1              //0x80  系统时钟12分频
+  24   1              //ECF=0；禁止PCA计数溢出中断功能；
+  25   1        CCON=0X00;  //CF=0；清零PCA溢出中断请求标志位；
+  26   1              //CR=0;不允许PCA计数器计数
+  27   1              //清零PCA各模块中断请求标志位
+  28   1        CH=0;   //清零PCA计数器
+  29   1        CL=0;
+  30   1        
+  31   1        CCAPM0=0x42; //设置模块0为8位PWM输出模式；PWM无需中断支持；模块0的脉冲在P1.3脚输出
+  32   1        PCA_PWM0=0x00;
+  33   1        CR=1;    //启动PCA计数器
+  34   1      
+  35   1        //通过控制 CCAPnH 来控制占空比      CCAP0H  小于CCAP0H输出0，大于时输出1
+  36   1        //CL跳变到00时，CCAPnH自动装载到CCAPnL
+  37   1      }
+  38          
+  39          ///*******************************************************************************************************
+             -**
+  40          //** 函数功能 ：初始化Timer0
+  41          //** 函数说明 ：Timer0的溢出率为PCA计数器的时钟
+  42          //** 入口参数 ：无
+  43          //** 出口参数 ：无
+  44          //********************************************************************************************************
+             -*/
+  45          //void Timer0_init()
+  46          //{
+  47          //  TMOD=0x02;       //计数器0设置为8位计数器且自动重载
+  48          //  TH0=thx0;  //十个系统时钟Timer0溢出一次
+  49          //  TL0=tlx0;
+  50          //  TR0=1;         //开定时器0
+  51          //}
+
+C51 COMPILER V9.60.0.0   PWM                                                               04/21/2023 13:03:51 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     18    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,83 @@
+C51 COMPILER V9.60.0.0   ADC                                                               04/21/2023 13:03:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN .\OBJ\ADC.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Library\src\ADC.c LARGE OMF2 WARNINGLEVEL(1) OPTIMIZE(8,SPEED) INCDIR(.\
+                    -Library\inc;.\USER) PRINT(.\ADC.lst) TABS(2) OBJECT(.\OBJ\ADC.obj)
+
+line level    source
+
+   1          /*********************************************************************************************************
+   2          ** ÎÄ¼þ¹¦ÄÜ £ºSTC12C5A60S2ÄÚÖÃADÇý¶¯³ÌÐò
+   3          ** ¹¤³Ì×÷Õß £ºBlue Sky Teams¡ª¡ªZZL
+   4          ** ¹¤³Ì°æ±¾ £ºV1.0
+   5          *********************************************************************************************************/
+   6          #include "ADC.h"
+   7          
+   8          /*********************************************************************************************************
+   9          ** º¯Êý¹¦ÄÜ £ºÄÚÖÃADCµÄ³õÊ¼»¯ÅäÖÃ
+  10          ** º¯ÊýËµÃ÷ £ºÊ¹ÓÃÄÚÖÃADCÊ±ÐèÒªÏÈÅäÖÃ¶ÔÓ¦µÄP1¿ÚµÄ¹Ü½ÅÎªÄ£ÄâÊäÈë
+  11          ** Èë¿Ú²ÎÊý £ºport£ºÐèÒªÅäÖÃÎªÄ£ÄâÊäÈëµÄÍ¨µÀ£¬Ê¹ÓÃ»òÔËËã¿ÉÒÔÍ¬Ê±ÅäÖÃ¶à¸ö¹Ü½Å
+  12          **        Èç£ºADC_Init(ADC_PORT0 | ADC_PORT1 | ADC_PORT2)µ÷ÓÃ´Ëº¯Êýºó¿ÉÒÔÍ¬Ê±ÅäÖÃP1^0,P1^1,P1^2ÎªÄ£ÄâÊäÈë
+  13          ** ³ö¿Ú²ÎÊý £ºÎÞ
+  14          *********************************************************************************************************/
+  15          void ADC_Init(unsigned char port)
+  16          {
+  17   1        P1ASF=port;//ÉèÖÃAD×ª»»Í¨µÀ
+  18   1        ADC_RES=0;//Çå¿Õ×ª»»½á¹û
+  19   1        ADC_CONTR=ADC_POWER | ADC_SPEEDLL_540;//´ò¿ªAD×ª»¯Æ÷µçÔ´
+  20   1        
+  21   1      
+  22   1      
+  23   1      //  IE=0XA0;//¿ªÆô×ÜÖÐ¶Ï£¬ADCÖÐ¶Ï
+  24   1        _nop_();
+  25   1        _nop_();
+  26   1        _nop_();
+  27   1        _nop_();
+  28   1      }
+  29          /*********************************************************************************************************
+  30          ** º¯Êý¹¦ÄÜ £º»ñÈ¡ADC¶ÔÓ¦Í¨µÀµÄµçÑ¹Öµ
+  31          ** º¯ÊýËµÃ÷ £ºÃ¿´ÎÖ»ÄÜ»ñÈ¡Ò»¸öÍ¨µÀµÄµçÑ¹Öµ£¬²»Í¬Í¨µÀÐèÒª·Ö±ðµ÷ÓÃ¸Ãº¯Êý»ñÈ¡
+  32          ** Èë¿Ú²ÎÊý £ºchannel£º»ñÈ¡¸ÃÍ¨µÀµÄµçÑ¹Öµ
+  33          ** ³ö¿Ú²ÎÊý £ºresult£º µ±Ç°Í¨µÀµÄµçÑ¹Öµ
+  34          *********************************************************************************************************/
+  35          float GetADCResult(unsigned char channel)//¶ÁÈ¡Í¨µÀchµÄµçÑ¹Öµ
+  36          {
+  37   1        unsigned int ADC_RESULT = 0;//ÓÃÀ´´æ·Å½á¹û
+  38   1        float result;
+  39   1        ADC_CONTR = ADC_POWER | ADC_SPEEDLL_540 | ADC_START | channel;//¿ªÊ¼×ª»»£¬²¢ÉèÖÃ²âÁ¿Í¨µÀÎªP1^0
+  40   1        _nop_();//Ðè¾­¹ýËÄ¸öCPUÊ±ÖÓÑÓÊ±£¬ÉÏÊöÖµ²ÅÄÜ±£Ö¤±»Éè½øADC_CONTR¿ØÖÆ¼Ä´æÆ÷
+  41   1        _nop_();
+  42   1        _nop_();
+  43   1        _nop_();
+  44   1        while(!(ADC_CONTR & ADC_FLAG));//µÈ´ý×ª»»½áÊø
+  45   1        ADC_CONTR &= ~ADC_FLAG;//Èí¼þÇå³ýÖÐ¶Ï¿ØÖÆÎ»
+  46   1        ADC_RESULT = ADC_RES;
+  47   1        ADC_RESULT = (ADC_RESULT << 2) | (0x02 & ADC_RESL); //Ä¬ÈÏÊý¾Ý´æ´¢·½Ê½£º¸ß°ËÎ»ÔÚADC_RES,µÍ¶þÎ»ÔÚADC_RESLµ
+             -Í¶þÎ»
+  48   1        result = ADC_RESULT * 5.0 / 1024.0 ;  //»ù×¼µçÑ¹ÎªµçÔ´µçÑ¹5V£¬10µÄ·Ö±æÂÊ£¬¼´1024
+  49   1        return result;
+  50   1      }
+  51          
+  52          
+
+C51 COMPILER V9.60.0.0   ADC                                                               04/21/2023 13:03:50 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     87    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

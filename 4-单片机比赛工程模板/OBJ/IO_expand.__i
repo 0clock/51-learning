@@ -1,0 +1,1 @@
+"Library\src\IO_expand.c" LARGE OMF2 WARNINGLEVEL (1) OPTIMIZE (8,SPEED) INCDIR(.\Library\inc;.\USER) PRINT(.\IO_expand.lst) TABS (2) OBJECT(.\OBJ\IO_expand.obj)

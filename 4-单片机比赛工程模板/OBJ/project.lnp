@@ -1,0 +1,24 @@
+".\OBJ\main.obj",
+".\OBJ\ADC.obj",
+".\OBJ\AT24C02.obj",
+".\OBJ\Digital_tube.obj",
+".\OBJ\DS18B20.obj",
+".\OBJ\ds1302.obj",
+".\OBJ\int_it.obj",
+".\OBJ\IO_expand.obj",
+".\OBJ\LCD1602.obj",
+".\OBJ\parallel_12864.obj",
+".\OBJ\PCF8591.obj",
+".\OBJ\PWM.obj",
+".\OBJ\stepper_motor.obj",
+".\OBJ\time.obj",
+".\OBJ\usart.obj",
+".\OBJ\HX711.obj",
+".\OBJ\as608.obj",
+".\OBJ\buzz.obj",
+".\OBJ\delay.obj",
+".\OBJ\mpu6050.obj",
+".\OBJ\key.obj" 
+TO ".\OBJ\project" 
+
+PRINT(".\project.map") DISABLEWARNING (16) 
